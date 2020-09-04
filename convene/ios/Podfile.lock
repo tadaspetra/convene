@@ -1,9 +1,17 @@
 PODS:
+  - cloud_firestore (0.14.0-2):
+    - Firebase/CoreOnly (~> 6.26.0)
+    - Firebase/Firestore (~> 6.26.0)
+    - firebase_core
+    - Flutter
   - Firebase/Auth (6.26.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 6.5.3)
   - Firebase/CoreOnly (6.26.0):
     - FirebaseCore (= 6.7.2)
+  - Firebase/Firestore (6.26.0):
+    - Firebase/CoreOnly
+    - FirebaseFirestore (~> 1.15.0)
   - firebase_auth (0.18.0-1):
     - Firebase/Auth (~> 6.26.0)
     - Firebase/CoreOnly (~> 6.26.0)
@@ -30,6 +38,7 @@ PODS:
     - GoogleUtilities/Logger (~> 6.7)
     - nanopb (~> 1.30906.0)
   - FirebaseCoreDiagnosticsInterop (1.2.0)
+  - FirebaseFirestore (1.15.0)
   - Flutter (1.0.0)
   - GoogleDataTransport (7.3.0):
     - nanopb (~> 1.30906.0)
@@ -57,8 +66,10 @@ PODS:
   - PromisesObjC (1.2.10)
 
 DEPENDENCIES:
+  - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `6.26.0`)
   - Flutter (from `Flutter`)
 
 SPEC REPOS:
@@ -76,14 +87,25 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
+  cloud_firestore:
+    :path: ".symlinks/plugins/cloud_firestore/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 6.26.0
   Flutter:
     :path: Flutter
 
+CHECKOUT OPTIONS:
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 6.26.0
+
 SPEC CHECKSUMS:
+  cloud_firestore: b054ccc068b5907645c32b669d38e82db2a11fc7
   Firebase: 7cf5f9c67f03cb3b606d1d6535286e1080e57eb6
   firebase_auth: c42c06a212439824b5da53437da905931e8e6b9a
   firebase_core: 3134fe79d257d430f163b558caf52a10a87efe8a
@@ -92,6 +114,7 @@ SPEC CHECKSUMS:
   FirebaseCore: f42e5e5f382cdcf6b617ed737bf6c871a6947b17
   FirebaseCoreDiagnostics: 7415bfb3883b3500c5a95c42b6ba66baae78f600
   FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
+  FirebaseFirestore: 2cf6944bc538e57c94d8332bae501178edb70727
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   GoogleDataTransport: e85fb700c9b027079ce182c3d08e12e0f9618bb4
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
@@ -99,6 +122,6 @@ SPEC CHECKSUMS:
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
 
-PODFILE CHECKSUM: 3282192ed5ef2300e39d9b4a015b2fdceb8de29a
+PODFILE CHECKSUM: 1cd093a95feb91cc5875edc704d5308051ab9190
 
 COCOAPODS: 1.9.3
