@@ -6,10 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../sign_up/view/sign_up_page.dart';
 import '../state/state.dart';
 
-final loginProvider = StateNotifierProvider<LoginStateNotifier>((ref) {
-  return LoginStateNotifier(ref.read);
-});
-
 final _loginFormStatus = Provider<FormzStatus>((ref) {
   final login = ref.watch(loginProvider.state);
   return login.status;

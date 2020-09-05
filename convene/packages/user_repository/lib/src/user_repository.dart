@@ -1,9 +1,9 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:user_repository/src/models/user.dart';
 
 abstract class UserRepository {
   const UserRepository();
 
-  Future<void> addUser(User user);
-  Future<void> removeUser(User user);
-  Future<void> updateUser(User user);
+  Future<void> addUser(DatabaseUser user);
+  Future<void> removeUser(DatabaseUser user);
+  Future<void> updateUser(DatabaseUser user);
 }

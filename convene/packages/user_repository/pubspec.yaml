@@ -25,5 +25,6 @@ dev_dependencies:
   mockito: ^4.0.0
   freezed: ^0.11.6
   build_runner: ^1.10.1
+  json_serializable: ^3.4.1
   lint: ^1.2.0
 

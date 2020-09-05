@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 
-import 'models/user.dart' as custom;
-
 /// Thrown if during the sign up process if a failure occurs.
 class SignUpFailure implements Exception {}
 
@@ -30,12 +28,8 @@ class AuthenticationRepository {
 
   /// Stream of [User] which will emit the current user when
   /// the authentication state changes.
-  ///
-  /// Emits [User.empty] if the user is not authenticated.
-  Stream<custom.User> get user {
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      return firebaseUser == null ? custom.User.empty() : firebaseUser.toUser;
-    });
+  Stream<User> get user {
+    return _firebaseAuth.authStateChanges();
   }
 
   /// Creates a new user with the provided [email] and [password].
@@ -107,8 +101,8 @@ class AuthenticationRepository {
   }
 }
 
-extension on User {
-  custom.User get toUser {
-    return custom.User(id: uid, email: email, name: displayName);
-  }
-}
+// extension on User {
+//   custom.User get toUser {
+//     return custom.User(id: uid, email: email, name: displayName);
+//   }
+// }

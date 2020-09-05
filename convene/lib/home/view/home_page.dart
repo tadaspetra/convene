@@ -26,14 +26,14 @@ class HomePage extends StatelessWidget {
             RaisedButton(
               onPressed: () {
                 context.read(userRepositoryProvider).addUser(
-                      const User(
-                        id: 'a real id',
+                      const DatabaseUser(
+                        uid: 'a real id 2',
                         email: 'test@test.com',
                         name: 'test',
                       ),
                     );
               },
-              child: Text('write db'),
+              child: const Text('write db'),
             )
           ],
         ),
