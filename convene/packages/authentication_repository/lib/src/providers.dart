@@ -14,7 +14,7 @@ final userProvider = StreamProvider<User>((ref) {
 });
 
 /// Returns the current logged-in user's [User.uid]
-final userTokenProvider = FutureProvider<String>((ref) async {
+final userUidProvider = FutureProvider<String>((ref) async {
   final user = await ref.watch(userProvider.last);
   return user.uid;
 });

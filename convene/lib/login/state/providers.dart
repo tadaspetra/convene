@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'login_state_notifier.dart';
+import 'login_controller.dart';
 
-final loginProvider = StateNotifierProvider<LoginStateNotifier>((ref) {
-  return LoginStateNotifier(ref.read);
+final loginController = StateNotifierProvider<LoginController>((ref) {
+  return LoginController(ref.read);
 });

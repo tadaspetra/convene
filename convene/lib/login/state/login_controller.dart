@@ -6,8 +6,8 @@ import 'package:state_notifier/state_notifier.dart';
 import '../../authentication/models/models.dart';
 import 'login_state.dart';
 
-class LoginStateNotifier extends StateNotifier<LoginState> {
-  LoginStateNotifier(this.read, [LoginState state])
+class LoginController extends StateNotifier<LoginState> {
+  LoginController(this.read, [LoginState state])
       : super(state ?? const LoginState());
 
   /// The `ref.read` function

@@ -7,7 +7,7 @@ import '../../sign_up/view/sign_up_page.dart';
 import '../state/state.dart';
 
 final _loginFormStatus = Provider<FormzStatus>((ref) {
-  final login = ref.watch(loginProvider.state);
+  final login = ref.watch(loginController.state);
   return login.status;
 });
 
@@ -50,7 +50,7 @@ class LoginForm extends StatelessWidget {
 /// This is an optimization method. [_EmailInput] will only rebuild when
 /// [_showEmailErrorMessage] changes value.
 final _showEmailErrorMessage = Provider<bool>((ref) {
-  final login = ref.watch(loginProvider.state);
+  final login = ref.watch(loginController.state);
   return login.email.invalid && login.hasSubmitted;
 });
 
@@ -61,7 +61,7 @@ class _EmailInput extends HookWidget {
   Widget build(BuildContext context) {
     return TextField(
       key: const Key('loginForm_emailInput_textField'),
-      onChanged: (email) => context.read(loginProvider).emailChanged(email),
+      onChanged: (email) => context.read(loginController).emailChanged(email),
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         labelText: 'email',
@@ -78,7 +78,7 @@ class _EmailInput extends HookWidget {
 /// This is an optimization method. [_PasswordInput] will only rebuild when
 /// [_showPasswordErrorMessage] changes value.
 final _showPasswordErrorMessage = Provider<bool>((ref) {
-  final login = ref.watch(loginProvider.state);
+  final login = ref.watch(loginController.state);
   return login.password.invalid && login.hasSubmitted;
 });
 
@@ -90,7 +90,7 @@ class _PasswordInput extends HookWidget {
     return TextField(
       key: const Key('loginForm_passwordInput_textField'),
       onChanged: (password) =>
-          context.read(loginProvider).passwordChanged(password),
+          context.read(loginController).passwordChanged(password),
       obscureText: true,
       decoration: InputDecoration(
         labelText: 'password',
@@ -118,7 +118,7 @@ class _LoginButton extends HookWidget {
             ? const CircularProgressIndicator()
             : RaisedButton(
                 onPressed: () {
-                  context.read(loginProvider).loginWithCredentials();
+                  context.read(loginController).loginWithCredentials();
                 },
                 child: const Text('Login'),
               ),

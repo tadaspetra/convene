@@ -13,7 +13,7 @@ class FirebaseUserRepository implements UserRepository {
 
   @override
   Future<void> addUser(DatabaseUser user) async {
-    final uid = await read(userTokenProvider.future);
+    final uid = await read(userUidProvider.future);
     return users.doc(uid).set(user.toJson());
   }
 
