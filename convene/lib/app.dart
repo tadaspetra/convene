@@ -65,7 +65,7 @@ class App extends StatelessWidget {
           },
         );
       },
-      onGenerateRoute: (_) => MaterialPageRoute(builder: (context) {
+      onGenerateRoute: (_) => MaterialPageRoute<SplashPage>(builder: (context) {
         return const SplashPage();
       }),
     );
