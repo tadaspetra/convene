@@ -1,4 +1,4 @@
-import 'package:user_repository/src/models/user.dart';
+import 'package:user_repository/src/models/database_user.dart';
 
 abstract class UserRepository {
   const UserRepository();

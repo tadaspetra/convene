@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'user.freezed.dart';
-part 'user.g.dart';
+part 'database_user.freezed.dart';
+part 'database_user.g.dart';
 
 @freezed
 abstract class DatabaseUser with _$DatabaseUser {

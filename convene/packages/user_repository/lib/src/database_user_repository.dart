@@ -1,11 +1,11 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:user_repository/src/models/user.dart';
+import 'package:user_repository/src/models/database_user.dart';
 import 'package:user_repository/src/user_repository.dart';
 
-class FirebaseUserRepository implements UserRepository {
-  FirebaseUserRepository(this.read);
+class DatabaseUserRepository implements UserRepository {
+  DatabaseUserRepository(this.read);
 
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
