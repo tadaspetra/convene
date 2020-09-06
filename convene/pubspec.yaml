@@ -34,6 +34,8 @@ dependencies:
   formz: ^0.3.0
   authentication_repository:
     path: packages/authentication_repository
+  user_repository:
+    path: packages/user_repository
 
 dev_dependencies:
   flutter_driver:
@@ -44,6 +46,7 @@ dev_dependencies:
   test:
   lint:
   freezed:
+  json_serializable: ^3.4.1
   build_runner: 1.10.1
 
 # https://github.com/flutter/flutter/issues/63556

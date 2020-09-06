@@ -1,6 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:user_repository/user_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage();
@@ -13,11 +14,28 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            context.read(authRepositoryProvider).logOut();
-          },
-          child: const Text('Sign out'),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RaisedButton(
+              onPressed: () {
+                context.read(authRepositoryProvider).logOut();
+              },
+              child: const Text('Sign out'),
+            ),
+            RaisedButton(
+              onPressed: () {
+                context.read(userRepositoryProvider).addUser(
+                      const DatabaseUser(
+                        uid: 'a real id 2',
+                        email: 'test@test.com',
+                        name: 'test',
+                      ),
+                    );
+              },
+              child: const Text('write db'),
+            )
+          ],
         ),
       ),
     );

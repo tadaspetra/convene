@@ -1,4 +1,4 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'authentication_state.freezed.dart';

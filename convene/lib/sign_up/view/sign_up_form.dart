@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../sign_up.dart';
 
 final _signUpFormStatus = Provider<FormzStatus>((ref) {
-  final signUp = ref.watch(signUpProvider.state);
+  final signUp = ref.watch(signUpController.state);
   return signUp.status;
 });
 
@@ -48,7 +48,7 @@ class SignUpForm extends StatelessWidget {
 /// This is an optimization method. [_EmailInput] will only rebuild when
 /// [_showEmailErrorMessage] changes value.
 final _showEmailErrorMessage = Provider<bool>((ref) {
-  final signUp = ref.watch(signUpProvider.state);
+  final signUp = ref.watch(signUpController.state);
   return signUp.email.invalid && signUp.hasSubmitted;
 });
 
@@ -59,7 +59,7 @@ class _EmailInput extends HookWidget {
   Widget build(BuildContext context) {
     return TextField(
       key: const Key('loginForm_emailInput_textField'),
-      onChanged: (email) => context.read(signUpProvider).emailChanged(email),
+      onChanged: (email) => context.read(signUpController).emailChanged(email),
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         labelText: 'email',
@@ -76,7 +76,7 @@ class _EmailInput extends HookWidget {
 /// This is an optimization method. [_PasswordInput] will only rebuild when
 /// [_showPasswordErrorMessage] changes value.
 final _showPasswordErrorMessage = Provider<bool>((ref) {
-  final signUp = ref.watch(signUpProvider.state);
+  final signUp = ref.watch(signUpController.state);
   return signUp.password.invalid && signUp.hasSubmitted;
 });
 
@@ -88,7 +88,7 @@ class _PasswordInput extends HookWidget {
     return TextField(
       key: const Key('loginForm_passwordInput_textField'),
       onChanged: (password) =>
-          context.read(signUpProvider).passwordChanged(password),
+          context.read(signUpController).passwordChanged(password),
       obscureText: true,
       decoration: InputDecoration(
         labelText: 'password',
@@ -114,7 +114,7 @@ class _SignUpButton extends HookWidget {
             ? const CircularProgressIndicator()
             : RaisedButton(
                 onPressed: () {
-                  context.read(signUpProvider).signUpFormSubmitted();
+                  context.read(signUpController).signUpFormSubmitted();
                 },
                 child: const Text('SIGN UP'),
               ),
