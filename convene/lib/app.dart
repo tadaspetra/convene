@@ -1,4 +1,5 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:convene/email_not_verified/email_not_verified.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -46,6 +47,9 @@ class App extends StatelessWidget {
                   state.maybeWhen(
                     authenticated: (user) {
                       _navigateToRoute(HomePage.route());
+                    },
+                    emailNotVerified: () {
+                      _navigateToRoute(EmailNotVerifiedPage.route());
                     },
                     unauthenticated: () {
                       _navigateToRoute(LoginPage.route());

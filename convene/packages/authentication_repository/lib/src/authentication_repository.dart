@@ -6,6 +6,9 @@ import 'package:meta/meta.dart';
 /// Thrown if during the sign up process if a failure occurs.
 class SignUpFailure implements Exception {}
 
+/// Thrown if during the sign up process if a failure occurs.
+class EmailVerificationFailure implements Exception {}
+
 /// Thrown during the login process if a failure occurs.
 class LogInWithEmailAndPasswordFailure implements Exception {}
 
@@ -29,7 +32,18 @@ class AuthenticationRepository {
   /// Stream of [User] which will emit the current user when
   /// the authentication state changes.
   Stream<User> get user {
-    return _firebaseAuth.authStateChanges();
+    return _firebaseAuth.userChanges();
+  }
+
+  /// Once they accept email verification, reload needs to be called
+  ///
+  /// Throws a [EmailVerificationFailure] if an exception occurs.
+  Future<void> emailVerified() async {
+    try {
+      await _firebaseAuth.currentUser.reload();
+    } on Exception {
+      throw EmailVerificationFailure();
+    }
   }
 
   /// Creates a new user with the provided [email] and [password].
@@ -41,10 +55,12 @@ class AuthenticationRepository {
   }) async {
     assert(email != null && password != null);
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      final UserCredential credential =
+          await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      await credential.user.sendEmailVerification();
     } on Exception {
       throw SignUpFailure();
     }

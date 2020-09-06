@@ -26,8 +26,13 @@ final authStateProvider = Provider<AuthenticationState>((ref) {
     data: (user) {
       if (user == null) {
         return const AuthenticationState.unauthenticated();
+      } else {
+        if (user.emailVerified == true) {
+          return AuthenticationState.authenticated(user);
+        } else {
+          return const AuthenticationState.emailNotVerified();
+        }
       }
-      return AuthenticationState.authenticated(user);
     },
     loading: () {
       return const AuthenticationState.unknown();
