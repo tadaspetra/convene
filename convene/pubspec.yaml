@@ -36,6 +36,8 @@ dependencies:
     path: packages/authentication_repository
   user_repository:
     path: packages/user_repository
+  club_repository:
+    path: packages/club_repository
 
 dev_dependencies:
   flutter_driver:
