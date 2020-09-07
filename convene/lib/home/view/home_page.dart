@@ -2,6 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:club_repository/club_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage();
@@ -34,6 +35,18 @@ class HomePage extends StatelessWidget {
                     );
               },
               child: const Text('write db'),
+            ),
+            RaisedButton(
+              onPressed: () {
+                context.read(clubRepositoryProvider).createClub(
+                      const DatabaseUser(
+                        uid: 'a real id 2',
+                        email: 'test@test.com',
+                        name: 'test',
+                      ),
+                    );
+              },
+              child: const Text("create club"),
             )
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:user_repository/src/models/database_user.dart';
 
 abstract class UserRepository {
+  // why make this abstract?
   const UserRepository();
 
   Future<void> addUser(DatabaseUser user);
