@@ -1,15 +1,16 @@
-import 'package:convene/authentication/authentication.dart';
 import 'package:formz/formz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'login_state.freezed.dart';
+import 'package:convene/services/authentication/models/models.dart';
+
+part 'sign_up_state.freezed.dart';
 
 @freezed
-abstract class LoginState with _$LoginState {
-  const factory LoginState({
+abstract class SignUpState with _$SignUpState {
+  const factory SignUpState({
     @Default(Email.pure()) Email email,
     @Default(Password.pure()) Password password,
     FormzStatus status,
     @Default(false) bool hasSubmitted,
-  }) = _LoginState;
+  }) = _SignUpState;
 }
