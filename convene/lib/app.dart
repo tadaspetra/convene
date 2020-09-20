@@ -1,13 +1,13 @@
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:convene/email_not_verified/email_not_verified.dart';
+import 'package:convene/screens/email_not_verified/email_not_verified.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'error/error.dart';
-import 'home/home.dart';
-import 'login/view/view.dart';
-import 'splash/splash.dart';
+import 'screens/error/error.dart';
+import 'screens/home/home.dart';
+import 'screens/login/view/view.dart';
+import 'screens/splash/splash.dart';
 
 class App extends StatelessWidget {
   // Create the initilization Future outside of `build`:
