@@ -1,10 +1,12 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:convene/screens/home/widgets/add_drawer.dart';
+import 'package:convene/screens/home/widgets/books.dart';
+import 'package:convene/screens/home/widgets/clubs.dart';
+import 'package:convene/screens/home/widgets/menu_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:user_repository/user_repository.dart';
-import 'package:club_repository/club_repository.dart';
 
-class HomePage extends StatelessWidget {
+/// If you want to use Hooks, you need to create a separate stateless widget for that,
+/// since for a drawer you need to have a stateful widget. Is there a better way around this?
+class HomePage extends StatefulWidget {
   const HomePage();
 
   static Route route() {
@@ -12,25 +14,45 @@ class HomePage extends StatelessWidget {
   }
 
   @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _homeScaffoldKey = GlobalKey();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _homeScaffoldKey,
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            RaisedButton(
-              onPressed: () {
-                context.read(authRepositoryProvider).logOut();
-              },
-              child: const Text('Sign out'),
+            SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () {
+                      _homeScaffoldKey.currentState.openDrawer();
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      _homeScaffoldKey.currentState.openEndDrawer();
+                    },
+                  ),
+                ],
+              ),
             ),
-            RaisedButton(
-              onPressed: () {}, // create club function
-              child: const Text("create club"),
-            )
+            Books(),
+            Clubs(),
           ],
         ),
       ),
+      drawer: const MenuDrawer(),
+      endDrawer: const AddDrawer(),
     );
   }
 }

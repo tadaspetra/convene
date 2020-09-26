@@ -1,4 +1,5 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:convene/config/palette.dart';
 import 'package:convene/screens/email_not_verified/email_not_verified.dart';
 import 'package:convene/screens/no_firestor_user/no_firestore_user.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,7 +30,20 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
+      theme: ThemeData(
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        buttonColor: Palette.darkerGrey,
+        canvasColor: Palette.lightGrey,
+        accentColor: Palette.lightBlue,
+        primaryColor: Palette.darkerGrey,
+        buttonTheme: const ButtonThemeData(
+          buttonColor: Palette.darkerGrey,
+          textTheme: ButtonTextTheme.primary,
+        ),
+        colorScheme: const ColorScheme.light(
+          primary: Colors.black, //flat button text color
+        ),
+      ),
       navigatorKey: _navigatorKey,
       builder: (context, child) {
         return FutureBuilder(
