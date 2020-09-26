@@ -1,7 +1,7 @@
 import 'package:formz/formz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package:convene/services/authentication/models/models.dart';
+import 'package:convene/services/authentication/authentication.dart';
 
 part 'sign_up_state.freezed.dart';
 

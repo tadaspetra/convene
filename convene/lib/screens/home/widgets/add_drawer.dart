@@ -1,4 +1,7 @@
+import 'package:convene/providers.dart';
+import 'package:convene/services/navigation/navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AddDrawer extends StatelessWidget {
   const AddDrawer({
@@ -17,6 +20,7 @@ class AddDrawer extends StatelessWidget {
               leading: const Icon(Icons.add),
               title: const Text('Add Solo Book'),
               onTap: () {
+                context.read(currentPageProvider).state = Pages.addbook;
                 Navigator.pop(context);
               },
             ),

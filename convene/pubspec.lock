@@ -36,13 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.2"
-  authentication_repository:
+  books_finder:
     dependency: "direct main"
     description:
-      path: "packages/authentication_repository"
-      relative: true
-    source: path
-    version: "1.0.0"
+      name: books_finder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2+4"
   boolean_selector:
     dependency: transitive
     description:
@@ -162,13 +162,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0+1"
-  club_repository:
-    dependency: "direct main"
-    description:
-      path: "packages/club_repository"
-      relative: true
-    source: path
-    version: "1.0.0"
   code_builder:
     dependency: transitive
     description:

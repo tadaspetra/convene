@@ -1,5 +1,5 @@
 name: user_repository
-description: Dart package which manages the user domain.
+description: Dart package which manages the users
 version: 1.0.0
 
 # The following line prevents the package from being accidentally published to
@@ -12,11 +12,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  firebase_core: ^0.5.0
+  firebase_core: "^0.5.0"
+  firebase_auth: "^0.18.0+1"
   cloud_firestore: ^0.14.0+2
-  authentication_repository:
-    path: ../authentication_repository
+  freezed_annotation: ^0.11.0+1
   riverpod: ^0.7.0
 
 dev_dependencies:

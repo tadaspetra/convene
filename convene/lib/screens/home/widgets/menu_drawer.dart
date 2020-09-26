@@ -1,4 +1,4 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:user_repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,7 +10,7 @@ class MenuDrawer extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = useProvider(userProvider);
+    final user = useProvider(databaseUserProvider);
     return Drawer(
       child: SafeArea(
         child: ListView(
@@ -18,10 +18,12 @@ class MenuDrawer extends HookWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             ListTile(
-              title: Text(user.when(
-                  data: (config) => config.email,
-                  loading: () => "loading",
-                  error: (err, stack) => "error")),
+              title: Text(
+                user.when(
+                    data: (config) => config.name ?? "no name",
+                    loading: () => "loading..",
+                    error: (err, stack) => "error"),
+              ),
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app),

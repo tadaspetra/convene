@@ -1,6 +1,5 @@
-import 'package:authentication_repository/authentication_repository.dart'; //What are we going to do about dependencies like this?
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:club_repository/club_repository.dart';
+import 'package:convene/services/club_repository/club_repository.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:user_repository/user_repository.dart';
@@ -15,7 +14,7 @@ class FirestoreClub implements ClubRepository {
 
   @override
   Future<void> createClub(DatabaseUser user) async {
-    final uid = await read(userUidProvider.future);
-    return clubs.doc().collection("users").doc(uid).set(user.toJson());
+    final user = await read(userRespositoryProvider).getCurrentUser();
+    return clubs.doc().collection("users").doc(user.uid).set(user.toJson());
   }
 }

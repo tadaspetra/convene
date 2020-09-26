@@ -1,11 +1,11 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:user_repository/src/models/database_user.dart';
+import 'package:user_repository/src/models/database_user/database_user.dart';
 import 'package:user_repository/src/user_repository.dart';
+import 'package:user_repository/src/providers.dart';
 
-class DatabaseUserRepository implements UserRepository {
-  DatabaseUserRepository(this.read);
+class FirestoreUserRepository implements UserRepository {
+  FirestoreUserRepository(this.read);
 
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
@@ -13,8 +13,8 @@ class DatabaseUserRepository implements UserRepository {
 
   @override
   Future<void> addUser(DatabaseUser user) async {
-    final uid = await read(userUidProvider.future);
-    return users.doc(uid).set(user.toJson());
+    final currentUser = await read(authUserProvider.last);
+    return users.doc(currentUser.uid).set(user.toJson());
   }
 
   @override
@@ -31,7 +31,8 @@ class DatabaseUserRepository implements UserRepository {
 
   @override
   Future<DatabaseUser> getCurrentUser() async {
-    final uid = await read(userUidProvider.future);
-    return DatabaseUser.fromDocumentSnapshot(await users.doc(uid).get());
+    final currentUser = await read(authUserProvider.last);
+    return DatabaseUser.fromDocumentSnapshot(
+        await users.doc(currentUser.uid).get());
   }
 }

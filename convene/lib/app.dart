@@ -1,15 +1,15 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:convene/config/palette.dart';
+import 'package:convene/providers.dart';
+import 'package:convene/screens/add_book/view/add_book_page.dart';
 import 'package:convene/screens/email_not_verified/email_not_verified.dart';
-import 'package:convene/screens/no_firestor_user/no_firestore_user.dart';
+import 'package:convene/screens/login/view/login_page.dart';
+import 'package:convene/services/navigation/navigation_state.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:user_repository/user_repository.dart';
 
 import 'screens/error/error.dart';
 import 'screens/home/home.dart';
-import 'screens/login/view/view.dart';
 import 'screens/splash/splash.dart';
 
 class App extends StatelessWidget {
@@ -58,29 +58,17 @@ class App extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               // Listen to user authentication state updates
               return ProviderListener(
-                provider: authStateProvider,
-                onChange: (AuthenticationState state) {
-                  state.maybeWhen(
-                    authenticated: (user) async {
-                      try {
-                        final DatabaseUser currentUser = await context
-                            .read(userRepositoryProvider)
-                            .getCurrentUser();
-                        _navigateToRoute(HomePage.route());
-                      } catch (e) {
-                        _navigateToRoute(NoFirestoreUserPage.route());
-                      }
-                    },
-                    emailNotVerified: () {
-                      _navigateToRoute(EmailNotVerifiedPage.route());
-                    },
-                    unauthenticated: () {
-                      _navigateToRoute(LoginPage.route());
-                    },
-                    error: (err) {
-                      _navigateToRoute(ErrorPage.route());
-                    },
-                    orElse: () {},
+                provider: navigationProvider,
+                onChange: (NavigationState state) {
+                  state.when(
+                    home: () => _navigateToRoute(HomePage.route()),
+                    addBook: () => _navigateToRoute(AddBookPage.route()),
+                    unauthenticated: () => _navigateToRoute(LoginPage.route()),
+                    emailNotVerified: () =>
+                        _navigateToRoute(EmailNotVerifiedPage.route()),
+                    loading: () => _navigateToRoute(SplashPage.route()),
+                    error: (Object error) =>
+                        _navigateToRoute(ErrorPage.route()),
                   );
                 },
                 child: child,
