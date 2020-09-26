@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:user_repository/src/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 
@@ -21,9 +21,9 @@ class LogOutFailure implements Exception {}
 /// {@template authentication_repository}
 /// Repository which manages user authentication.
 /// {@endtemplate}
-class AuthenticationRepository {
+class FirebaseAuthRepository implements AuthRepository {
   /// {@macro authentication_repository}
-  AuthenticationRepository({
+  FirebaseAuthRepository({
     FirebaseAuth firebaseAuth,
   }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
@@ -31,6 +31,7 @@ class AuthenticationRepository {
 
   /// Stream of [User] which will emit the current user when
   /// the authentication state changes.
+  @override
   Stream<User> get user {
     return _firebaseAuth.userChanges();
   }
@@ -38,6 +39,7 @@ class AuthenticationRepository {
   /// Once they accept email verification, reload needs to be called
   ///
   /// Throws a [EmailVerificationFailure] if an exception occurs.
+  @override
   Future<void> emailVerified() async {
     try {
       await _firebaseAuth.currentUser.reload();
@@ -49,6 +51,7 @@ class AuthenticationRepository {
   /// Creates a new user with the provided [email] and [password].
   ///
   /// Throws a [SignUpFailure] if an exception occurs.
+  @override
   Future<void> signUp({
     @required String email,
     @required String password,
@@ -86,6 +89,7 @@ class AuthenticationRepository {
   /// Signs in with the provided [email] and [password].
   ///
   /// Throws a [LogInWithEmailAndPasswordFailure] if an exception occurs.
+  @override
   Future<void> logInWithEmailAndPassword({
     @required String email,
     @required String password,
@@ -105,6 +109,7 @@ class AuthenticationRepository {
   /// [User.empty] from the [user] Stream.
   ///
   /// Throws a [LogOutFailure] if an exception occurs.
+  @override
   Future<void> logOut() async {
     try {
       await Future.wait([
@@ -116,9 +121,3 @@ class AuthenticationRepository {
     }
   }
 }
-
-// extension on User {
-//   custom.User get toUser {
-//     return custom.User(id: uid, email: email, name: displayName);
-//   }
-// }

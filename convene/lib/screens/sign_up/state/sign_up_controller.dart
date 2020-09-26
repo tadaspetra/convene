@@ -1,9 +1,9 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:user_repository/user_repository.dart';
 import 'package:formz/formz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-import 'package:convene/services/authentication/models/models.dart';
+import 'package:convene/services/authentication/authentication.dart';
 import 'sign_up_state.dart';
 
 class SignUpController extends StateNotifier<SignUpState> {

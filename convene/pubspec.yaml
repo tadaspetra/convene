@@ -32,12 +32,9 @@ dependencies:
   flutter_hooks: ^0.13.2
   freezed_annotation: ^0.11.0+1
   formz: ^0.3.0
-  authentication_repository:
-    path: packages/authentication_repository
+  books_finder:
   user_repository:
     path: packages/user_repository
-  club_repository:
-    path: packages/club_repository
 
 dev_dependencies:
   flutter_driver:
