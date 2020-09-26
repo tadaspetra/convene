@@ -1,8 +1,10 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:convene/screens/email_not_verified/email_not_verified.dart';
+import 'package:convene/screens/no_firestor_user/no_firestore_user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:user_repository/user_repository.dart';
 
 import 'screens/error/error.dart';
 import 'screens/home/home.dart';
@@ -45,8 +47,15 @@ class App extends StatelessWidget {
                 provider: authStateProvider,
                 onChange: (AuthenticationState state) {
                   state.maybeWhen(
-                    authenticated: (user) {
-                      _navigateToRoute(HomePage.route());
+                    authenticated: (user) async {
+                      try {
+                        final DatabaseUser currentUser = await context
+                            .read(userRepositoryProvider)
+                            .getCurrentUser();
+                        _navigateToRoute(HomePage.route());
+                      } catch (e) {
+                        _navigateToRoute(NoFirestoreUserPage.route());
+                      }
                     },
                     emailNotVerified: () {
                       _navigateToRoute(EmailNotVerifiedPage.route());
