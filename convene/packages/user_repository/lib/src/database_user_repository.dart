@@ -28,4 +28,10 @@ class DatabaseUserRepository implements UserRepository {
     // TODO: implement updateUser
     throw UnimplementedError();
   }
+
+  @override
+  Future<DatabaseUser> getCurrentUser() async {
+    final uid = await read(userUidProvider.future);
+    return DatabaseUser.fromDocumentSnapshot(await users.doc(uid).get());
+  }
 }

@@ -1,14 +1,12 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:user_repository/user_repository.dart';
-import 'package:club_repository/club_repository.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage();
+class NoFirestoreUserPage extends StatelessWidget {
+  const NoFirestoreUserPage({Key key}) : super(key: key);
 
   static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => const HomePage());
+    return MaterialPageRoute<void>(builder: (_) => const NoFirestoreUserPage());
   }
 
   @override
@@ -16,17 +14,14 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text('You need to create a user'),
             RaisedButton(
               onPressed: () {
                 context.read(authRepositoryProvider).logOut();
               },
-              child: const Text('Sign out'),
-            ),
-            RaisedButton(
-              onPressed: () {}, // create club function
-              child: const Text("create club"),
+              child: const Text("Sign Out"),
             )
           ],
         ),
