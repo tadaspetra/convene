@@ -1,16 +1,17 @@
 import 'package:convene/config/palette.dart';
-import 'package:convene/providers.dart';
-import 'package:convene/screens/add_book/view/add_book_page.dart';
-import 'package:convene/screens/email_not_verified/email_not_verified.dart';
-import 'package:convene/screens/login/view/login_page.dart';
-import 'package:convene/services/navigation/navigation_state.dart';
+
+import 'package:convene/domain/navigation/navigation_state.dart';
+import 'package:convene/providers/navigation_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'screens/error/error.dart';
-import 'screens/home/home.dart';
-import 'screens/splash/splash.dart';
+import 'pages/add_book/view/add_book_page.dart';
+import 'pages/email_not_verified/email_not_verified.dart';
+import 'pages/error/error.dart';
+import 'pages/home/home.dart';
+import 'pages/login/view/login_page.dart';
+import 'pages/splash/splash.dart';
 
 class App extends StatelessWidget {
   // Create the initilization Future outside of `build`:

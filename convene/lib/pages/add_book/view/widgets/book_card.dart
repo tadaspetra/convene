@@ -1,4 +1,4 @@
-import 'package:convene/services/book_repository/book_repository.dart';
+import 'package:convene/domain/book_repository/book_repository.dart';
 import 'package:flutter/material.dart';
 
 class BookCard extends StatelessWidget {

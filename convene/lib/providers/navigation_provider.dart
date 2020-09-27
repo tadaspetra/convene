@@ -1,7 +1,5 @@
-import 'package:convene/services/book_repository/book_repository.dart';
-import 'package:convene/services/club_repository/club_repository.dart';
-import 'package:convene/services/navigation/navigation.dart';
-import 'package:convene/services/navigation/navigation_state.dart';
+import 'package:convene/domain/navigation/navigation.dart';
+import 'package:convene/domain/navigation/navigation_state.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -44,9 +42,3 @@ final navigationProvider = Provider<NavigationState>((ref) {
     error: (error) => NavigationState.error(error),
   );
 });
-
-final bookRepositoryProvider =
-    Provider<BookRepository>((ref) => FirestoreBook(ref.read));
-
-final clubRepositoryProvider =
-    Provider<ClubRepository>((ref) => FirestoreClub(ref.read));

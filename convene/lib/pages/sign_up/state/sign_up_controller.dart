@@ -1,20 +1,21 @@
 import 'package:user_repository/user_repository.dart';
-import 'package:convene/services/authentication/authentication.dart';
 import 'package:formz/formz.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-import 'login_state.dart';
+import 'package:convene/domain/authentication/authentication.dart';
+import 'sign_up_state.dart';
 
-class LoginController extends StateNotifier<LoginState> {
-  LoginController(this.read, [LoginState state])
-      : super(state ?? const LoginState());
+class SignUpController extends StateNotifier<SignUpState> {
+  SignUpController(this.read, [SignUpState state])
+      : super(state ?? const SignUpState());
 
   /// The `ref.read` function
   final Reader read;
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
+
     state = state.copyWith(
       email: email,
       status: Formz.validate([email, state.password]),
@@ -29,14 +30,14 @@ class LoginController extends StateNotifier<LoginState> {
     );
   }
 
-  Future<void> loginWithCredentials() async {
+  Future<void> signUpFormSubmitted() async {
     state = state.copyWith(hasSubmitted: true);
 
     if (!state.status.isValidated) return;
 
     state = state.copyWith(status: FormzStatus.submissionInProgress);
     try {
-      await read(authRepositoryProvider).logInWithEmailAndPassword(
+      await read(authRepositoryProvider).signUp(
         email: state.email.value,
         password: state.password.value,
       );
