@@ -1,1 +1,1 @@
-export 'view/email_not_verified_page.dart';
+export 'view/view.dart';

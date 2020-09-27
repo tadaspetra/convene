@@ -51,7 +51,7 @@ class App extends StatelessWidget {
           builder: (context, snapshot) {
             // Firebase check for errors
             if (snapshot.hasError) {
-              _navigateToRoute(ErrorPage.route());
+              _navigateToRoute(ErrorPage.route);
             }
 
             // Firebase initialized
@@ -61,14 +61,16 @@ class App extends StatelessWidget {
                 provider: navigationProvider,
                 onChange: (NavigationState state) {
                   state.when(
-                    home: () => _navigateToRoute(HomePage.route()),
-                    addBook: () => _navigateToRoute(AddBookPage.route()),
-                    unauthenticated: () => _navigateToRoute(LoginPage.route()),
+                    home: () => _navigateToRoute(HomePage.route),
+                    addBook: () => _navigateToRoute(AddBookPage.route),
+                    unauthenticated: () => _navigateToRoute(LoginPage.route),
                     emailNotVerified: () =>
-                        _navigateToRoute(EmailNotVerifiedPage.route()),
-                    loading: () => _navigateToRoute(SplashPage.route()),
-                    error: (Object error) =>
-                        _navigateToRoute(ErrorPage.route()),
+                        _navigateToRoute(EmailNotVerifiedPage.route),
+                    loading: () => _navigateToRoute(SplashPage.route),
+                    error: (Object error) {
+                      print(error);
+                      _navigateToRoute(ErrorPage.route);
+                    },
                   );
                 },
                 child: child,

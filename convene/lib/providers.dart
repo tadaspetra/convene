@@ -1,7 +1,5 @@
 import 'package:convene/services/book_repository/book_repository.dart';
-import 'package:convene/services/book_repository/firestore_book.dart';
 import 'package:convene/services/club_repository/club_repository.dart';
-import 'package:convene/services/club_repository/firestore_club.dart';
 import 'package:convene/services/navigation/navigation.dart';
 import 'package:convene/services/navigation/navigation_state.dart';
 import 'package:riverpod/riverpod.dart';

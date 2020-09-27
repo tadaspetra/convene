@@ -1,8 +1,4 @@
-import 'models/book_model.dart';
-
-abstract class BookRepository {
-  const BookRepository();
-
-  Future<List<BookModel>> searchBooks(String name);
-  Future<void> addSoloBook(String name);
-}
+export 'src/book_repository.dart';
+export 'src/firestore_book.dart';
+export 'src/models/models.dart';
+export 'src/providers.dart';
