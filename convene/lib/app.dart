@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'pages/add_book/add_book.dart';
+import 'config/logger.dart';
 import 'pages/email_not_verified/email_not_verified.dart';
 import 'pages/error/error.dart';
 import 'pages/home/home.dart';
@@ -79,6 +80,7 @@ class App extends StatelessWidget {
                     loading: () => _navigateToRoute(SplashPage.route),
                     error: (Object error) {
                       log(error.toString(), name: "Convene Log");
+                      logger.e(error.toString());
                       _navigateToRoute(ErrorPage.route);
                     },
                   );
