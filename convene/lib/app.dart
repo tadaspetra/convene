@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'config/logger.dart';
 import 'pages/add_book/view/add_book_page.dart';
 import 'pages/email_not_verified/email_not_verified.dart';
 import 'pages/error/error.dart';
@@ -69,7 +70,7 @@ class App extends StatelessWidget {
                         _navigateToRoute(EmailNotVerifiedPage.route),
                     loading: () => _navigateToRoute(SplashPage.route),
                     error: (Object error) {
-                      print(error);
+                      logger.e(error.toString());
                       _navigateToRoute(ErrorPage.route);
                     },
                   );
