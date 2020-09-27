@@ -1,7 +1,7 @@
-import 'package:convene/screens/home/widgets/add_drawer.dart';
-import 'package:convene/screens/home/widgets/books.dart';
-import 'package:convene/screens/home/widgets/clubs.dart';
-import 'package:convene/screens/home/widgets/menu_drawer.dart';
+import 'package:convene/pages/home/widgets/add_drawer.dart';
+import 'package:convene/pages/home/widgets/books.dart';
+import 'package:convene/pages/home/widgets/clubs.dart';
+import 'package:convene/pages/home/widgets/menu_drawer.dart';
 import 'package:flutter/material.dart';
 
 /// If you want to use Hooks, you need to create a separate stateless widget for that,

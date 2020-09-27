@@ -1,5 +1,5 @@
-import 'package:convene/providers.dart';
-import 'package:convene/services/navigation/navigation.dart';
+import 'package:convene/domain/navigation/navigation.dart';
+import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
