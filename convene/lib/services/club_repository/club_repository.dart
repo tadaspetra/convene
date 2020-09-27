@@ -1,7 +1,4 @@
-import 'package:user_repository/user_repository.dart';
-
-abstract class ClubRepository {
-  const ClubRepository();
-
-  Future<void> createClub(DatabaseUser user);
-}
+export 'src/club_repository.dart';
+export 'src/firestore_club.dart';
+export 'src/models/models.dart';
+export 'src/providers.dart';
