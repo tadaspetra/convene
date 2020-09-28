@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:convene/config/palette.dart';
 
@@ -19,9 +20,16 @@ import 'pages/home/home.dart';
 import 'pages/login/view/login_page.dart';
 import 'pages/splash/splash.dart';
 
-class App extends StatelessWidget {
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class App extends StatefulWidget {
   // Create the initilization Future outside of `build`:
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  Future<FirebaseApp> _initialization;
 
   final _navigatorKey = GlobalKey<NavigatorState>();
 
@@ -32,6 +40,22 @@ class App extends StatelessWidget {
       route,
       (_) => false,
     );
+  }
+
+  @override
+  void initState() {
+    // TODO provide better debug settup
+    // The .then will use the local Firebase Emulator
+    _initialization = Firebase.initializeApp()
+      ..then((value) {
+        // final host = Platform.isAndroid ? '10.0.2.2:8080' : 'localhost:8080';
+        // FirebaseFirestore.instance.settings = Settings(
+        //   host: host,
+        //   sslEnabled: false,
+        // );
+      });
+
+    super.initState();
   }
 
   @override
