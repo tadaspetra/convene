@@ -18,6 +18,7 @@ class AddBookPage extends StatefulWidget {
 }
 
 class _AddBookPageState extends State<AddBookPage> {
+  TextEditingController bookController = TextEditingController();
   List<BookModel> _books = [];
   @override
   Widget build(BuildContext context) {
@@ -36,14 +37,27 @@ class _AddBookPageState extends State<AddBookPage> {
                 ],
               ),
             ),
-            RaisedButton(
-              onPressed: () async {
-                _books = await context
-                    .read(bookRepositoryProvider)
-                    .searchBooks("brave new world");
-                setState(() {}); // TODO improve this
-              },
-              child: const Text("Retrieve Books"),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: TextFormField(
+                      decoration: const InputDecoration(hintText: "Enter Book"),
+                      controller: bookController,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    _books = await context
+                        .read(bookRepositoryProvider)
+                        .searchBooks(bookController.text);
+                    setState(() {}); // TODO improve this
+                  },
+                  icon: const Icon(Icons.arrow_forward),
+                ),
+              ],
             ),
             Expanded(
               child: ListView.builder(

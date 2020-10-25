@@ -22,7 +22,7 @@ class FirestoreBook implements BookRepository {
     final List<BookModel> _books = [];
     final books = await queryBooks(
       name,
-      maxResults: 3,
+      maxResults: 20, //TODO: How many books do we want to display
       printType: PrintType.books,
       orderBy: OrderBy.relevance,
     );

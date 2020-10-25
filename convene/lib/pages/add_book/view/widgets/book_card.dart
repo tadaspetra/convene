@@ -13,7 +13,7 @@ class BookCard extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(8.0),
         boxShadow: const [
           BoxShadow(
             color: Colors.grey,
@@ -24,17 +24,36 @@ class BookCard extends StatelessWidget {
         ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(
-            book.coverImage.toString(),
-            width: 80,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: Image.network(
+              book.coverImage.toString(),
+              width: 80,
+              height: 120,
+              cacheWidth: 80,
+              cacheHeight: 120,
+            ),
           ),
-          Column(
-            children: [
-              Text(book.title),
-              Text(book.authors[0]),
-              Text(book.pageCount.toString()),
-            ],
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  book.title,
+                  style: const TextStyle(
+                      fontSize: 24.0, fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.fade,
+                  maxLines: 1,
+                  softWrap: false,
+                ),
+                Text(book.authors[0]),
+              ],
+            ),
           )
         ],
       ),
