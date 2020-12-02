@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:books_finder/books_finder.dart';
+import 'package:user_repository/user_repository.dart';
 
 import 'book_repository.dart';
 import 'models/book_model.dart';
@@ -22,7 +23,7 @@ class FirestoreBook implements BookRepository {
     final List<BookModel> _books = [];
     final books = await queryBooks(
       name,
-      maxResults: 3,
+      maxResults: 20, //TODO: How many books do we want to display
       printType: PrintType.books,
       orderBy: OrderBy.relevance,
     );
@@ -42,12 +43,12 @@ class FirestoreBook implements BookRepository {
   }
 
   @override
-  Future<void> addSoloBook(String name) async {
-    final books = await queryBooks(
-      name,
-      maxResults: 3,
-      printType: PrintType.books,
-      orderBy: OrderBy.relevance,
-    );
+  Future<void> addSoloBook(BookModel book) async {
+    final user = await read(userRespositoryProvider).getCurrentUser();
+    return users
+        .doc(user.uid)
+        .collection("currentBooks")
+        .doc(book.id)
+        .set(book.toJson());
   }
 }

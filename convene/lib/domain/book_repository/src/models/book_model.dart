@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'book_model.freezed.dart';
 
 @freezed
-abstract class BookModel with _$BookModel {
+abstract class BookModel implements _$BookModel {
   const factory BookModel({
     String id,
     @required String title,
@@ -12,6 +12,7 @@ abstract class BookModel with _$BookModel {
     int pageCount,
     Uri coverImage,
   }) = _Book;
+  const BookModel._();
 
   factory BookModel.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
     return BookModel(
@@ -22,4 +23,11 @@ abstract class BookModel with _$BookModel {
       coverImage: documentSnapshot.data()["coverImage"] as Uri,
     );
   }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'title': title,
+        'authors': authors,
+        'pageCount': pageCount,
+        'coverImage': coverImage.toString(),
+      };
 }

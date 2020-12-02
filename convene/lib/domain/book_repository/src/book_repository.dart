@@ -4,5 +4,5 @@ abstract class BookRepository {
   const BookRepository();
 
   Future<List<BookModel>> searchBooks(String name);
-  Future<void> addSoloBook(String name);
+  Future<void> addSoloBook(BookModel book);
 }
