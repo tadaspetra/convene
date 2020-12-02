@@ -36,23 +36,25 @@ class BookCard extends StatelessWidget {
               cacheHeight: 120,
             ),
           ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  book.title,
-                  style: const TextStyle(
-                      fontSize: 24.0, fontWeight: FontWeight.bold),
-                  overflow: TextOverflow.fade,
-                  maxLines: 1,
-                  softWrap: false,
-                ),
-                Text(book.authors[0]),
-              ],
+          Expanded(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Text(
+                      book.title,
+                      style: const TextStyle(
+                          fontSize: 24.0, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  if (book.authors.isNotEmpty)
+                    Flexible(child: Text(book.authors[0])),
+                ],
+              ),
             ),
           )
         ],
