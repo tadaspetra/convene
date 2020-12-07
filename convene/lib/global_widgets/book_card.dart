@@ -83,13 +83,16 @@ class ActualCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
-            child: Image.network(
-              book.coverImage.toString(),
-              width: 80,
-              height: 120,
-              cacheWidth: 80,
-              cacheHeight: 120,
-            ),
+            child: book.coverImage ==
+                    "noimage" //if object gets created with no cover image we set to "noimage"
+                ? Container()
+                : Image.network(
+                    book.coverImage,
+                    width: 80,
+                    height: 120,
+                    cacheWidth: 80,
+                    cacheHeight: 120,
+                  ),
           ),
           Expanded(
             child: Padding(

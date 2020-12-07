@@ -34,7 +34,7 @@ class FirestoreBook implements BookRepository {
           title: book.info.title,
           authors: book.info.authors,
           pageCount: book.info.pageCount,
-          coverImage: book.info.imageLinks["smallThumbnail"],
+          coverImage: book.info.imageLinks["smallThumbnail"].toString(),
         ),
       );
     }
@@ -50,5 +50,20 @@ class FirestoreBook implements BookRepository {
         .collection("currentBooks")
         .doc(book.id)
         .set(book.toJson());
+  }
+
+  @override
+  Future<List<BookModel>> getCurrentBooks() async {
+    final List<BookModel> _books = [];
+    final user = await read(userRespositoryProvider).getCurrentUser();
+    final books = await users.doc(user.uid).collection("currentBooks").get();
+
+    for (final DocumentSnapshot book in books.docs) {
+      _books.add(
+        BookModel.fromDocumentSnapshot(book),
+      );
+    }
+
+    return _books;
   }
 }

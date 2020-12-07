@@ -10,17 +10,19 @@ abstract class BookModel implements _$BookModel {
     @required String title,
     @required List<String> authors, //some books have multiple
     int pageCount,
-    Uri coverImage,
+    String coverImage,
   }) = _Book;
   const BookModel._();
 
   factory BookModel.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
     return BookModel(
       id: documentSnapshot.id, // Did we plan to make the uid the document id?
-      title: documentSnapshot.data()["title"] as String,
-      authors: documentSnapshot.data()["authors"] as List<String>,
-      pageCount: documentSnapshot.data()["pageCount"] as int,
-      coverImage: documentSnapshot.data()["coverImage"] as Uri,
+      title: documentSnapshot.data()["title"] as String ?? "Error: no title",
+      authors: (documentSnapshot.data()["authors"].length != 0)
+          ? documentSnapshot.data()["authors"].cast<String>() as List<String>
+          : ["Error: no author"],
+      pageCount: documentSnapshot.data()["pageCount"] as int ?? 0,
+      coverImage: documentSnapshot.data()["coverImage"] as String ?? "noimage",
     );
   }
 
@@ -28,6 +30,6 @@ abstract class BookModel implements _$BookModel {
         'title': title,
         'authors': authors,
         'pageCount': pageCount,
-        'coverImage': coverImage.toString(),
+        'coverImage': coverImage,
       };
 }

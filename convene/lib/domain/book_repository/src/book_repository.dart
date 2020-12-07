@@ -5,4 +5,5 @@ abstract class BookRepository {
 
   Future<List<BookModel>> searchBooks(String name);
   Future<void> addSoloBook(BookModel book);
+  Future<List<BookModel>> getCurrentBooks();
 }
