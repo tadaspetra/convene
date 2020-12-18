@@ -13,6 +13,7 @@ class Books extends StatelessWidget {
         (BuildContext context, int index) {
           return BookCard(
             book: books[index],
+            cardType: CardType.home,
           );
         },
         childCount: books.length,

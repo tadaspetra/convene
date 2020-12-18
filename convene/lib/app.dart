@@ -1,6 +1,7 @@
 import 'package:convene/config/palette.dart';
 
 import 'package:convene/domain/navigation/navigation_state.dart';
+import 'package:convene/pages/finished_book/finished_book.dart';
 import 'package:convene/providers/navigation_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,8 @@ class App extends StatelessWidget {
                   state.when(
                     home: () => _navigateToRoute(HomePage.route),
                     addBook: () => _navigateToRoute(AddBookPage.route),
+                    finishedBook: () =>
+                        _navigateToRoute(FinishedBookPage.route),
                     unauthenticated: () => _navigateToRoute(LoginPage.route),
                     emailNotVerified: () =>
                         _navigateToRoute(EmailNotVerifiedPage.route),

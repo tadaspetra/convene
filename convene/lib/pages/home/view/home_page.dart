@@ -23,14 +23,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _homeScaffoldKey = GlobalKey();
   List<BookModel> _currentBooks;
-  @override
-  Future<void> didChangeDependencies() async {
-    // TODO: maybe using a future builder or some riverpod thing is better
-    _currentBooks =
-        await context.read(bookRepositoryProvider).getCurrentBooks();
-    setState(() {});
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +62,21 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Books(_currentBooks ?? <BookModel>[]),
+          Consumer(
+            builder: (BuildContext context,
+                T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+              final Future<List<BookModel>> books =
+                  watch(bookRepositoryProvider).getCurrentBooks();
+              books.whenComplete(() async {
+                _currentBooks = await books;
+                if (mounted) {
+                  //TODO: Is this the best way to do it?
+                  setState(() {});
+                }
+              });
+              return Books(_currentBooks ?? <BookModel>[]);
+            },
+          ),
           SliverList(
             delegate: SliverChildListDelegate(
               [
