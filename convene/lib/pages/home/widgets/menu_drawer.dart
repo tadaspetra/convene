@@ -1,3 +1,5 @@
+import 'package:convene/domain/navigation/navigation.dart';
+import 'package:convene/providers/navigation_provider.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,6 +25,14 @@ class MenuDrawer extends ConsumerWidget {
                     loading: () => "loading..",
                     error: (err, stack) => "error"),
               ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.book_outlined),
+              title: const Text('Finished Books'),
+              onTap: () {
+                context.read(currentPageProvider).state = Pages.finishedbook;
+                Navigator.pop(context);
+              },
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app),

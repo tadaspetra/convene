@@ -66,4 +66,32 @@ class FirestoreBook implements BookRepository {
 
     return _books;
   }
+
+  @override
+  Future<void> finishBook(BookModel book) async {
+    final user = await read(userRespositoryProvider).getCurrentUser();
+
+    //don't need to await, nothing is dependent on this
+    users.doc(user.uid).collection("currentBooks").doc(book.id).delete();
+    return users
+        .doc(user.uid)
+        .collection("books")
+        .doc(book.id)
+        .set(book.toJson());
+  }
+
+  @override
+  Future<List<BookModel>> getFinishedBooks() async {
+    final List<BookModel> _books = [];
+    final user = await read(userRespositoryProvider).getCurrentUser();
+    final books = await users.doc(user.uid).collection("books").get();
+
+    for (final DocumentSnapshot book in books.docs) {
+      _books.add(
+        BookModel.fromDocumentSnapshot(book),
+      );
+    }
+
+    return _books;
+  }
 }

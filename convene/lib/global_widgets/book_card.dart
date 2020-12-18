@@ -5,62 +5,82 @@ import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+enum CardType {
+  search,
+  home,
+  finished,
+}
+
 class BookCard extends StatelessWidget {
   final BookModel book;
-  final bool canAddToList;
+  final CardType cardType;
 
-  const BookCard({Key key, this.book, this.canAddToList = true})
+  const BookCard({Key key, this.book, @required this.cardType})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (canAddToList) {
-      return GestureDetector(
-        onTap: () => showDialog<Widget>(
-          context: context,
-          builder: (_) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
-            child: Scaffold(
-              body: ListView(
-                children: [
-                  ActualCard(book: book),
-                  const SizedBox(height: 30),
-                  const Text(
-                    "Add this book to current reading?",
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-                  ),
-                  Center(
-                    child: RaisedButton(
-                      onPressed: () {
-                        context.read(bookRepositoryProvider).addSoloBook(book);
-                        Navigator.pop(context);
-                        context.read(currentPageProvider).state = Pages.home;
-                      },
-                      child: const Text("Add"),
+    switch (cardType) {
+      case CardType.search:
+        return GestureDetector(
+          onTap: () => showDialog<Widget>(
+            context: context,
+            builder: (_) => Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
+              child: Scaffold(
+                body: ListView(
+                  children: [
+                    DisplayBookCard(book: book),
+                    const SizedBox(height: 30),
+                    const Text(
+                      "Add this book to current reading?",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 24.0, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ],
+                    Center(
+                      child: RaisedButton(
+                        onPressed: () {
+                          context
+                              .read(bookRepositoryProvider)
+                              .addSoloBook(book);
+                          Navigator.pop(context);
+                          context.read(currentPageProvider).state = Pages.home;
+                        },
+                        child: const Text("Add"),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        child: ActualCard(book: book),
-      );
-    } else {
-      return ActualCard(book: book);
+          child: DisplayBookCard(book: book, cardType: cardType),
+        );
+        break;
+      case CardType.home:
+        return DisplayBookCard(book: book, cardType: cardType);
+        break;
+      case CardType.finished:
+        return DisplayBookCard(book: book, cardType: cardType);
+        break;
+      default:
+        return DisplayBookCard(book: book, cardType: cardType);
+        break;
     }
   }
 }
 
-class ActualCard extends StatelessWidget {
-  const ActualCard({
+class DisplayBookCard extends StatelessWidget {
+  const DisplayBookCard({
     Key key,
     @required this.book,
+    this.cardType,
   }) : super(key: key);
 
   final BookModel book;
+  final CardType cardType;
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +131,27 @@ class ActualCard extends StatelessWidget {
                   ),
                   if (book.authors.isNotEmpty)
                     Flexible(child: Text(book.authors[0])),
+                  () {
+                    switch (cardType) {
+                      case CardType.search:
+                        return Container(); //TODO: Is there something better to return here?
+                        break;
+                      case CardType.home:
+                        return RaisedButton(
+                          onPressed: () => context
+                              .read(bookRepositoryProvider)
+                              .finishBook(book),
+                          child: const Text("Done"),
+                        );
+                        break;
+                      case CardType.finished:
+                        return Container();
+                        break;
+                      default:
+                        return Container();
+                        break;
+                    }
+                  }()
                 ],
               ),
             ),

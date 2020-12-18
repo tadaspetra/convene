@@ -25,6 +25,9 @@ final navigationProvider = Provider<NavigationState>((ref) {
               case Pages.addbook:
                 return const NavigationState.addBook();
                 break;
+              case Pages.finishedbook:
+                return const NavigationState.finishedBook();
+                break;
               default:
                 return const NavigationState.error("invalid page");
             }

@@ -64,6 +64,7 @@ class _AddBookPageState extends State<AddBookPage> {
                 itemBuilder: (context, index) {
                   return BookCard(
                     book: _books[index],
+                    cardType: CardType.search,
                   );
                 },
               ),
