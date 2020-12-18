@@ -5,7 +5,7 @@ import 'package:convene/pages/home/widgets/books.dart';
 import 'package:convene/pages/home/widgets/clubs.dart';
 import 'package:convene/pages/home/widgets/menu_drawer.dart';
 import 'package:convene/providers/book_provider.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
 /// If you want to use Hooks, you need to create a separate stateless widget for that,

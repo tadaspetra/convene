@@ -1,6 +1,6 @@
 import 'package:user_repository/user_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EmailNotVerifiedPage extends StatelessWidget {
   const EmailNotVerifiedPage({Key key}) : super(key: key);
