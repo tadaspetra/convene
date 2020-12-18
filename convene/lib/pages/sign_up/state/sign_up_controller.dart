@@ -1,6 +1,6 @@
 import 'package:user_repository/user_repository.dart';
 import 'package:formz/formz.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 import 'package:convene/domain/authentication/authentication.dart';

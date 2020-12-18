@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:formz/formz.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../sign_up/view/sign_up_page.dart';
 import '../state/state.dart';
@@ -54,11 +53,11 @@ final _showEmailErrorMessage = Provider<bool>((ref) {
   return login.email.invalid && login.hasSubmitted;
 });
 
-class _EmailInput extends HookWidget {
+class _EmailInput extends ConsumerWidget {
   const _EmailInput();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     return TextField(
       key: const Key('loginForm_emailInput_textField'),
       onChanged: (email) => context.read(loginController).emailChanged(email),
@@ -66,7 +65,7 @@ class _EmailInput extends HookWidget {
       decoration: InputDecoration(
         labelText: 'email',
         helperText: '',
-        errorText: useProvider(_showEmailErrorMessage) ? 'invalid email' : null,
+        errorText: watch(_showEmailErrorMessage) ? 'invalid email' : null,
       ),
     );
   }
@@ -82,11 +81,11 @@ final _showPasswordErrorMessage = Provider<bool>((ref) {
   return login.password.invalid && login.hasSubmitted;
 });
 
-class _PasswordInput extends HookWidget {
+class _PasswordInput extends ConsumerWidget {
   const _PasswordInput();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     return TextField(
       key: const Key('loginForm_passwordInput_textField'),
       onChanged: (password) =>
@@ -95,21 +94,20 @@ class _PasswordInput extends HookWidget {
       decoration: InputDecoration(
         labelText: 'password',
         helperText: '',
-        errorText:
-            useProvider(_showPasswordErrorMessage) ? 'invalid password' : null,
+        errorText: watch(_showPasswordErrorMessage) ? 'invalid password' : null,
       ),
     );
   }
 }
 
-class _LoginButton extends HookWidget {
+class _LoginButton extends ConsumerWidget {
   const _LoginButton({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final form = useProvider(_loginFormStatus);
+  Widget build(BuildContext context, ScopedReader watch) {
+    final form = watch(_loginFormStatus);
     return SizedBox(
       // specify a height, to ensure the same height for both children
       height: 75,
