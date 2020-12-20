@@ -137,11 +137,68 @@ class DisplayBookCard extends StatelessWidget {
                         return Container(); //TODO: Is there something better to return here?
                         break;
                       case CardType.home:
-                        return RaisedButton(
-                          onPressed: () => context
-                              .read(bookRepositoryProvider)
-                              .finishBook(book),
-                          child: const Text("Done"),
+                        final TextEditingController _textController =
+                            TextEditingController(
+                                text: book.currentPage.toString());
+                        return Column(
+                          children: [
+                            Text(
+                                "${(book.currentPage / book.pageCount * 100).toStringAsFixed(2)}%"),
+                            RaisedButton(
+                              onPressed: () => showDialog<Widget>(
+                                context: context,
+                                builder: (_) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 250, horizontal: 30),
+                                  child: Scaffold(
+                                    body: ListView(
+                                      children: [
+                                        const Text(
+                                          "Current Page",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 24.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        TextField(
+                                          controller: _textController,
+                                          textAlign: TextAlign.center,
+                                          keyboardType: TextInputType.number,
+                                        ),
+                                        Center(
+                                          child: RaisedButton(
+                                            onPressed: () {
+                                              context
+                                                  .read(bookRepositoryProvider)
+                                                  .updateProgress(book,
+                                                      _textController.text);
+                                              Navigator.pop(context);
+                                              context
+                                                  .read(currentPageProvider)
+                                                  .state = Pages.home;
+                                            },
+                                            child: const Text("Update"),
+                                          ),
+                                        ),
+                                        Center(
+                                          child: RaisedButton(
+                                            onPressed: () {
+                                              context
+                                                  .read(bookRepositoryProvider)
+                                                  .finishBook(book);
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Finished Book"),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              child: const Text("Update"),
+                            ),
+                          ],
                         );
                         break;
                       case CardType.finished:

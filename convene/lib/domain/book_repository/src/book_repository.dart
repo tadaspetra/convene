@@ -8,4 +8,5 @@ abstract class BookRepository {
   Future<List<BookModel>> getCurrentBooks();
   Future<void> finishBook(BookModel book);
   Future<List<BookModel>> getFinishedBooks();
+  Future<void> updateProgress(BookModel book, String newPage);
 }

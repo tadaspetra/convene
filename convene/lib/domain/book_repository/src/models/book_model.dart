@@ -9,6 +9,7 @@ abstract class BookModel implements _$BookModel {
     String id,
     @required String title,
     @required List<String> authors, //some books have multiple
+    int currentPage,
     int pageCount,
     String coverImage,
   }) = _Book;
@@ -21,6 +22,7 @@ abstract class BookModel implements _$BookModel {
       authors: (documentSnapshot.data()["authors"].length != 0)
           ? documentSnapshot.data()["authors"].cast<String>() as List<String>
           : ["Error: no author"],
+      currentPage: documentSnapshot.data()["currentPage"] as int ?? 0,
       pageCount: documentSnapshot.data()["pageCount"] as int ?? 0,
       coverImage: documentSnapshot.data()["coverImage"] as String ?? "noimage",
     );
@@ -29,6 +31,7 @@ abstract class BookModel implements _$BookModel {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
         'authors': authors,
+        'currentPage': currentPage,
         'pageCount': pageCount,
         'coverImage': coverImage,
       };

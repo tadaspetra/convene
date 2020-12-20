@@ -33,6 +33,7 @@ class FirestoreBook implements BookRepository {
         BookModel(
           title: book.info.title,
           authors: book.info.authors,
+          currentPage: 0, //this object will be used to add to firestore
           pageCount: book.info.pageCount,
           coverImage: book.info.imageLinks["smallThumbnail"].toString(),
         ),
@@ -84,7 +85,10 @@ class FirestoreBook implements BookRepository {
   Future<List<BookModel>> getFinishedBooks() async {
     final List<BookModel> _books = [];
     final user = await read(userRespositoryProvider).getCurrentUser();
-    final books = await users.doc(user.uid).collection("books").get();
+    final books = await users
+        .doc(user.uid)
+        .collection("books")
+        .get(); //TODO order this by date completeld
 
     for (final DocumentSnapshot book in books.docs) {
       _books.add(
@@ -93,5 +97,17 @@ class FirestoreBook implements BookRepository {
     }
 
     return _books;
+  }
+
+  @override
+  Future<void> updateProgress(BookModel book, String newPage) async {
+    final user = await read(userRespositoryProvider).getCurrentUser();
+    return users
+        .doc(user.uid)
+        .collection("currentBooks")
+        .doc(book.id)
+        .update(<String, dynamic>{
+      'currentPage': int.parse(newPage),
+    });
   }
 }
