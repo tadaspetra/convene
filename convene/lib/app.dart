@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:convene/config/palette.dart';
 
 import 'package:convene/domain/navigation/navigation_state.dart';
@@ -72,7 +74,7 @@ class App extends StatelessWidget {
                         _navigateToRoute(EmailNotVerifiedPage.route),
                     loading: () => _navigateToRoute(SplashPage.route),
                     error: (Object error) {
-                      print(error);
+                      log(error.toString(), name: "Convene Log");
                       _navigateToRoute(ErrorPage.route);
                     },
                   );

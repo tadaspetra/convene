@@ -61,11 +61,7 @@ class BookCard extends StatelessWidget {
         );
         break;
       case CardType.home:
-        return DisplayBookCard(book: book, cardType: cardType);
-        break;
       case CardType.finished:
-        return DisplayBookCard(book: book, cardType: cardType);
-        break;
       default:
         return DisplayBookCard(book: book, cardType: cardType);
         break;
@@ -138,16 +134,12 @@ class DisplayBookCard extends StatelessWidget {
                         return Container(); //TODO: Is there something better to return here?
                         break;
                       case CardType.home:
-                        final TextEditingController _textController =
-                            TextEditingController(
-                                text: book.currentPage.toString());
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                                 "${(book.currentPage / book.pageCount * 100).toStringAsFixed(2)}%"),
-                            UpdateButton(
-                                textController: _textController, book: book),
+                            UpdateButton(book: book),
                           ],
                         );
                         break;
@@ -178,16 +170,15 @@ class DisplayBookCard extends StatelessWidget {
 class UpdateButton extends StatelessWidget {
   const UpdateButton({
     Key key,
-    @required TextEditingController textController,
     @required this.book,
-  })  : _textController = textController,
-        super(key: key);
+  }) : super(key: key);
 
-  final TextEditingController _textController;
   final BookModel book;
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _textController =
+        TextEditingController(text: book.currentPage.toString());
     return RaisedButton(
       onPressed: () => showDialog<Widget>(
         context: context,
@@ -280,10 +271,6 @@ class UpdateButton extends StatelessWidget {
                           ),
                         ),
                       );
-                      // context
-                      //     .read(bookRepositoryProvider)
-                      //     .finishBook(book);
-                      // Navigator.pop(context);
                     },
                     child: const Text("Finished Book"),
                   ),
