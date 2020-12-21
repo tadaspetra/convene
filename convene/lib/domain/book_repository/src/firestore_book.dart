@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:books_finder/books_finder.dart';
 import 'package:user_repository/user_repository.dart';
@@ -69,16 +70,19 @@ class FirestoreBook implements BookRepository {
   }
 
   @override
-  Future<void> finishBook(BookModel book) async {
+  Future<void> finishBook(
+      {BookModel book, double rating, String review}) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
 
     //don't need to await, nothing is dependent on this
     users.doc(user.uid).collection("currentBooks").doc(book.id).delete();
-    return users
-        .doc(user.uid)
-        .collection("books")
-        .doc(book.id)
-        .set(book.toJson());
+    return users.doc(user.uid).collection("books").doc(book.id).set(book
+        .copyWith(
+          rating: rating,
+          review: review,
+          dateCompleted: DateTime.now(),
+        )
+        .toJson());
   }
 
   @override
@@ -88,6 +92,7 @@ class FirestoreBook implements BookRepository {
     final books = await users
         .doc(user.uid)
         .collection("books")
+        .orderBy('dateCompleted', descending: true)
         .get(); //TODO order this by date completeld
 
     for (final DocumentSnapshot book in books.docs) {
@@ -100,7 +105,7 @@ class FirestoreBook implements BookRepository {
   }
 
   @override
-  Future<void> updateProgress(BookModel book, String newPage) async {
+  Future<void> updateProgress({BookModel book, String newPage}) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
     return users
         .doc(user.uid)
