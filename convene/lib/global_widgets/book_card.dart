@@ -3,6 +3,7 @@ import 'package:convene/domain/navigation/navigation.dart';
 import 'package:convene/providers/book_provider.dart';
 import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum CardType {
@@ -137,15 +138,27 @@ class DisplayBookCard extends StatelessWidget {
                         return Container(); //TODO: Is there something better to return here?
                         break;
                       case CardType.home:
-                        return RaisedButton(
-                          onPressed: () => context
-                              .read(bookRepositoryProvider)
-                              .finishBook(book),
-                          child: const Text("Done"),
+                        final TextEditingController _textController =
+                            TextEditingController(
+                                text: book.currentPage.toString());
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                "${(book.currentPage / book.pageCount * 100).toStringAsFixed(2)}%"),
+                            UpdateButton(
+                                textController: _textController, book: book),
+                          ],
                         );
                         break;
                       case CardType.finished:
-                        return Container();
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Rating: ${book.rating}"),
+                            Text("Review:  ${book.review}"),
+                          ],
+                        );
                         break;
                       default:
                         return Container();
@@ -158,6 +171,129 @@ class DisplayBookCard extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class UpdateButton extends StatelessWidget {
+  const UpdateButton({
+    Key key,
+    @required TextEditingController textController,
+    @required this.book,
+  })  : _textController = textController,
+        super(key: key);
+
+  final TextEditingController _textController;
+  final BookModel book;
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      onPressed: () => showDialog<Widget>(
+        context: context,
+        builder: (_) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
+          child: Scaffold(
+            body: ListView(
+              children: [
+                const Text(
+                  "Current Page",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                ),
+                TextField(
+                  controller: _textController,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                ),
+                Center(
+                  child: RaisedButton(
+                    onPressed: () {
+                      context.read(bookRepositoryProvider).updateProgress(
+                          book: book, newPage: _textController.text);
+                      Navigator.pop(context);
+                      context.read(currentPageProvider).state = Pages.home;
+                    },
+                    child: const Text("Update"),
+                  ),
+                ),
+                Center(
+                  child: RaisedButton(
+                    onPressed: () {
+                      final TextEditingController _reviewController =
+                          TextEditingController();
+                      double rating = 0;
+                      showDialog<Widget>(
+                        context: context,
+                        builder: (_) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 250, horizontal: 30),
+                          child: Scaffold(
+                            body: ListView(
+                              children: [
+                                const Text(
+                                  "Review",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 24.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                RatingBar.builder(
+                                  initialRating: 1,
+                                  minRating: 1,
+                                  allowHalfRating: true,
+                                  itemPadding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0),
+                                  itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (newRating) {
+                                    rating = newRating;
+                                  },
+                                ),
+                                TextField(
+                                  controller: _reviewController,
+                                  maxLines: 6,
+                                  decoration: const InputDecoration(
+                                    hintText: "Add A Review",
+                                  ),
+                                ),
+                                RaisedButton(
+                                  onPressed: () {
+                                    context
+                                        .read(bookRepositoryProvider)
+                                        .finishBook(
+                                            book: book,
+                                            rating: rating,
+                                            review: _reviewController.text);
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    context.read(currentPageProvider).state =
+                                        Pages.home;
+                                  },
+                                  child: const Text("Update"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                      // context
+                      //     .read(bookRepositoryProvider)
+                      //     .finishBook(book);
+                      // Navigator.pop(context);
+                    },
+                    child: const Text("Finished Book"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      child: const Text("Update"),
     );
   }
 }

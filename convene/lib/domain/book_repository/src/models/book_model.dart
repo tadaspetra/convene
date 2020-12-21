@@ -9,8 +9,12 @@ abstract class BookModel implements _$BookModel {
     String id,
     @required String title,
     @required List<String> authors, //some books have multiple
+    int currentPage,
     int pageCount,
     String coverImage,
+    DateTime dateCompleted,
+    double rating,
+    String review,
   }) = _Book;
   const BookModel._();
 
@@ -21,15 +25,27 @@ abstract class BookModel implements _$BookModel {
       authors: (documentSnapshot.data()["authors"].length != 0)
           ? documentSnapshot.data()["authors"].cast<String>() as List<String>
           : ["Error: no author"],
+      currentPage: documentSnapshot.data()["currentPage"] as int ?? 0,
       pageCount: documentSnapshot.data()["pageCount"] as int ?? 0,
       coverImage: documentSnapshot.data()["coverImage"] as String ?? "noimage",
+      dateCompleted: (documentSnapshot.data()["dateCompleted"] as Timestamp ??
+              Timestamp.fromDate(DateTime(1)))
+          .toDate(),
+      rating: documentSnapshot.data()["rating"] as double ?? 0,
+      review: documentSnapshot.data()["review"] as String ?? "Error: no review",
     );
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'title': title,
         'authors': authors,
+        'currentPage': currentPage,
         'pageCount': pageCount,
         'coverImage': coverImage,
+        'dateCompleted': dateCompleted ??
+            Timestamp.fromDate(DateTime(
+                1)), //TODO: how to do this maybe set to 0 and check on return
+        'rating': rating,
+        'review': review,
       };
 }
