@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:books_finder/books_finder.dart';
 import 'package:user_repository/user_repository.dart';
@@ -58,7 +57,11 @@ class FirestoreBook implements BookRepository {
   Future<List<BookModel>> getCurrentBooks() async {
     final List<BookModel> _books = [];
     final user = await read(userRespositoryProvider).getCurrentUser();
-    final books = await users.doc(user.uid).collection("currentBooks").get();
+    final books = await users
+        .doc(user.uid)
+        .collection("currentBooks")
+        .orderBy("title")
+        .get();
 
     for (final DocumentSnapshot book in books.docs) {
       _books.add(
@@ -93,7 +96,7 @@ class FirestoreBook implements BookRepository {
         .doc(user.uid)
         .collection("books")
         .orderBy('dateCompleted', descending: true)
-        .get(); //TODO order this by date completeld
+        .get();
 
     for (final DocumentSnapshot book in books.docs) {
       _books.add(
