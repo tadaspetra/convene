@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "33835237518",
+    "firebase_url": "https://convenedev-3688f.firebaseio.com",
+    "project_id": "convenedev-3688f",
+    "storage_bucket": "convenedev-3688f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33835237518:android:fc75a6396bae414bb049df",
+        "android_client_info": {
+          "package_name": "com.convene.convene"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33835237518-mtdl94f43t0ifqgk6najmch7uv5tepf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAB0LyclUm0YGYqWo7JMMS3xXpeopgFUM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "33835237518-mtdl94f43t0ifqgk6najmch7uv5tepf0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "33835237518-n3joo3qrusggrahkf486beplklkdmdq9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.convene.convene"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
