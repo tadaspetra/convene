@@ -33,6 +33,7 @@ class FirestoreBook implements BookRepository {
         BookModel(
           title: book.info.title,
           authors: book.info.authors,
+          currentPage: 0, //this object will be used to add to firestore
           pageCount: book.info.pageCount,
           coverImage: book.info.imageLinks["smallThumbnail"].toString(),
         ),
@@ -56,7 +57,11 @@ class FirestoreBook implements BookRepository {
   Future<List<BookModel>> getCurrentBooks() async {
     final List<BookModel> _books = [];
     final user = await read(userRespositoryProvider).getCurrentUser();
-    final books = await users.doc(user.uid).collection("currentBooks").get();
+    final books = await users
+        .doc(user.uid)
+        .collection("currentBooks")
+        .orderBy("title")
+        .get();
 
     for (final DocumentSnapshot book in books.docs) {
       _books.add(
@@ -68,23 +73,30 @@ class FirestoreBook implements BookRepository {
   }
 
   @override
-  Future<void> finishBook(BookModel book) async {
+  Future<void> finishBook(
+      {BookModel book, double rating, String review}) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
 
     //don't need to await, nothing is dependent on this
     users.doc(user.uid).collection("currentBooks").doc(book.id).delete();
-    return users
-        .doc(user.uid)
-        .collection("books")
-        .doc(book.id)
-        .set(book.toJson());
+    return users.doc(user.uid).collection("books").doc(book.id).set(book
+        .copyWith(
+          rating: rating,
+          review: review,
+          dateCompleted: DateTime.now(),
+        )
+        .toJson());
   }
 
   @override
   Future<List<BookModel>> getFinishedBooks() async {
     final List<BookModel> _books = [];
     final user = await read(userRespositoryProvider).getCurrentUser();
-    final books = await users.doc(user.uid).collection("books").get();
+    final books = await users
+        .doc(user.uid)
+        .collection("books")
+        .orderBy('dateCompleted', descending: true)
+        .get();
 
     for (final DocumentSnapshot book in books.docs) {
       _books.add(
@@ -93,5 +105,17 @@ class FirestoreBook implements BookRepository {
     }
 
     return _books;
+  }
+
+  @override
+  Future<void> updateProgress({BookModel book, String newPage}) async {
+    final user = await read(userRespositoryProvider).getCurrentUser();
+    return users
+        .doc(user.uid)
+        .collection("currentBooks")
+        .doc(book.id)
+        .update(<String, dynamic>{
+      'currentPage': int.parse(newPage),
+    });
   }
 }

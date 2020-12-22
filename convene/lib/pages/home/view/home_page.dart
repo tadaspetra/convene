@@ -2,7 +2,6 @@ import 'package:convene/config/palette.dart';
 import 'package:convene/domain/book_repository/book_repository.dart';
 import 'package:convene/pages/home/widgets/add_drawer.dart';
 import 'package:convene/pages/home/widgets/books.dart';
-import 'package:convene/pages/home/widgets/clubs.dart';
 import 'package:convene/pages/home/widgets/menu_drawer.dart';
 import 'package:convene/providers/book_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
