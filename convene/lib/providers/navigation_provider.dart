@@ -28,6 +28,13 @@ final navigationProvider = Provider<NavigationState>((ref) {
               case Pages.finishedbook:
                 return const NavigationState.finishedBook();
                 break;
+              case Pages.createClub:
+                return const NavigationState.createClub();
+                break;
+
+              case Pages.joinClub:
+                return const NavigationState.joinClub();
+                break;
               default:
                 return const NavigationState.error("invalid page");
             }

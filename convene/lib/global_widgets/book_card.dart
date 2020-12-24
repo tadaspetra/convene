@@ -16,8 +16,7 @@ class BookCard extends StatelessWidget {
   final BookModel book;
   final CardType cardType;
 
-  const BookCard({Key key, this.book, @required this.cardType})
-      : super(key: key);
+  const BookCard({Key key, this.book, this.cardType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +130,11 @@ class DisplayBookCard extends StatelessWidget {
                   () {
                     switch (cardType) {
                       case CardType.search:
-                        return Container(); //TODO: Is there something better to return here?
+                        return Column(
+                          children: [
+                            Text(book.pageCount.toString()),
+                          ],
+                        ); //TODO: Is there something better to return here?
                         break;
                       case CardType.home:
                         return Column(

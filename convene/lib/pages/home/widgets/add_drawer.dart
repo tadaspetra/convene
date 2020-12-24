@@ -28,6 +28,7 @@ class AddDrawer extends StatelessWidget {
               leading: const Icon(Icons.group),
               title: const Text('Join a Club'),
               onTap: () {
+                context.read(currentPageProvider).state = Pages.joinClub;
                 Navigator.pop(context);
               },
             ),
@@ -35,6 +36,7 @@ class AddDrawer extends StatelessWidget {
               leading: const Icon(Icons.group_add),
               title: const Text('Create a Club'),
               onTap: () {
+                context.read(currentPageProvider).state = Pages.createClub;
                 Navigator.pop(context);
               },
             ),
