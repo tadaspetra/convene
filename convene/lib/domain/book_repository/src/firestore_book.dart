@@ -46,11 +46,7 @@ class FirestoreBook implements BookRepository {
   @override
   Future<void> addSoloBook(BookModel book) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
-    return users
-        .doc(user.uid)
-        .collection("currentBooks")
-        .doc(book.id)
-        .set(book.toJson());
+    return users.doc(user.uid).collection("currentBooks").add(book.toJson());
   }
 
   @override
