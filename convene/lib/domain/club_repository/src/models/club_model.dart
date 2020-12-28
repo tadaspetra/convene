@@ -32,7 +32,7 @@ abstract class ClubModel implements _$ClubModel {
       members: (documentSnapshot.data()["members"].length != 0)
           ? documentSnapshot.data()["members"].cast<String>() as List<String>
           : ["Error: no members"],
-      notifTokens: (documentSnapshot.data()["notifTokens"].length != 0)
+      notifTokens: (documentSnapshot.data()["notifTokens"] != null)
           ? documentSnapshot.data()["notifTokens"].cast<String>()
               as List<String>
           : <String>[],

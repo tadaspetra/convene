@@ -38,4 +38,20 @@ class FirestoreClub implements ClubRepository {
         .doc(_clubRef.id)
         .set(clubModel.toJson()); //add club to users model
   }
+
+  @override
+  Future<List<ClubModel>> getCurrentClubs() async {
+    final List<ClubModel> _clubs = [];
+    final user = await read(userRespositoryProvider).getCurrentUser();
+    final clubs =
+        await users.doc(user.uid).collection("clubs").orderBy("clubName").get();
+
+    for (final DocumentSnapshot club in clubs.docs) {
+      _clubs.add(
+        ClubModel.fromDocumentSnapshot(club),
+      );
+    }
+
+    return _clubs;
+  }
 }
