@@ -54,4 +54,20 @@ class FirestoreClub implements ClubRepository {
 
     return _clubs;
   }
+
+  @override
+  Future<void> joinClub(String clubId) async {
+    final user = await read(userRespositoryProvider).getCurrentUser();
+    DocumentReference _clubRef = await clubs.doc(clubId);
+    ClubModel _clubModel = ClubModel.fromDocumentSnapshot(await _clubRef.get());
+
+    List<String> _newMembers = _clubModel.members;
+    _newMembers.add(user.uid);
+
+    _clubRef.update(_clubModel.copyWith(members: _newMembers).toJson());
+    await users.doc(user.uid).collection("clubs").doc(_clubRef.id).set(
+        _clubModel
+            .copyWith(members: _newMembers)
+            .toJson()); //add club to users model
+  }
 }

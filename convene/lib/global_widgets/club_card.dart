@@ -1,6 +1,7 @@
 import 'package:convene/domain/book_repository/book_repository.dart';
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/domain/navigation/navigation.dart';
+import 'package:convene/pages/club/view/club.dart';
 import 'package:convene/providers/book_provider.dart';
 import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
@@ -18,24 +19,12 @@ class ClubCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => showDialog<Widget>(
-        context: context,
-        builder: (_) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
-          child: Scaffold(
-            body: ListView(
-              children: [
-                Center(
-                  child: RaisedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      context.read(currentPageProvider).state = Pages.home;
-                    },
-                    child: const Text("Add"),
-                  ),
-                ),
-              ],
-            ),
+      onTap: () => Navigator.push(
+        //TODO: this push goes against the way the app is set up, but will figure out later
+        context,
+        MaterialPageRoute<ClubPage>(
+          builder: (context) => ClubPage(
+            club: club,
           ),
         ),
       ),

@@ -7,5 +7,6 @@ abstract class ClubRepository {
   const ClubRepository();
 
   Future<void> createClub(ClubModel clubModel, BookModel bookModel);
+  Future<void> joinClub(String clubId);
   Future<List<ClubModel>> getCurrentClubs();
 }

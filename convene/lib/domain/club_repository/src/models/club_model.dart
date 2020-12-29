@@ -10,8 +10,8 @@ abstract class ClubModel implements _$ClubModel {
     @required String clubName,
     @required String leader,
     List<String> selectors,
-    List<String> members,
-    List<String> notifTokens,
+    List<String> members, //TODO: this might be better as a collection
+    List<String> notifTokens, //TODO: add support for this later
     DateTime dateCreated,
     String currentBookId,
     DateTime currentBookDue,
@@ -26,10 +26,10 @@ abstract class ClubModel implements _$ClubModel {
       clubName:
           documentSnapshot.data()["clubName"] as String ?? "Error no club name",
       leader: documentSnapshot.data()["leader"] as String ?? "Error no leader",
-      selectors: (documentSnapshot.data()["selectors"].length != 0)
+      selectors: (documentSnapshot.data()["selectors"] != null)
           ? documentSnapshot.data()["selectors"].cast<String>() as List<String>
           : ["Error: no selectors"],
-      members: (documentSnapshot.data()["members"].length != 0)
+      members: (documentSnapshot.data()["members"] != null)
           ? documentSnapshot.data()["members"].cast<String>() as List<String>
           : ["Error: no members"],
       notifTokens: (documentSnapshot.data()["notifTokens"] != null)

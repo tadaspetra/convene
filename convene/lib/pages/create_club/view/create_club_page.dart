@@ -80,7 +80,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
   }
 
   @override
-  void didChangeDependencies() async {
+  Future<void> didChangeDependencies() async {
     currentUser = await context.read(userRespositoryProvider).getCurrentUser();
     super.didChangeDependencies();
   }
@@ -224,7 +224,8 @@ class _CreateClubPageState extends State<CreateClubPage> {
                         //currentBookId needs to be done within createClub function
                         currentBookDue: _selectedDate,
                       ),
-                      _firstBook.book,
+                      _firstBook.book
+                          .copyWith(fromClub: true, clubName: _clubName.text),
                     );
                 context.read(currentPageProvider).state = Pages.home;
               },

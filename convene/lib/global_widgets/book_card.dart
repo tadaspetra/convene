@@ -29,6 +29,7 @@ class BookCard extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 body: ListView(
                   children: [
                     DisplayBookCard(book: book),
@@ -140,6 +141,7 @@ class DisplayBookCard extends StatelessWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            if (book.fromClub) Text("From: ${book.clubName}"),
                             Text(
                                 "${(book.currentPage / book.pageCount * 100).toStringAsFixed(2)}%"),
                             UpdateButton(book: book),
@@ -188,6 +190,7 @@ class UpdateButton extends StatelessWidget {
         builder: (_) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             body: ListView(
               children: [
                 const Text(
@@ -223,6 +226,8 @@ class UpdateButton extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               vertical: 250, horizontal: 30),
                           child: Scaffold(
+                            resizeToAvoidBottomInset:
+                                false, //this makes it so scaffold still appears
                             body: ListView(
                               children: [
                                 const Text(
