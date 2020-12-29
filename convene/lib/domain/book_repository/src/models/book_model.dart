@@ -15,6 +15,8 @@ abstract class BookModel implements _$BookModel {
     DateTime dateCompleted,
     double rating,
     String review,
+    bool fromClub,
+    String clubName,
   }) = _Book;
   const BookModel._();
 
@@ -33,6 +35,9 @@ abstract class BookModel implements _$BookModel {
           .toDate(),
       rating: documentSnapshot.data()["rating"] as double ?? 0,
       review: documentSnapshot.data()["review"] as String ?? "Error: no review",
+      fromClub: documentSnapshot.data()["fromClub"] as bool ?? false,
+      clubName:
+          documentSnapshot.data()["clubName"] as String ?? "Error: no club",
     );
   }
 
@@ -47,5 +52,7 @@ abstract class BookModel implements _$BookModel {
                 1)), //TODO: how to do this maybe set to 0 and check on return
         'rating': rating,
         'review': review,
+        'fromClub': fromClub,
+        'clubName': clubName,
       };
 }

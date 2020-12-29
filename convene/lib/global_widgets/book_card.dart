@@ -16,8 +16,7 @@ class BookCard extends StatelessWidget {
   final BookModel book;
   final CardType cardType;
 
-  const BookCard({Key key, this.book, @required this.cardType})
-      : super(key: key);
+  const BookCard({Key key, this.book, this.cardType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +29,7 @@ class BookCard extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 body: ListView(
                   children: [
                     DisplayBookCard(book: book),
@@ -131,12 +131,17 @@ class DisplayBookCard extends StatelessWidget {
                   () {
                     switch (cardType) {
                       case CardType.search:
-                        return Container(); //TODO: Is there something better to return here?
+                        return Column(
+                          children: [
+                            Text(book.pageCount.toString()),
+                          ],
+                        ); //TODO: Is there something better to return here?
                         break;
                       case CardType.home:
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            if (book.fromClub) Text("From: ${book.clubName}"),
                             Text(
                                 "${(book.currentPage / book.pageCount * 100).toStringAsFixed(2)}%"),
                             UpdateButton(book: book),
@@ -185,6 +190,7 @@ class UpdateButton extends StatelessWidget {
         builder: (_) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             body: ListView(
               children: [
                 const Text(
@@ -220,6 +226,8 @@ class UpdateButton extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               vertical: 250, horizontal: 30),
                           child: Scaffold(
+                            resizeToAvoidBottomInset:
+                                false, //this makes it so scaffold still appears
                             body: ListView(
                               children: [
                                 const Text(

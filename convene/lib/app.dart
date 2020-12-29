@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:convene/config/palette.dart';
 
 import 'package:convene/domain/navigation/navigation_state.dart';
+import 'package:convene/pages/create_club/create_club.dart';
 import 'package:convene/pages/finished_book/finished_book.dart';
+import 'package:convene/pages/join_club/join_club.dart';
 import 'package:convene/providers/navigation_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +71,8 @@ class App extends StatelessWidget {
                     addBook: () => _navigateToRoute(AddBookPage.route),
                     finishedBook: () =>
                         _navigateToRoute(FinishedBookPage.route),
+                    createClub: () => _navigateToRoute(CreateClubPage.route),
+                    joinClub: () => _navigateToRoute(JoinClubPage.route),
                     unauthenticated: () => _navigateToRoute(LoginPage.route),
                     emailNotVerified: () =>
                         _navigateToRoute(EmailNotVerifiedPage.route),

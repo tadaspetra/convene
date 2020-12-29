@@ -1,9 +1,12 @@
 import 'package:convene/config/palette.dart';
 import 'package:convene/domain/book_repository/book_repository.dart';
+import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/pages/home/widgets/add_drawer.dart';
 import 'package:convene/pages/home/widgets/books.dart';
+import 'package:convene/pages/home/widgets/clubs.dart';
 import 'package:convene/pages/home/widgets/menu_drawer.dart';
 import 'package:convene/providers/book_provider.dart';
+import 'package:convene/providers/club_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +25,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _homeScaffoldKey = GlobalKey();
   List<BookModel> _currentBooks;
+  List<ClubModel> _currentClubs;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +94,21 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+          ),
+          Consumer(
+            builder: (BuildContext context,
+                T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+              final Future<List<ClubModel>> clubs =
+                  watch(clubRepositoryProvider).getCurrentClubs();
+              clubs.whenComplete(() async {
+                _currentClubs = await clubs;
+                if (mounted) {
+                  //TODO: Is this the best way to do it?
+                  setState(() {});
+                }
+              });
+              return Clubs(_currentClubs ?? <ClubModel>[]);
+            },
           ),
         ],
       ),
