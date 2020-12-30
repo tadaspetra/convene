@@ -1,7 +1,8 @@
 import 'package:formz/formz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package:convene/domain/authentication/authentication.dart';
+import 'package:convene/domain/authentication/email.dart';
+import 'package:convene/domain/authentication/password.dart';
 
 part 'sign_up_state.freezed.dart';
 

@@ -1,4 +1,4 @@
-import 'package:convene/domain/book_repository/book_repository.dart';
+import 'package:convene/domain/book_repository/src/models/book_model.dart';
 import 'package:convene/global_widgets/book_card.dart';
 import 'package:flutter/material.dart';
 

@@ -3,7 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:books_finder/books_finder.dart';
 import 'package:user_repository/user_repository.dart';
 
-import 'book_repository.dart';
+import '../book_repository.dart';
 import 'models/book_model.dart';
 
 class FirestoreBook implements BookRepository {
@@ -75,6 +75,18 @@ class FirestoreBook implements BookRepository {
 
     //don't need to await, nothing is dependent on this
     users.doc(user.uid).collection("currentBooks").doc(book.id).delete();
+    if (book.fromClub) {
+      clubs
+          .doc(book.clubId)
+          .collection("books")
+          .doc(book.clubBookId)
+          .collection("reviews")
+          .doc(user.uid)
+          .set(<String, dynamic>{
+        'rating': rating,
+        'review': review,
+      }); //TODO: rating and reviews get stored in separate places for solo books and for clubs
+    }
     return users.doc(user.uid).collection("books").doc(book.id).set(book
         .copyWith(
           rating: rating,

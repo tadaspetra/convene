@@ -17,6 +17,8 @@ abstract class BookModel implements _$BookModel {
     String review,
     bool fromClub,
     String clubName,
+    String clubId,
+    String clubBookId,
   }) = _Book;
   const BookModel._();
 
@@ -36,8 +38,12 @@ abstract class BookModel implements _$BookModel {
       rating: documentSnapshot.data()["rating"] as double ?? 0,
       review: documentSnapshot.data()["review"] as String ?? "Error: no review",
       fromClub: documentSnapshot.data()["fromClub"] as bool ?? false,
-      clubName:
-          documentSnapshot.data()["clubName"] as String ?? "Error: no club",
+      clubName: documentSnapshot.data()["clubName"] as String ??
+          "Error: no club name",
+      clubId:
+          documentSnapshot.data()["clubId"] as String ?? "Error: no club Id",
+      clubBookId: documentSnapshot.data()["clubBookId"] as String ??
+          "Error: no club book Id",
     );
   }
 
@@ -54,5 +60,7 @@ abstract class BookModel implements _$BookModel {
         'review': review,
         'fromClub': fromClub,
         'clubName': clubName,
+        'clubId': clubId,
+        'clubBookId': clubBookId,
       };
 }

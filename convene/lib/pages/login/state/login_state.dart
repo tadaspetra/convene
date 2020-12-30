@@ -1,4 +1,5 @@
-import 'package:convene/domain/authentication/authentication.dart';
+import 'package:convene/domain/authentication/email.dart';
+import 'package:convene/domain/authentication/password.dart';
 import 'package:formz/formz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

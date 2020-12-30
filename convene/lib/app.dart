@@ -11,7 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'pages/add_book/view/add_book_page.dart';
+import 'pages/add_book/add_book.dart';
 import 'pages/email_not_verified/email_not_verified.dart';
 import 'pages/error/error.dart';
 import 'pages/home/home.dart';
