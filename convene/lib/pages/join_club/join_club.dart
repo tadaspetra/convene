@@ -15,7 +15,7 @@ class JoinClubPage extends StatefulWidget {
 }
 
 class _JoinClubPageState extends State<JoinClubPage> {
-  TextEditingController _clubId = TextEditingController();
+  final TextEditingController _clubId = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,14 +35,14 @@ class _JoinClubPageState extends State<JoinClubPage> {
             const Text('Join Club'),
             TextField(
               controller: _clubId,
-              decoration: InputDecoration(labelText: "Enter Group ID"),
+              decoration: const InputDecoration(labelText: "Enter Group ID"),
             ),
             RaisedButton(
               onPressed: () {
                 context.read(clubRepositoryProvider).joinClub(_clubId.text);
                 context.read(currentPageProvider).state = Pages.home;
               },
-              child: Text("Join Club"),
+              child: const Text("Join Club"),
             )
           ],
         ),

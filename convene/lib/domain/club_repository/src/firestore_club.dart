@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:convene/domain/book_repository/book_repository.dart';
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/providers/book_provider.dart';
@@ -22,9 +21,9 @@ class FirestoreClub implements ClubRepository {
   @override
   Future<void> createClub(ClubModel clubModel, BookModel bookModel) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
-    DocumentReference _clubRef =
+    final DocumentReference _clubRef =
         await clubs.add(clubModel.toJson()); //create club
-    DocumentReference _bookRef = await _clubRef.collection("books").add(
+    final DocumentReference _bookRef = await _clubRef.collection("books").add(
         bookModel
             .copyWith(clubId: _clubRef.id)
             .toJson()); //add book to club list
@@ -61,10 +60,11 @@ class FirestoreClub implements ClubRepository {
   @override
   Future<void> joinClub(String clubId) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
-    DocumentReference _clubRef = await clubs.doc(clubId);
-    ClubModel _clubModel = ClubModel.fromDocumentSnapshot(await _clubRef.get());
+    final DocumentReference _clubRef = clubs.doc(clubId);
+    final ClubModel _clubModel =
+        ClubModel.fromDocumentSnapshot(await _clubRef.get());
 
-    List<String> _newMembers = _clubModel.members;
+    final List<String> _newMembers = _clubModel.members;
     _newMembers.add(user.uid);
 
     _clubRef.update(_clubModel.copyWith(members: _newMembers).toJson());

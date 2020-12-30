@@ -12,10 +12,10 @@ class ClubPage extends StatefulWidget {
 }
 
 class _ClubPageState extends State<ClubPage> {
-  final key = new GlobalKey<ScaffoldState>();
+  final key = GlobalKey<ScaffoldState>();
   void _copyGroupId(BuildContext context) {
     Clipboard.setData(ClipboardData(text: widget.club.id));
-    key.currentState.showSnackBar(SnackBar(
+    key.currentState.showSnackBar(const SnackBar(
       content: Text("Copied!"),
     ));
   }
@@ -30,7 +30,7 @@ class _ClubPageState extends State<ClubPage> {
           Text(widget.club.clubName),
           RaisedButton(
             onPressed: () => _copyGroupId(context),
-            child: Text("Copy Group ID"),
+            child: const Text("Copy Group ID"),
           )
         ],
       ),

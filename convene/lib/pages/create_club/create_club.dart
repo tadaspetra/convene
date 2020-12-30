@@ -22,17 +22,22 @@ class CreateClubPage extends StatefulWidget {
 }
 
 class _CreateClubPageState extends State<CreateClubPage> {
-  TextEditingController _clubName = TextEditingController();
-  TextEditingController bookController = TextEditingController();
+  final TextEditingController _clubName = TextEditingController();
+  final TextEditingController _bookController = TextEditingController();
   BookCard _firstBook;
   List<BookModel> _books = [];
   DatabaseUser currentUser;
   DateTime _selectedDate = DateTime.now();
 
-  initState() {
+  @override
+  void initState() {
     super.initState();
-    _selectedDate = DateTime(_selectedDate.year, _selectedDate.month,
-        _selectedDate.day, _selectedDate.hour, 0, 0, 0, 0);
+    _selectedDate = DateTime(
+      _selectedDate.year,
+      _selectedDate.month,
+      _selectedDate.day,
+      _selectedDate.hour,
+    );
   }
 
   Future<void> _selectDate() async {
@@ -44,8 +49,12 @@ class _CreateClubPageState extends State<CreateClubPage> {
 
     if (picked != null && picked != _selectedDate) {
       setState(() {
-        _selectedDate = DateTime(picked.year, picked.month, picked.day,
-            _selectedDate.hour, 0, 0, 0, 0);
+        _selectedDate = DateTime(
+          picked.year,
+          picked.month,
+          picked.day,
+          _selectedDate.hour,
+        );
       });
     }
   }
@@ -69,10 +78,6 @@ class _CreateClubPageState extends State<CreateClubPage> {
             _selectedDate.month,
             _selectedDate.day,
             value,
-            0,
-            0,
-            0,
-            0,
           );
         });
       }
@@ -106,7 +111,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                             child: TextFormField(
                               decoration:
                                   const InputDecoration(hintText: "Enter Book"),
-                              controller: bookController,
+                              controller: _bookController,
                             ),
                           ),
                         ),
@@ -114,7 +119,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                           onPressed: () async {
                             _books = await context
                                 .read(bookRepositoryProvider)
-                                .searchBooks(bookController.text);
+                                .searchBooks(_bookController.text);
                             setState(() {}); // TODO improve this
                           },
                           icon: const Icon(Icons.arrow_forward),
@@ -168,13 +173,13 @@ class _CreateClubPageState extends State<CreateClubPage> {
               child: TextField(
                 controller: _clubName,
                 textAlign: TextAlign.center,
-                decoration: InputDecoration(hintText: "Club Name"),
+                decoration: const InputDecoration(hintText: "Club Name"),
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            if (_firstBook != null) Text("First Book"),
+            if (_firstBook != null) const Text("First Book"),
             _firstBook ?? Container(),
             RaisedButton(
               onPressed: () async {
@@ -182,13 +187,13 @@ class _CreateClubPageState extends State<CreateClubPage> {
                 setState(() {});
               },
               child: _firstBook != null
-                  ? Text("Change book")
-                  : Text("Add initial book"),
+                  ? const Text("Change book")
+                  : const Text("Add initial book"),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               "First book due date:",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -198,14 +203,14 @@ class _CreateClubPageState extends State<CreateClubPage> {
               children: [
                 Expanded(
                   child: FlatButton(
-                    child: Text("Change Date"),
                     onPressed: () => _selectDate(),
+                    child: const Text("Change Date"),
                   ),
                 ),
                 Expanded(
                   child: FlatButton(
-                    child: Text("Change Time"),
                     onPressed: () => _selectTime(),
+                    child: const Text("Change Time"),
                   ),
                 ),
               ],
