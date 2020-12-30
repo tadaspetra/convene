@@ -3,7 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:books_finder/books_finder.dart';
 import 'package:user_repository/user_repository.dart';
 
-import 'book_repository.dart';
+import '../book_repository.dart';
 import 'models/book_model.dart';
 
 class FirestoreBook implements BookRepository {

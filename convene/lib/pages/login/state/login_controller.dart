@@ -1,5 +1,6 @@
 import 'package:user_repository/user_repository.dart';
-import 'package:convene/domain/authentication/authentication.dart';
+import 'package:convene/domain/authentication/email.dart';
+import 'package:convene/domain/authentication/password.dart';
 import 'package:formz/formz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_notifier/state_notifier.dart';

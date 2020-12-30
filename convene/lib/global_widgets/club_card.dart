@@ -1,7 +1,7 @@
 import 'package:convene/domain/book_repository/book_repository.dart';
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/domain/navigation/navigation.dart';
-import 'package:convene/pages/club/view/club.dart';
+import 'package:convene/pages/club/club.dart';
 import 'package:convene/providers/book_provider.dart';
 import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';

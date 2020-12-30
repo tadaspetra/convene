@@ -1,4 +1,4 @@
-import 'package:convene/domain/book_repository/book_repository.dart';
+import 'package:convene/domain/book_repository/src/models/book_model.dart';
 import 'package:convene/domain/navigation/navigation.dart';
 import 'package:convene/providers/book_provider.dart';
 import 'package:convene/providers/navigation_provider.dart';

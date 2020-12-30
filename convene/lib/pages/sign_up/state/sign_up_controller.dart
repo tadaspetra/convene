@@ -3,7 +3,8 @@ import 'package:formz/formz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-import 'package:convene/domain/authentication/authentication.dart';
+import 'package:convene/domain/authentication/email.dart';
+import 'package:convene/domain/authentication/password.dart';
 import 'sign_up_state.dart';
 
 class SignUpController extends StateNotifier<SignUpState> {

@@ -7,7 +7,7 @@ import 'package:riverpod/riverpod.dart';
 
 import 'package:user_repository/user_repository.dart';
 
-import 'club_repository.dart';
+import '../club_repository.dart';
 
 class FirestoreClub implements ClubRepository {
   FirestoreClub(this.read);
