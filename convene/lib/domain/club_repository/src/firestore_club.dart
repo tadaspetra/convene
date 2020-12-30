@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:convene/domain/book_repository/book_repository.dart';
+import 'package:convene/domain/book_repository/src/models/book_model.dart';
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/providers/book_provider.dart';
 import 'package:riverpod/riverpod.dart';
@@ -23,15 +24,17 @@ class FirestoreClub implements ClubRepository {
     final user = await read(userRespositoryProvider).getCurrentUser();
     DocumentReference _clubRef =
         await clubs.add(clubModel.toJson()); //create club
-    DocumentReference _bookRef = await _clubRef
-        .collection("books")
-        .add(bookModel.toJson()); //add book to club list
+    DocumentReference _bookRef = await _clubRef.collection("books").add(
+        bookModel
+            .copyWith(clubId: _clubRef.id)
+            .toJson()); //add book to club list
     //book relys on club being created and currentBookId relys on book being created
     _clubRef.update(clubModel.copyWith(currentBookId: _bookRef.id).toJson());
     //this will give personal list a different ID, but I think has to be that way, because there is
     //a possibility that it will give an ID that already exists
-    await read(bookRepositoryProvider)
-        .addSoloBook(bookModel); //add book to personal list
+    await read(bookRepositoryProvider).addSoloBook(bookModel.copyWith(
+        clubId: _clubRef.id,
+        clubBookId: _bookRef.id)); //add book to personal list
     await users
         .doc(user.uid)
         .collection("clubs")
