@@ -24,8 +24,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _homeScaffoldKey = GlobalKey();
-  List<BookModel> _currentBooks;
-  List<ClubModel> _currentClubs;
+  @override
+  void didChangeDependencies() {
+    context.read(clubProvider).updateList();
+    context.read(bookProvider).updateList();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,16 +72,9 @@ class _HomePageState extends State<HomePage> {
           Consumer(
             builder: (BuildContext context,
                 T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
-              final Future<List<BookModel>> books =
-                  watch(bookRepositoryProvider).getCurrentBooks();
-              books.whenComplete(() async {
-                _currentBooks = await books;
-                if (mounted) {
-                  //TODO: Is this the best way to do it?
-                  setState(() {});
-                }
-              });
-              return Books(_currentBooks ?? <BookModel>[]);
+              final List<BookModel> books = watch(bookProvider.state);
+
+              return Books(books ?? <BookModel>[]);
             },
           ),
           SliverList(
@@ -98,16 +95,9 @@ class _HomePageState extends State<HomePage> {
           Consumer(
             builder: (BuildContext context,
                 T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
-              final Future<List<ClubModel>> clubs =
-                  watch(clubRepositoryProvider).getCurrentClubs();
-              clubs.whenComplete(() async {
-                _currentClubs = await clubs;
-                if (mounted) {
-                  //TODO: Is this the best way to do it?
-                  setState(() {});
-                }
-              });
-              return Clubs(_currentClubs ?? <ClubModel>[]);
+              final List<ClubModel> clubs = watch(clubProvider.state);
+
+              return Clubs(clubs ?? <ClubModel>[]);
             },
           ),
         ],

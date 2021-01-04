@@ -1,6 +1,8 @@
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/pages/club/club.dart';
+import 'package:convene/providers/club_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ClubCard extends StatelessWidget {
   final ClubModel club;
@@ -10,18 +12,24 @@ class ClubCard extends StatelessWidget {
     this.club,
   }) : super(key: key);
 
+  Future<void> goToClub() async {}
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        //TODO: this push goes against the way the app is set up, but will figure out later
-        context,
-        MaterialPageRoute<ClubPage>(
-          builder: (context) => ClubPage(
-            club: club,
+      onTap: () async {
+        final ClubModel _realClub =
+            await context.read(clubRepositoryProvider).getSingleClub(club.id);
+        Navigator.push(
+          //TODO: this push goes against the way the app is set up, but will figure out later
+          context,
+          MaterialPageRoute<ClubPage>(
+            builder: (context) => ClubPage(
+              club: _realClub,
+            ),
           ),
-        ),
-      ),
+        );
+      },
       child: DisplayClubCard(club: club),
     );
   }
