@@ -1,9 +1,9 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:convene/config/palette.dart';
 
 import 'package:convene/domain/navigation/navigation_state.dart';
+import 'package:convene/pages/add_book/add_book.dart';
 import 'package:convene/pages/create_club/create_club.dart';
 import 'package:convene/pages/finished_book/finished_book.dart';
 import 'package:convene/pages/join_club/join_club.dart';
@@ -12,15 +12,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'pages/add_book/add_book.dart';
 import 'config/logger.dart';
 import 'pages/email_not_verified/email_not_verified.dart';
 import 'pages/error/error.dart';
 import 'pages/home/home.dart';
 import 'pages/login/view/login_page.dart';
 import 'pages/splash/splash.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class App extends StatefulWidget {
   // Create the initilization Future outside of `build`:
