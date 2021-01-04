@@ -23,7 +23,7 @@ dev_dependencies:
     sdk: flutter
   mockito: ^4.0.0
   freezed: 
-  build_runner: 
+  build_runner:
   json_serializable: 
   lint: ^1.2.0
 

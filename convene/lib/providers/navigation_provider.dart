@@ -1,3 +1,4 @@
+import 'package:convene/config/logger.dart';
 import 'package:convene/domain/navigation/navigation.dart';
 import 'package:convene/domain/navigation/navigation_state.dart';
 import 'package:riverpod/riverpod.dart';
@@ -43,12 +44,18 @@ final navigationProvider = Provider<NavigationState>((ref) {
           }
         },
         loading: () => const NavigationState.loading(),
-        error: (error, stack) => NavigationState.error(error),
+        error: (error, stack) {
+          logger.e(error.toString());
+          return NavigationState.error(error);
+        },
       );
     },
     emailNotVerified: () => const NavigationState.emailNotVerified(),
     unauthenticated: () => const NavigationState.unauthenticated(),
     loading: () => const NavigationState.loading(),
-    error: (error) => NavigationState.error(error),
+    error: (error) {
+      logger.e(error.toString());
+      return NavigationState.error(error);
+    },
   );
 });
