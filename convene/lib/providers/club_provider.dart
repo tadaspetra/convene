@@ -1,5 +1,4 @@
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
-import 'package:convene/domain/club_repository/club_repository.dart';
 import 'package:convene/domain/club_repository/src/firestore_club.dart';
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/domain/club_repository/src/models/club_set.dart';
@@ -22,6 +21,23 @@ final currentClubsProvider = StreamProvider<List<ClubModel>>((ref) {
         ),
       );
 });
+
+final clubLogic = Provider.autoDispose<ClubLogic>((ref) {
+  return ClubLogic(ref.read);
+});
+
+class ClubLogic {
+  Reader read;
+  ClubLogic(this.read);
+
+  Future<void> createClub(ClubModel clubModel, BookModel bookModel) async {
+    await read(clubRepositoryProvider).createClub(clubModel, bookModel);
+  }
+
+  Future<void> joinClub(String clubId) async {
+    await read(clubRepositoryProvider).joinClub(clubId);
+  }
+}
 
 final clubProvider = StateNotifierProvider.autoDispose
     .family<CurrentClub, String>((ref, clubid) {

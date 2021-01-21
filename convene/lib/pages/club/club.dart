@@ -1,5 +1,4 @@
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
-import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/domain/club_repository/src/models/club_set.dart';
 import 'package:convene/global_widgets/book_card.dart';
 import 'package:convene/providers/club_provider.dart';

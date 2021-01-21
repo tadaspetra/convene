@@ -1,8 +1,6 @@
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/pages/club/club.dart';
-import 'package:convene/providers/club_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ClubCard extends StatelessWidget {
   final ClubModel club;

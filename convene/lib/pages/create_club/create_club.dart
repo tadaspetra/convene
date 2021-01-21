@@ -1,9 +1,9 @@
 import 'package:convene/domain/book_repository/src/firestore_book.dart';
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
-import 'package:convene/domain/club_repository/src/firestore_club.dart';
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/domain/navigation/navigation.dart';
 import 'package:convene/global_widgets/book_card.dart';
+import 'package:convene/providers/club_provider.dart';
 import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -217,7 +217,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
             ),
             RaisedButton(
               onPressed: () {
-                context.read(clubRepositoryProvider).createClub(
+                context.read(clubLogic).createClub(
                       ClubModel(
                         clubName: _clubName.text,
                         leader: currentUser.uid,
