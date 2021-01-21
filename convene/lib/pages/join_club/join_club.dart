@@ -39,7 +39,7 @@ class _JoinClubPageState extends State<JoinClubPage> {
             ),
             RaisedButton(
               onPressed: () {
-                context.read(clubRepositoryProvider).joinClub(_clubId.text);
+                context.read(clubLogic).joinClub(_clubId.text);
                 context.read(currentPageProvider).state = Pages.home;
               },
               child: const Text("Join Club"),

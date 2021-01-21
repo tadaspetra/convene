@@ -10,18 +10,22 @@ class ClubCard extends StatelessWidget {
     this.club,
   }) : super(key: key);
 
+  Future<void> goToClub() async {}
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        //TODO: this push goes against the way the app is set up, but will figure out later
-        context,
-        MaterialPageRoute<ClubPage>(
-          builder: (context) => ClubPage(
-            club: club,
+      onTap: () async {
+        Navigator.push(
+          //TODO: this push goes against the way the app is set up, but will figure out later
+          context,
+          MaterialPageRoute<ClubPage>(
+            builder: (context) => ClubPage(
+              clubid: club.id,
+            ),
           ),
-        ),
-      ),
+        );
+      },
       child: DisplayClubCard(club: club),
     );
   }

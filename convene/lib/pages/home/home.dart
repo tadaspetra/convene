@@ -10,8 +10,6 @@ import 'package:convene/providers/club_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
-/// If you want to use Hooks, you need to create a separate stateless widget for that,
-/// since for a drawer you need to have a stateful widget. Is there a better way around this?
 class HomePage extends StatefulWidget {
   const HomePage();
 
@@ -24,8 +22,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _homeScaffoldKey = GlobalKey();
-  List<BookModel> _currentBooks;
-  List<ClubModel> _currentClubs;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,16 +68,23 @@ class _HomePageState extends State<HomePage> {
           Consumer(
             builder: (BuildContext context,
                 T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
-              final Future<List<BookModel>> books =
-                  watch(bookRepositoryProvider).getCurrentBooks();
-              books.whenComplete(() async {
-                _currentBooks = await books;
-                if (mounted) {
-                  //TODO: Is this the best way to do it?
-                  setState(() {});
-                }
-              });
-              return Books(_currentBooks ?? <BookModel>[]);
+              return watch(currentBooksController.state).when(
+                error: (Object error, StackTrace stackTrace) {
+                  return SliverList(
+                    delegate: SliverChildListDelegate(
+                        [const Text("Error retrieving books")]),
+                  );
+                },
+                loading: () {
+                  return SliverList(
+                    delegate: SliverChildListDelegate(
+                        [const Center(child: CircularProgressIndicator())]),
+                  );
+                },
+                data: (List<BookModel> value) {
+                  return Books(value);
+                },
+              );
             },
           ),
           SliverList(
@@ -98,16 +105,23 @@ class _HomePageState extends State<HomePage> {
           Consumer(
             builder: (BuildContext context,
                 T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
-              final Future<List<ClubModel>> clubs =
-                  watch(clubRepositoryProvider).getCurrentClubs();
-              clubs.whenComplete(() async {
-                _currentClubs = await clubs;
-                if (mounted) {
-                  //TODO: Is this the best way to do it?
-                  setState(() {});
-                }
-              });
-              return Clubs(_currentClubs ?? <ClubModel>[]);
+              return watch(currentClubsProvider).when(
+                data: (List<ClubModel> value) {
+                  return Clubs(value);
+                },
+                error: (Object error, StackTrace stackTrace) {
+                  return SliverList(
+                    delegate: SliverChildListDelegate(
+                        [const Text("Error retrieving books")]),
+                  );
+                },
+                loading: () {
+                  return SliverList(
+                    delegate: SliverChildListDelegate(
+                        [const Center(child: CircularProgressIndicator())]),
+                  );
+                },
+              );
             },
           ),
         ],

@@ -9,6 +9,7 @@ abstract class ClubModel implements _$ClubModel {
     String id,
     @required String clubName,
     @required String leader,
+    int nextIndexPicking,
     List<String> selectors,
     List<String> members, //TODO: this might be better as a collection
     List<String> notifTokens, //TODO: add support for this later
@@ -17,7 +18,7 @@ abstract class ClubModel implements _$ClubModel {
     DateTime currentBookDue,
     String nextBookId,
     DateTime nextBookDue,
-  }) = _Club;
+  }) = _ClubModel;
   const ClubModel._();
 
   factory ClubModel.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
@@ -26,6 +27,7 @@ abstract class ClubModel implements _$ClubModel {
       clubName:
           documentSnapshot.data()["clubName"] as String ?? "Error no club name",
       leader: documentSnapshot.data()["leader"] as String ?? "Error no leader",
+      nextIndexPicking: documentSnapshot.data()["nextIndexPicking"] as int ?? 0,
       selectors: (documentSnapshot.data()["selectors"] != null)
           ? documentSnapshot.data()["selectors"].cast<String>() as List<String>
           : ["Error: no selectors"],
@@ -40,7 +42,7 @@ abstract class ClubModel implements _$ClubModel {
               Timestamp.fromDate(DateTime(1)))
           .toDate(),
       currentBookId: documentSnapshot.data()["currentBookId"] as String ??
-          "Error no current Book",
+          "Error no current bok",
       currentBookDue: (documentSnapshot.data()["currentBookDue"] as Timestamp ??
               Timestamp.fromDate(DateTime(1)))
           .toDate(),
@@ -55,6 +57,7 @@ abstract class ClubModel implements _$ClubModel {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'clubName': clubName,
         'leader': leader,
+        'nextIndexPicking': nextIndexPicking,
         'selectors': selectors,
         'members': members,
         'notifTokens': notifTokens,

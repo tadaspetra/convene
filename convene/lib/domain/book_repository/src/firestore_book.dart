@@ -6,6 +6,10 @@ import 'package:user_repository/user_repository.dart';
 import '../book_repository.dart';
 import 'models/book_model.dart';
 
+// access to repository inteface. Should not be touched in UI
+final bookRepositoryProvider =
+    Provider<BookRepository>((ref) => FirestoreBook(ref.read));
+
 class FirestoreBook implements BookRepository {
   FirestoreBook(this.read);
 
@@ -44,7 +48,7 @@ class FirestoreBook implements BookRepository {
   }
 
   @override
-  Future<void> addSoloBook(BookModel book) async {
+  Future<void> addBook(BookModel book) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
     return users.doc(user.uid).collection("currentBooks").add(book.toJson());
   }
@@ -69,8 +73,7 @@ class FirestoreBook implements BookRepository {
   }
 
   @override
-  Future<void> finishBook(
-      {BookModel book, double rating, String review}) async {
+  Future<void> finishBook({BookModel book}) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
 
     //don't need to await, nothing is dependent on this
@@ -83,14 +86,12 @@ class FirestoreBook implements BookRepository {
           .collection("reviews")
           .doc(user.uid)
           .set(<String, dynamic>{
-        'rating': rating,
-        'review': review,
+        'rating': book.rating,
+        'review': book.review,
       }); //TODO: rating and reviews get stored in separate places for solo books and for clubs
     }
     return users.doc(user.uid).collection("books").doc(book.id).set(book
         .copyWith(
-          rating: rating,
-          review: review,
           dateCompleted: DateTime.now(),
         )
         .toJson());
@@ -116,14 +117,14 @@ class FirestoreBook implements BookRepository {
   }
 
   @override
-  Future<void> updateProgress({BookModel book, String newPage}) async {
+  Future<void> updateBook({BookModel book}) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
     return users
         .doc(user.uid)
         .collection("currentBooks")
         .doc(book.id)
         .update(<String, dynamic>{
-      'currentPage': int.parse(newPage),
+      'currentPage': book.currentPage,
     });
   }
 }
