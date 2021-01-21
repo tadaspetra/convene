@@ -1,5 +1,4 @@
-import 'package:convene/domain/navigation/navigation.dart';
-import 'package:convene/providers/navigation_provider.dart';
+import 'package:convene/pages/finished_book/finished_book.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,8 +29,14 @@ class MenuDrawer extends ConsumerWidget {
               leading: const Icon(Icons.book_outlined),
               title: const Text('Finished Books'),
               onTap: () {
-                context.read(currentPageProvider).state = Pages.finishedbook;
                 Navigator.pop(context);
+                Navigator.push(
+                  //TODO: this push goes against the way the app is set up, but will figure out later
+                  context,
+                  MaterialPageRoute<FinishedBookPage>(
+                    builder: (context) => const FinishedBookPage(),
+                  ),
+                );
               },
             ),
             ListTile(

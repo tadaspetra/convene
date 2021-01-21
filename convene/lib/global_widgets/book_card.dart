@@ -44,8 +44,8 @@ class BookCard extends StatelessWidget {
                       child: RaisedButton(
                         onPressed: () {
                           context
-                              .read(bookRepositoryProvider)
-                              .addSoloBook(book);
+                              .read(currentBooksController)
+                              .addBook(book: book);
                           Navigator.pop(context);
                           context.read(currentPageProvider).state = Pages.home;
                         },
@@ -100,8 +100,8 @@ class DisplayBookCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
-            child: book.coverImage ==
-                    "noimage" //if object gets created with no cover image we set to "noimage"
+            child: ((book.coverImage == "noimage") || book.coverImage == null)
+                //if object gets created with no cover image we set to "noimage"
                 ? Container()
                 : Image.network(
                     book.coverImage,
@@ -206,8 +206,9 @@ class UpdateButton extends StatelessWidget {
                 Center(
                   child: RaisedButton(
                     onPressed: () {
-                      context.read(bookRepositoryProvider).updateProgress(
-                          book: book, newPage: _textController.text);
+                      context.read(currentBooksController).updateBook(
+                          book: book.copyWith(
+                              currentPage: int.parse(_textController.text)));
                       Navigator.pop(context);
                       context.read(currentPageProvider).state = Pages.home;
                     },
@@ -262,11 +263,13 @@ class UpdateButton extends StatelessWidget {
                                 RaisedButton(
                                   onPressed: () {
                                     context
-                                        .read(bookRepositoryProvider)
+                                        .read(currentBooksController)
                                         .finishBook(
-                                            book: book,
+                                          book: book.copyWith(
                                             rating: rating,
-                                            review: _reviewController.text);
+                                            review: _reviewController.text,
+                                          ),
+                                        );
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                     context.read(currentPageProvider).state =

@@ -19,7 +19,7 @@ abstract class BookModel implements _$BookModel {
     String clubName,
     String clubId,
     String clubBookId,
-  }) = _Book;
+  }) = _BookModel;
   const BookModel._();
 
   factory BookModel.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) {

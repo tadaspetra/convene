@@ -18,14 +18,12 @@ class ClubCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        final ClubModel _realClub =
-            await context.read(clubRepositoryProvider).getSingleClub(club.id);
         Navigator.push(
           //TODO: this push goes against the way the app is set up, but will figure out later
           context,
           MaterialPageRoute<ClubPage>(
             builder: (context) => ClubPage(
-              club: _realClub,
+              clubid: club.id,
             ),
           ),
         );

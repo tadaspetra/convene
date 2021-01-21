@@ -1,23 +1,51 @@
+import 'package:convene/domain/book_repository/src/models/book_model.dart';
 import 'package:convene/domain/club_repository/club_repository.dart';
 import 'package:convene/domain/club_repository/src/firestore_club.dart';
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
+import 'package:convene/domain/club_repository/src/models/club_set.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_notifier/state_notifier.dart';
+import 'package:user_repository/user_repository.dart';
 
-final clubRepositoryProvider =
-    Provider<ClubRepository>((ref) => FirestoreClub(ref.read));
-
-final clubProvider = StateNotifierProvider<ClubList>((ref) {
-  return ClubList(ref.read);
+final currentClubsProvider = StreamProvider<List<ClubModel>>((ref) {
+  return ref.watch(clubRepositoryProvider).getCurrentClubs(
+        ref.watch(currentUserController.state).when(
+          data: (DatabaseUser value) {
+            return value;
+          },
+          error: (Object error, StackTrace stackTrace) {
+            return DatabaseUser(uid: null, email: null);
+          },
+          loading: () {
+            return DatabaseUser(uid: null, email: null);
+          },
+        ),
+      );
 });
 
-class ClubList extends StateNotifier<List<ClubModel>> {
-  ClubList(this.read) : super(<ClubModel>[]);
+final clubProvider = StateNotifierProvider.autoDispose
+    .family<CurrentClub, String>((ref, clubid) {
+  return CurrentClub(ref.read, clubid);
+});
+
+class CurrentClub extends StateNotifier<AsyncValue<ClubSet>> {
+  String clubid;
+  CurrentClub(this.read, this.clubid) : super(const AsyncLoading()) {
+    _getInfo(clubid);
+  }
 
   /// The `ref.read` function
   final Reader read;
 
-  Future<void> updateList() async {
-    state = await read(clubRepositoryProvider).getCurrentClubs();
+  Future<void> _getInfo(String id) async {
+    try {
+      final ClubModel club =
+          await read(clubRepositoryProvider).getSingleClub(id);
+      final BookModel book = await read(clubRepositoryProvider)
+          .getCurrentBook(clubid, club.currentBookId);
+      state = AsyncData(ClubSet(club: club, book: book));
+    } catch (e, st) {
+      return AsyncError<Exception>(e, st);
+    }
   }
 }

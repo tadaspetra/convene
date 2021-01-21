@@ -7,6 +7,7 @@ import 'package:user_repository/src/services/firebase_auth.dart';
 import 'package:user_repository/src/services/firestore_user.dart';
 import 'package:user_repository/src/user_repository.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:state_notifier/state_notifier.dart';
 
 /// Provides methods to interact with Firebase Authentication.
 final authRepositoryProvider =
@@ -53,3 +54,27 @@ final authStateProvider = Provider<AuthenticationState>((ref) {
     },
   );
 });
+
+// list of books being currently read by the user
+final currentUserController = StateNotifierProvider<CurrentUser>((ref) {
+  return CurrentUser(ref.read);
+});
+
+class CurrentUser extends StateNotifier<AsyncValue<DatabaseUser>> {
+  CurrentUser(this.read) : super(const AsyncLoading()) {
+    _getUser();
+  }
+
+  final Reader read;
+
+  Future<void> _getUser() async {
+    try {
+      final DatabaseUser user =
+          await read(userRespositoryProvider).getCurrentUser();
+
+      state = AsyncData(user);
+    } catch (e, st) {
+      return AsyncError<Exception>(e, st);
+    }
+  }
+}

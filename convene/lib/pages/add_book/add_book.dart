@@ -18,7 +18,8 @@ class AddBookPage extends StatefulWidget {
 
 class _AddBookPageState extends State<AddBookPage> {
   TextEditingController bookController = TextEditingController();
-  List<BookModel> _books = [];
+
+  String searchText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,9 +50,7 @@ class _AddBookPageState extends State<AddBookPage> {
                 ),
                 IconButton(
                   onPressed: () async {
-                    _books = await context
-                        .read(bookRepositoryProvider)
-                        .searchBooks(bookController.text);
+                    searchText = bookController.text;
                     setState(() {}); // TODO improve this
                   },
                   icon: const Icon(Icons.arrow_forward),
@@ -59,12 +58,34 @@ class _AddBookPageState extends State<AddBookPage> {
               ],
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: _books.length,
-                itemBuilder: (context, index) {
-                  return BookCard(
-                    book: _books[index],
-                    cardType: CardType.search,
+              child: Consumer(
+                builder: (BuildContext context,
+                    T Function<T>(ProviderBase<Object, T>) watch,
+                    Widget child) {
+                  return watch(searchBooksProvider(searchText)).when(
+                    error: (Object error, StackTrace stackTrace) {
+                      return const Text("Error retrieving books");
+                    },
+                    loading: () {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                    data: (List<BookModel> value) {
+                      if (value.isEmpty) {
+                        return Container();
+                      } else {
+                        return ListView.builder(
+                          itemCount: value.length,
+                          itemBuilder: (context, index) {
+                            return BookCard(
+                              book: value[index],
+                              cardType: CardType.search,
+                            );
+                          },
+                        );
+                      }
+                    },
                   );
                 },
               ),

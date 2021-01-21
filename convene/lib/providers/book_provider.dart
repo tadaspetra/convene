@@ -1,23 +1,79 @@
-import 'package:convene/domain/book_repository/book_repository.dart';
 import 'package:convene/domain/book_repository/src/firestore_book.dart';
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-final bookRepositoryProvider =
-    Provider<BookRepository>((ref) => FirestoreBook(ref.read));
-
-final bookProvider = StateNotifierProvider<BookList>((ref) {
-  return BookList(ref.read);
+// list of books from search
+final searchBooksProvider =
+    FutureProvider.autoDispose.family<List<BookModel>, String>((ref, name) {
+  if (name == null) {
+    return Future.value([]);
+  }
+  return ref.read(bookRepositoryProvider).searchBooks(name);
 });
 
-class BookList extends StateNotifier<List<BookModel>> {
-  BookList(this.read) : super(<BookModel>[]);
+// list of finished books
+final finishedBooksProvider =
+    FutureProvider.autoDispose<List<BookModel>>((ref) {
+  return ref.watch(bookRepositoryProvider).getFinishedBooks();
+});
 
-  /// The `ref.read` function
+// list of books being currently read by the user
+final currentBooksController = StateNotifierProvider<CurrentBookList>((ref) {
+  return CurrentBookList(ref.read);
+});
+
+class CurrentBookList extends StateNotifier<AsyncValue<List<BookModel>>> {
+  CurrentBookList(this.read) : super(const AsyncLoading()) {
+    _getBooks();
+  }
+
   final Reader read;
 
-  Future<void> updateList() async {
-    state = await read(bookRepositoryProvider).getCurrentBooks();
+  Future<void> _getBooks() async {
+    try {
+      final List<BookModel> books =
+          await read(bookRepositoryProvider).getCurrentBooks();
+      state = AsyncData(books);
+    } catch (e, st) {
+      return AsyncError<Exception>(e, st);
+    }
+  }
+
+  Future<void> addBook({BookModel book}) async {
+    try {
+      await read(bookRepositoryProvider).addBook(book);
+      final List<BookModel> books =
+          await read(bookRepositoryProvider).getCurrentBooks();
+      state = AsyncData(books);
+    } catch (e, st) {
+      return AsyncError<Exception>(e, st);
+    }
+  }
+
+  Future<void> updateBook({BookModel book}) async {
+    try {
+      await read(bookRepositoryProvider).updateBook(book: book);
+      final List<BookModel> books =
+          await read(bookRepositoryProvider).getCurrentBooks();
+      state = AsyncData(books);
+    } catch (e, st) {
+      return AsyncError<Exception>(e, st);
+    }
+  }
+
+  Future<void> finishBook({BookModel book}) async {
+    try {
+      await read(bookRepositoryProvider).finishBook(book: book);
+      final List<BookModel> books =
+          await read(bookRepositoryProvider).getCurrentBooks();
+      state = AsyncData(books);
+    } catch (e, st) {
+      return AsyncError<Exception>(e, st);
+    }
   }
 }
+
+//Provider -- interfaces, shouldnt interact with UI
+//Stream, Future - will use Provider
+//StateNotifier - States of the app

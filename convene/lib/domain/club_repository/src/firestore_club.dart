@@ -8,6 +8,10 @@ import 'package:user_repository/user_repository.dart';
 
 import '../club_repository.dart';
 
+// access to repository inteface. Should not be touched in UI
+final clubRepositoryProvider =
+    Provider<ClubRepository>((ref) => FirestoreClub(ref.read));
+
 class FirestoreClub implements ClubRepository {
   FirestoreClub(this.read);
 
@@ -17,6 +21,24 @@ class FirestoreClub implements ClubRepository {
       FirebaseFirestore.instance.collection('clubs');
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
+
+  @override
+  Stream<List<ClubModel>> getCurrentClubs(DatabaseUser user) {
+    return users
+        .doc(user.uid)
+        .collection("clubs")
+        .orderBy("clubName")
+        .snapshots()
+        .map<List<ClubModel>>((querySnapshot) {
+      final List<ClubModel> _clubs = [];
+      for (final DocumentSnapshot club in querySnapshot.docs) {
+        _clubs.add(
+          ClubModel.fromDocumentSnapshot(club),
+        );
+      }
+      return _clubs;
+    });
+  }
 
   @override
   Future<void> createClub(ClubModel clubModel, BookModel bookModel) async {
@@ -31,30 +53,15 @@ class FirestoreClub implements ClubRepository {
     _clubRef.update(clubModel.copyWith(currentBookId: _bookRef.id).toJson());
     //this will give personal list a different ID, but I think has to be that way, because there is
     //a possibility that it will give an ID that already exists
-    await read(bookRepositoryProvider).addSoloBook(bookModel.copyWith(
-        clubId: _clubRef.id,
-        clubBookId: _bookRef.id)); //add book to personal list
+    await read(currentBooksController).addBook(
+        book: bookModel.copyWith(
+            clubId: _clubRef.id,
+            clubBookId: _bookRef.id)); //add book to personal list
     await users
         .doc(user.uid)
         .collection("clubs")
         .doc(_clubRef.id)
         .set(clubModel.toJson()); //add club to users model
-  }
-
-  @override
-  Future<List<ClubModel>> getCurrentClubs() async {
-    final List<ClubModel> _clubs = [];
-    final user = await read(userRespositoryProvider).getCurrentUser();
-    final clubs =
-        await users.doc(user.uid).collection("clubs").orderBy("clubName").get();
-
-    for (final DocumentSnapshot club in clubs.docs) {
-      _clubs.add(
-        ClubModel.fromDocumentSnapshot(club),
-      );
-    }
-
-    return _clubs;
   }
 
   @override

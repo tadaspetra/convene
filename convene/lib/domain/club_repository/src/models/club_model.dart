@@ -18,7 +18,7 @@ abstract class ClubModel implements _$ClubModel {
     DateTime currentBookDue,
     String nextBookId,
     DateTime nextBookDue,
-  }) = _Club;
+  }) = _ClubModel;
   const ClubModel._();
 
   factory ClubModel.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) {

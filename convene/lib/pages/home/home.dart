@@ -10,8 +10,6 @@ import 'package:convene/providers/club_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
-/// If you want to use Hooks, you need to create a separate stateless widget for that,
-/// since for a drawer you need to have a stateful widget. Is there a better way around this?
 class HomePage extends StatefulWidget {
   const HomePage();
 
@@ -26,8 +24,6 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _homeScaffoldKey = GlobalKey();
   @override
   void didChangeDependencies() {
-    context.read(clubProvider).updateList();
-    context.read(bookProvider).updateList();
     super.didChangeDependencies();
   }
 
@@ -72,9 +68,23 @@ class _HomePageState extends State<HomePage> {
           Consumer(
             builder: (BuildContext context,
                 T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
-              final List<BookModel> books = watch(bookProvider.state);
-
-              return Books(books ?? <BookModel>[]);
+              return watch(currentBooksController.state).when(
+                error: (Object error, StackTrace stackTrace) {
+                  return SliverList(
+                    delegate: SliverChildListDelegate(
+                        [const Text("Error retrieving books")]),
+                  );
+                },
+                loading: () {
+                  return SliverList(
+                    delegate: SliverChildListDelegate(
+                        [const Center(child: CircularProgressIndicator())]),
+                  );
+                },
+                data: (List<BookModel> value) {
+                  return Books(value);
+                },
+              );
             },
           ),
           SliverList(
@@ -95,9 +105,23 @@ class _HomePageState extends State<HomePage> {
           Consumer(
             builder: (BuildContext context,
                 T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
-              final List<ClubModel> clubs = watch(clubProvider.state);
-
-              return Clubs(clubs ?? <ClubModel>[]);
+              return watch(currentClubsProvider).when(
+                data: (List<ClubModel> value) {
+                  return Clubs(value);
+                },
+                error: (Object error, StackTrace stackTrace) {
+                  return SliverList(
+                    delegate: SliverChildListDelegate(
+                        [const Text("Error retrieving books")]),
+                  );
+                },
+                loading: () {
+                  return SliverList(
+                    delegate: SliverChildListDelegate(
+                        [const Center(child: CircularProgressIndicator())]),
+                  );
+                },
+              );
             },
           ),
         ],
