@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:convene/config/palette.dart';
 
 import 'package:convene/domain/navigation/navigation_state.dart';
+import 'package:convene/pages/add_book/add_book.dart';
 import 'package:convene/pages/create_club/create_club.dart';
 import 'package:convene/pages/finished_book/finished_book.dart';
 import 'package:convene/pages/join_club/join_club.dart';
@@ -11,16 +12,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'pages/add_book/add_book.dart';
+import 'config/logger.dart';
 import 'pages/email_not_verified/email_not_verified.dart';
 import 'pages/error/error.dart';
 import 'pages/home/home.dart';
 import 'pages/login/view/login_page.dart';
 import 'pages/splash/splash.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   // Create the initilization Future outside of `build`:
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  Future<FirebaseApp> _initialization;
 
   final _navigatorKey = GlobalKey<NavigatorState>();
 
@@ -31,6 +37,22 @@ class App extends StatelessWidget {
       route,
       (_) => false,
     );
+  }
+
+  @override
+  void initState() {
+    // TODO provide better debug settup
+    // The .then will use the local Firebase Emulator
+    _initialization = Firebase.initializeApp()
+      ..then((value) {
+        // final host = Platform.isAndroid ? '10.0.2.2:8080' : 'localhost:8080';
+        // FirebaseFirestore.instance.settings = Settings(
+        //   host: host,
+        //   sslEnabled: false,
+        // );
+      });
+
+    super.initState();
   }
 
   @override
@@ -79,6 +101,7 @@ class App extends StatelessWidget {
                     loading: () => _navigateToRoute(SplashPage.route),
                     error: (Object error) {
                       log(error.toString(), name: "Convene Log");
+                      logger.e(error.toString());
                       _navigateToRoute(ErrorPage.route);
                     },
                   );

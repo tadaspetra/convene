@@ -11,17 +11,17 @@ class FirestoreUserRepository implements UserRepository {
       FirebaseFirestore.instance.collection('users');
   final Reader read;
 
-  @override
-  Future<void> addUser(DatabaseUser user) async {
-    final currentUser = await read(authUserProvider.last);
-    return users.doc(currentUser.uid).set(user.toJson());
-  }
+  // @override
+  // Future<void> addUser(DatabaseUser user) async {
+  //   final currentUser = await read(authUserProvider.last);
+  //   return users.doc(currentUser.uid).set(user.toJson());
+  // }
 
-  @override
-  Future<void> removeUser(DatabaseUser user) {
-    // TODO: implement removeUser
-    throw UnimplementedError();
-  }
+  // @override
+  // Future<void> removeUser(DatabaseUser user) {
+  //   // TODO: implement removeUser
+  //   throw UnimplementedError();
+  // }
 
   @override
   Future<void> updateUser(DatabaseUser user) {
