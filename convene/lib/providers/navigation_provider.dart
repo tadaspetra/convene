@@ -9,7 +9,7 @@ import 'package:user_repository/user_repository.dart';
 final currentPageProvider = StateProvider<Pages>((ref) => Pages.home);
 
 /// Returns the current authentication state - [AuthenticationState]
-final navigationProvider = Provider<NavigationState>((ref) {
+final navigationProvider = Provider.autoDispose<NavigationState>((ref) {
   final authState = ref.watch(authStateProvider);
   final databaseUser = ref.watch(databaseUserProvider);
   final currentPage = ref.watch(currentPageProvider);

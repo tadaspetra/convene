@@ -10,7 +10,7 @@ import '../club_repository.dart';
 
 // access to repository inteface. Should not be touched in UI
 final clubRepositoryProvider =
-    Provider<ClubRepository>((ref) => FirestoreClub(ref.read));
+    Provider.autoDispose<ClubRepository>((ref) => FirestoreClub(ref.read));
 
 class FirestoreClub implements ClubRepository {
   FirestoreClub(this.read);

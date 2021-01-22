@@ -19,7 +19,8 @@ final finishedBooksProvider =
 });
 
 // list of books being currently read by the user
-final currentBooksController = StateNotifierProvider<CurrentBookList>((ref) {
+final currentBooksController =
+    StateNotifierProvider.autoDispose<CurrentBookList>((ref) {
   return CurrentBookList(ref.read);
 });
 

@@ -3,27 +3,35 @@ import 'package:user_repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MenuDrawer extends ConsumerWidget {
+class MenuDrawer extends StatelessWidget {
   const MenuDrawer({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final user = watch(databaseUserProvider);
+  Widget build(BuildContext context) {
     return Drawer(
       child: SafeArea(
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
-            ListTile(
-              title: Text(
-                user.when(
-                    data: (config) => config.name ?? "no name",
-                    loading: () => "loading..",
-                    error: (err, stack) => "error"),
-              ),
+            Consumer(
+              builder: (BuildContext context,
+                  T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+                return watch(currentUserController.state).when(
+                    data: (DatabaseUser value) {
+                  return ListTile(
+                    title: Text(
+                      value.name ?? "no name",
+                    ),
+                  );
+                }, error: (Object error, StackTrace stackTrace) {
+                  return Container();
+                }, loading: () {
+                  return Container();
+                });
+              },
             ),
             ListTile(
               leading: const Icon(Icons.book_outlined),
