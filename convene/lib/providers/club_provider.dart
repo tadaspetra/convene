@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_notifier/state_notifier.dart';
 import 'package:user_repository/user_repository.dart';
 
-final currentClubsProvider = StreamProvider<List<ClubModel>>((ref) {
+final currentClubsProvider = StreamProvider.autoDispose<List<ClubModel>>((ref) {
   return ref.watch(clubRepositoryProvider).getCurrentClubs(
         ref.watch(currentUserController.state).when(
           data: (DatabaseUser value) {

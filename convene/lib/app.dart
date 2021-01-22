@@ -10,6 +10,7 @@ import 'package:convene/providers/navigation_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:user_repository/user_repository.dart';
 
 import 'pages/add_book/add_book.dart';
 import 'pages/email_not_verified/email_not_verified.dart';
@@ -62,6 +63,7 @@ class App extends StatelessWidget {
 
             // Firebase initialized
             if (snapshot.connectionState == ConnectionState.done) {
+              //context.read(authRepositoryProvider).logOut();
               // Listen to user authentication state updates
               return ProviderListener(
                 provider: navigationProvider,

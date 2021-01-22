@@ -15,23 +15,18 @@ final authRepositoryProvider =
 //TODO: You can't instantiate a abstract class, is there a better way to do this?
 
 /// Provides methods to read and write to the User database.
-final userRespositoryProvider = Provider<UserRepository>((ref) {
+final userRespositoryProvider = Provider.autoDispose<UserRepository>((ref) {
   return FirestoreUserRepository(ref.read);
 });
 
-final databaseUserProvider = FutureProvider<DatabaseUser>((ref) {
-  final databaseRepo = ref.watch(userRespositoryProvider);
-  return databaseRepo.getCurrentUser();
-});
-
 /// Stream of [User]. Will be updated when the logged in user changes.
-final authUserProvider = StreamProvider<User>((ref) {
+final authUserProvider = StreamProvider.autoDispose<User>((ref) {
   final authRepo = ref.watch(authRepositoryProvider);
   return authRepo.user;
 });
 
 /// Returns the current authentication state - [AuthenticationState]
-final authStateProvider = Provider<AuthenticationState>((ref) {
+final authStateProvider = Provider.autoDispose<AuthenticationState>((ref) {
   final user = ref.watch(authUserProvider);
   return user.when(
     data: (user) {
@@ -54,9 +49,13 @@ final authStateProvider = Provider<AuthenticationState>((ref) {
     },
   );
 });
+final databaseUserProvider = FutureProvider.autoDispose<DatabaseUser>((ref) {
+  final databaseRepo = ref.watch(userRespositoryProvider);
+  return databaseRepo.getCurrentUser();
+});
 
-// list of books being currently read by the user
-final currentUserController = StateNotifierProvider<CurrentUser>((ref) {
+final currentUserController =
+    StateNotifierProvider.autoDispose<CurrentUser>((ref) {
   return CurrentUser(ref.read);
 });
 
