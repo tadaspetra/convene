@@ -96,14 +96,14 @@ class _ClubPageState extends State<ClubPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: key,
-      body: RefreshIndicator(
-        displacement: 80,
-        onRefresh: () {
-          return context.read(clubProvider(widget.clubid)).updateState(widget.clubid);
-        },
-        child: CustomScrollView(
+    return RefreshIndicator(
+      displacement: 80,
+      onRefresh: () {
+        return context.read(clubProvider(widget.clubid)).updateState(widget.clubid);
+      },
+      child: Scaffold(
+        key: key,
+        body: CustomScrollView(
           slivers: [
             SliverAppBar(
               actions: [
