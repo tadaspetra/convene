@@ -83,12 +83,20 @@ class FirestoreClub implements ClubRepository {
 
   @override
   Future<BookModel> getCurrentBook(String clubId, String bookId) async {
-    return BookModel.fromDocumentSnapshot(
-        await clubs.doc(clubId).collection("books").doc(bookId).get());
+    DocumentSnapshot doc =
+        await clubs.doc(clubId).collection("books").doc(bookId).get();
+    return BookModel.fromDocumentSnapshot(doc);
   }
 
   @override
   Future<ClubModel> getSingleClub(String clubId) async {
     return ClubModel.fromDocumentSnapshot(await clubs.doc(clubId).get());
+  }
+
+  @override
+  Future<void> addCurrentReader(String clubId, String userUid) async {
+    await clubs.doc(clubId).update(<String, dynamic>{
+      "currentReaders": FieldValue.arrayUnion(<String>[userUid]),
+    }); //
   }
 }

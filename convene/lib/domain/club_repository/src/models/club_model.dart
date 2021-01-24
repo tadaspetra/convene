@@ -6,14 +6,19 @@ part 'club_model.freezed.dart';
 @freezed
 abstract class ClubModel implements _$ClubModel {
   const factory ClubModel({
+    //can't be @required because when it is first created we don't have id
     String id,
     @required String clubName,
     @required String leader,
     int nextIndexPicking,
     List<String> selectors,
-    List<String> members, //TODO: this might be better as a collection
-    List<String> notifTokens, //TODO: add support for this later
-    DateTime dateCreated,
+    @required List<String> currentReaders,
+    //TODO: this might be better as a collection
+    @required List<String> members,
+    //TODO: add support for this later
+    List<String> notifTokens,
+    @required DateTime dateCreated,
+    //can't be @required because when club first created we don't have the id yet
     String currentBookId,
     DateTime currentBookDue,
     String nextBookId,
@@ -31,6 +36,10 @@ abstract class ClubModel implements _$ClubModel {
       selectors: (documentSnapshot.data()["selectors"] != null)
           ? documentSnapshot.data()["selectors"].cast<String>() as List<String>
           : ["Error: no selectors"],
+      currentReaders: (documentSnapshot.data()["currentReaders"] != null)
+          ? documentSnapshot.data()["currentReaders"].cast<String>()
+              as List<String>
+          : ["Error: no selectors"],
       members: (documentSnapshot.data()["members"] != null)
           ? documentSnapshot.data()["members"].cast<String>() as List<String>
           : ["Error: no members"],
@@ -46,8 +55,7 @@ abstract class ClubModel implements _$ClubModel {
       currentBookDue: (documentSnapshot.data()["currentBookDue"] as Timestamp ??
               Timestamp.fromDate(DateTime(1)))
           .toDate(),
-      nextBookId: documentSnapshot.data()["nextBookId"] as String ??
-          "Error no next book",
+      nextBookId: documentSnapshot.data()["nextBookId"] as String,
       nextBookDue: (documentSnapshot.data()["nextBookDue"] as Timestamp ??
               Timestamp.fromDate(DateTime(1)))
           .toDate(),
@@ -59,6 +67,7 @@ abstract class ClubModel implements _$ClubModel {
         'leader': leader,
         'nextIndexPicking': nextIndexPicking,
         'selectors': selectors,
+        'currentReaders': currentReaders,
         'members': members,
         'notifTokens': notifTokens,
         'dateCreated': dateCreated ??

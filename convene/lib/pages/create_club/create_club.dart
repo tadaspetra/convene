@@ -222,6 +222,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                         clubName: _clubName.text,
                         leader: currentUser.uid,
                         selectors: [currentUser.uid],
+                        currentReaders: [currentUser.uid],
                         members: [
                           currentUser.uid
                         ], //TODO: error checking to make sure user here

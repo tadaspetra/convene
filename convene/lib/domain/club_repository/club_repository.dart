@@ -14,4 +14,5 @@ abstract class ClubRepository {
 
   //inside club
   Future<BookModel> getCurrentBook(String clubId, String bookId);
+  Future<void> addCurrentReader(String clubId, String userUid);
 }

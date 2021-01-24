@@ -8,7 +8,8 @@ part 'club_set.freezed.dart';
 abstract class ClubSet implements _$ClubSet {
   const factory ClubSet({
     ClubModel club,
-    BookModel book,
+    BookModel currentBook,
+    BookModel nextBook,
   }) = _ClubSet;
   const ClubSet._();
 }
