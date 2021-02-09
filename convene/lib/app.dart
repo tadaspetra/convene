@@ -92,13 +92,11 @@ class _AppState extends State<App> {
                   state.when(
                     home: () => _navigateToRoute(HomePage.route),
                     addBook: () => _navigateToRoute(AddBookPage.route),
-                    finishedBook: () =>
-                        _navigateToRoute(FinishedBookPage.route),
+                    finishedBook: () => _navigateToRoute(FinishedBookPage.route),
                     createClub: () => _navigateToRoute(CreateClubPage.route),
                     joinClub: () => _navigateToRoute(JoinClubPage.route),
                     unauthenticated: () => _navigateToRoute(LoginPage.route),
-                    emailNotVerified: () =>
-                        _navigateToRoute(EmailNotVerifiedPage.route),
+                    emailNotVerified: () => _navigateToRoute(EmailNotVerifiedPage.route),
                     loading: () => _navigateToRoute(SplashPage.route),
                     error: (Object error) {
                       log(error.toString(), name: "Convene Log");

@@ -7,8 +7,7 @@ import 'package:user_repository/src/providers.dart';
 class FirestoreUserRepository implements UserRepository {
   FirestoreUserRepository(this.read);
 
-  final CollectionReference users =
-      FirebaseFirestore.instance.collection('users');
+  final CollectionReference users = FirebaseFirestore.instance.collection('users');
   final Reader read;
 
   // @override
@@ -32,7 +31,7 @@ class FirestoreUserRepository implements UserRepository {
   @override
   Future<DatabaseUser> getCurrentUser() async {
     final currentUser = await read(authUserProvider.last);
-    return DatabaseUser.fromDocumentSnapshot(
-        await users.doc(currentUser.uid).get());
+    if (currentUser == null) return null;
+    return DatabaseUser.fromDocumentSnapshot(await users.doc(currentUser.uid).get());
   }
 }

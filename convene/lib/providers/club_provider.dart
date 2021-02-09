@@ -38,9 +38,17 @@ class ClubLogic {
   Future<void> joinClub(String clubId) async {
     await read(clubRepositoryProvider).joinClub(clubId);
   }
+
+  Future<void> addSelector(String clubId, DatabaseUser user) async {
+    await read(clubRepositoryProvider).addNewSelector(clubId, user);
+  }
+
+  Future<void> removeSelector(String clubId, String uid) async {
+    await read(clubRepositoryProvider).removeSelector(clubId, uid);
+  }
 }
 
-final clubProvider = StateNotifierProvider.autoDispose.family<CurrentClub, String>((ref, clubid) {
+final clubController = StateNotifierProvider.autoDispose.family<CurrentClub, String>((ref, clubid) {
   return CurrentClub(ref.read, clubid);
 });
 
@@ -80,4 +88,17 @@ class CurrentClub extends StateNotifier<AsyncValue<ClubSet>> {
     await read(clubRepositoryProvider).addCurrentReader(clubInfo.club.id, uid);
     await updateState(clubInfo.club.id); //need to update the UI with the current club updates
   }
+
+  Future<void> pickNextBook(ClubSet clubInfo, DateTime nextBookDue, BookModel nextBook) async {
+    await read(clubRepositoryProvider).addNextBook(clubInfo.club.id, nextBookDue, nextBook);
+    await updateState(clubInfo.club.id); //need to update the UI with the current club updates
+  }
 }
+
+final selectorsController = StreamProvider.autoDispose.family<List<DatabaseUser>, String>((ref, clubid) {
+  return ref.watch(clubRepositoryProvider).getClubSelectors(clubid);
+});
+
+final membersController = FutureProvider.autoDispose.family<List<DatabaseUser>, String>((ref, clubid) {
+  return ref.read(clubRepositoryProvider).getClubMembers(clubid);
+});
