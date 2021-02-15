@@ -14,8 +14,7 @@ import 'package:intl/intl.dart';
 class CreateClubPage extends StatefulWidget {
   const CreateClubPage({Key key}) : super(key: key);
 
-  static Route get route =>
-      MaterialPageRoute<void>(builder: (_) => const CreateClubPage());
+  static Route get route => MaterialPageRoute<void>(builder: (_) => const CreateClubPage());
 
   @override
   _CreateClubPageState createState() => _CreateClubPageState();
@@ -41,11 +40,8 @@ class _CreateClubPageState extends State<CreateClubPage> {
   }
 
   Future<void> _selectDate() async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2222));
+    final DateTime picked =
+        await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2222));
 
     if (picked != null && picked != _selectedDate) {
       setState(() {
@@ -98,8 +94,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
         builder: (_) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
           child: StatefulBuilder(
-            builder: (BuildContext context,
-                void Function(void Function()) setState) {
+            builder: (BuildContext context, void Function(void Function()) setState) {
               return Scaffold(
                 body: Column(
                   children: [
@@ -109,17 +104,14 @@ class _CreateClubPageState extends State<CreateClubPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 16.0),
                             child: TextFormField(
-                              decoration:
-                                  const InputDecoration(hintText: "Enter Book"),
+                              decoration: const InputDecoration(hintText: "Enter Book"),
                               controller: _bookController,
                             ),
                           ),
                         ),
                         IconButton(
                           onPressed: () async {
-                            _books = await context
-                                .read(bookRepositoryProvider)
-                                .searchBooks(_bookController.text);
+                            _books = await context.read(bookRepositoryProvider).searchBooks(_bookController.text);
                             setState(() {}); // TODO improve this
                           },
                           icon: const Icon(Icons.arrow_forward),
@@ -162,9 +154,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BackButton(
-                      onPressed: () =>
-                          context.read(currentPageProvider).state = Pages.home),
+                  BackButton(onPressed: () => context.read(currentPageProvider).state = Pages.home),
                 ],
               ),
             ),
@@ -186,9 +176,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                 await searchDialog(context);
                 setState(() {});
               },
-              child: _firstBook != null
-                  ? const Text("Change book")
-                  : const Text("Add initial book"),
+              child: _firstBook != null ? const Text("Change book") : const Text("Add initial book"),
             ),
             const SizedBox(
               height: 20,
@@ -222,15 +210,12 @@ class _CreateClubPageState extends State<CreateClubPage> {
                         clubName: _clubName.text,
                         leader: currentUser.uid,
                         selectors: [currentUser.uid],
-                        members: [
-                          currentUser.uid
-                        ], //TODO: error checking to make sure user here
+                        currentReaders: [currentUser.uid],
                         dateCreated: DateTime.now(),
                         //currentBookId needs to be done within createClub function
                         currentBookDue: _selectedDate,
                       ),
-                      _firstBook.book
-                          .copyWith(fromClub: true, clubName: _clubName.text),
+                      _firstBook.book.copyWith(fromClub: true, clubName: _clubName.text),
                     );
                 context.read(currentPageProvider).state = Pages.home;
               },

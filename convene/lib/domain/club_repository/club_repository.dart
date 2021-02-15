@@ -14,4 +14,14 @@ abstract class ClubRepository {
 
   //inside club
   Future<BookModel> getCurrentBook(String clubId, String bookId);
+  Future<void> addCurrentReader(String clubId, String userUid);
+  Future<void> addNextBook(String clubId, DateTime nextBookDue, BookModel bookModel);
+
+  Stream<List<DatabaseUser>> getClubSelectors(String clubId);
+  Stream<List<DatabaseUser>> getClubMembers(String clubId);
+  Future<void> addNewMember(String clubId, DatabaseUser user);
+  Future<void> addNewSelector(String clubId, DatabaseUser user);
+  Future<void> removeMember(String clubId, String uid);
+  Future<void> removeCurrentReader(String clubId);
+  Future<void> removeSelector(String clubId, String uid);
 }

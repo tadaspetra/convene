@@ -9,4 +9,5 @@ abstract class BookRepository {
   Future<void> finishBook({BookModel book});
   Future<List<BookModel>> getFinishedBooks();
   Future<void> updateBook({BookModel book});
+  Future<void> deleteBook({BookModel book});
 }

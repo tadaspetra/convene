@@ -11,7 +11,6 @@ import 'package:convene/providers/navigation_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:user_repository/user_repository.dart';
 
 import 'config/logger.dart';
 import 'pages/email_not_verified/email_not_verified.dart';
@@ -93,13 +92,11 @@ class _AppState extends State<App> {
                   state.when(
                     home: () => _navigateToRoute(HomePage.route),
                     addBook: () => _navigateToRoute(AddBookPage.route),
-                    finishedBook: () =>
-                        _navigateToRoute(FinishedBookPage.route),
+                    finishedBook: () => _navigateToRoute(FinishedBookPage.route),
                     createClub: () => _navigateToRoute(CreateClubPage.route),
                     joinClub: () => _navigateToRoute(JoinClubPage.route),
                     unauthenticated: () => _navigateToRoute(LoginPage.route),
-                    emailNotVerified: () =>
-                        _navigateToRoute(EmailNotVerifiedPage.route),
+                    emailNotVerified: () => _navigateToRoute(EmailNotVerifiedPage.route),
                     loading: () => _navigateToRoute(SplashPage.route),
                     error: (Object error) {
                       log(error.toString(), name: "Convene Log");

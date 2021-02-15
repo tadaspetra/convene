@@ -12,8 +12,7 @@ abstract class DatabaseUser with _$DatabaseUser {
     String name,
   }) = _DatabaseUser;
 
-  factory DatabaseUser.fromJson(Map<String, dynamic> json) =>
-      _$DatabaseUserFromJson(json);
+  factory DatabaseUser.fromJson(Map<String, dynamic> json) => _$DatabaseUserFromJson(json);
 
   factory DatabaseUser.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
     return DatabaseUser(
