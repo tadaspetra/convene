@@ -203,24 +203,32 @@ class _CreateClubPageState extends State<CreateClubPage> {
                 ),
               ],
             ),
-            RaisedButton(
-              onPressed: () {
-                context.read(clubLogic).createClub(
-                      ClubModel(
-                        clubName: _clubName.text,
-                        leader: currentUser.uid,
-                        selectors: [currentUser.uid],
-                        currentReaders: [currentUser.uid],
-                        dateCreated: DateTime.now(),
-                        //currentBookId needs to be done within createClub function
-                        currentBookDue: _selectedDate,
-                      ),
-                      _firstBook.book.copyWith(fromClub: true, clubName: _clubName.text),
-                    );
-                context.read(currentPageProvider).state = Pages.home;
+            Consumer(
+              builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+                return watch(currentUserController.state).maybeWhen(data: (DatabaseUser value) {
+                  return RaisedButton(
+                    onPressed: () {
+                      context.read(clubLogic).createClub(
+                            ClubModel(
+                              clubName: _clubName.text,
+                              leader: currentUser.uid,
+                              selectors: [currentUser.uid],
+                              currentReaders: [currentUser.uid],
+                              dateCreated: DateTime.now(),
+                              //currentBookId needs to be done within createClub function
+                              currentBookDue: _selectedDate,
+                            ),
+                            _firstBook.book.copyWith(fromClub: true, clubName: _clubName.text),
+                          );
+                      context.read(currentPageProvider).state = Pages.home;
+                    },
+                    child: const Text("Create Club"),
+                  );
+                }, orElse: () {
+                  return const Text("Error, can't find current user");
+                });
               },
-              child: const Text("Create Club"),
-            )
+            ),
           ],
         ),
       ),

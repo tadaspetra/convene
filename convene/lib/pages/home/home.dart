@@ -13,8 +13,7 @@ import 'package:flutter/material.dart';
 class HomePage extends StatefulWidget {
   const HomePage();
 
-  static Route get route =>
-      MaterialPageRoute<void>(builder: (_) => const HomePage());
+  static Route get route => MaterialPageRoute<void>(builder: (_) => const HomePage());
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -66,19 +65,16 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Consumer(
-            builder: (BuildContext context,
-                T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+            builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
               return watch(currentBooksController.state).when(
                 error: (Object error, StackTrace stackTrace) {
                   return SliverList(
-                    delegate: SliverChildListDelegate(
-                        [const Text("Error retrieving books")]),
+                    delegate: SliverChildListDelegate([const Text("Error retrieving books")]),
                   );
                 },
                 loading: () {
                   return SliverList(
-                    delegate: SliverChildListDelegate(
-                        [const Center(child: CircularProgressIndicator())]),
+                    delegate: SliverChildListDelegate([const Center(child: CircularProgressIndicator())]),
                   );
                 },
                 data: (List<BookModel> value) {
@@ -103,22 +99,19 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Consumer(
-            builder: (BuildContext context,
-                T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+            builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
               return watch(currentClubsProvider).when(
                 data: (List<ClubModel> value) {
                   return Clubs(value);
                 },
                 error: (Object error, StackTrace stackTrace) {
                   return SliverList(
-                    delegate: SliverChildListDelegate(
-                        [const Text("Error retrieving books")]),
+                    delegate: SliverChildListDelegate([const Text("Error retrieving books")]),
                   );
                 },
                 loading: () {
                   return SliverList(
-                    delegate: SliverChildListDelegate(
-                        [const Center(child: CircularProgressIndicator())]),
+                    delegate: SliverChildListDelegate([const Center(child: CircularProgressIndicator())]),
                   );
                 },
               );
