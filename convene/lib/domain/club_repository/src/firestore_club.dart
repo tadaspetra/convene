@@ -183,4 +183,13 @@ class FirestoreClub implements ClubRepository {
       });
     }
   }
+
+  @override
+  Future<void> addReview(String clubId, String bookId, String review, double rating) async {
+    final user = await read(userRespositoryProvider).getCurrentUser();
+    clubs.doc(clubId).collection("books").doc(bookId).collection("reviews").doc(user.uid).set(<String, dynamic>{
+      "rating": rating,
+      "review": review,
+    });
+  }
 }

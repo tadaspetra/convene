@@ -24,4 +24,5 @@ abstract class ClubRepository {
   Future<void> removeMember(String clubId, String uid);
   Future<void> removeCurrentReader(String clubId);
   Future<void> removeSelector(String clubId, String uid);
+  Future<void> addReview(String clubId, String bookId, String review, double rating);
 }
