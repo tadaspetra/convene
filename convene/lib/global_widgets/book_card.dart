@@ -265,6 +265,9 @@ class UpdateButton extends StatelessWidget {
                                             review: _reviewController.text,
                                           ),
                                         );
+                                    if (!((book.clubId == null) || (book.clubId == "Error: no club Id"))) {
+                                      context.read(clubLogic).addReview(book.clubId, book.clubBookId, _reviewController.text, rating);
+                                    }
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                     context.read(currentPageProvider).state = Pages.home;

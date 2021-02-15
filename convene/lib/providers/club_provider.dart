@@ -54,6 +54,10 @@ class ClubLogic {
   Future<void> removeCurrentReader(String clubId) async {
     await read(clubRepositoryProvider).removeCurrentReader(clubId);
   }
+
+  Future<void> addReview(String clubId, String bookId, String review, double rating) async {
+    await read(clubRepositoryProvider).addReview(clubId, bookId, review, rating);
+  }
 }
 
 final clubController = StateNotifierProvider.autoDispose.family<CurrentClub, String>((ref, clubid) {
