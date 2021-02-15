@@ -1,6 +1,7 @@
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
 import 'package:convene/domain/navigation/navigation.dart';
 import 'package:convene/providers/book_provider.dart';
+import 'package:convene/providers/club_provider.dart';
 import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -26,8 +27,7 @@ class BookCard extends StatelessWidget {
           onTap: () => showDialog<Widget>(
             context: context,
             builder: (_) => Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
+              padding: const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
                 body: ListView(
@@ -37,15 +37,12 @@ class BookCard extends StatelessWidget {
                     const Text(
                       "Add this book to current reading?",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 24.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                     ),
                     Center(
                       child: RaisedButton(
                         onPressed: () {
-                          context
-                              .read(currentBooksController)
-                              .addBook(book: book);
+                          context.read(currentBooksController).addBook(book: book);
                           Navigator.pop(context);
                           context.read(currentPageProvider).state = Pages.home;
                         },
@@ -113,8 +110,7 @@ class DisplayBookCard extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,12 +118,10 @@ class DisplayBookCard extends StatelessWidget {
                   Flexible(
                     child: Text(
                       book.title,
-                      style: const TextStyle(
-                          fontSize: 24.0, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  if (book.authors.isNotEmpty)
-                    Flexible(child: Text(book.authors[0])),
+                  if (book.authors.isNotEmpty) Flexible(child: Text(book.authors[0])),
                   () {
                     switch (cardType) {
                       case CardType.search:
@@ -142,9 +136,19 @@ class DisplayBookCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             if (book.fromClub) Text("From: ${book.clubName}"),
-                            Text(
-                                "${(book.currentPage / book.pageCount * 100).toStringAsFixed(2)}%"),
+                            Text("${(book.currentPage / book.pageCount * 100).toStringAsFixed(2)}%"),
                             UpdateButton(book: book),
+                            RaisedButton(
+                              onPressed: () {
+                                if (!((book.clubId == null) || (book.clubId == "Error: no club Id"))) {
+                                  context.read(currentBooksController).deleteBook(book: book);
+                                  context.read(clubLogic).removeCurrentReader(book.clubId);
+                                } else {
+                                  context.read(currentBooksController).deleteBook(book: book);
+                                }
+                              },
+                              child: const Text("Delete"),
+                            )
                           ],
                         );
                         break;
@@ -182,8 +186,7 @@ class UpdateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _textController =
-        TextEditingController(text: book.currentPage.toString());
+    final TextEditingController _textController = TextEditingController(text: book.currentPage.toString());
     return RaisedButton(
       onPressed: () => showDialog<Widget>(
         context: context,
@@ -206,9 +209,7 @@ class UpdateButton extends StatelessWidget {
                 Center(
                   child: RaisedButton(
                     onPressed: () {
-                      context.read(currentBooksController).updateBook(
-                          book: book.copyWith(
-                              currentPage: int.parse(_textController.text)));
+                      context.read(currentBooksController).updateBook(book: book.copyWith(currentPage: int.parse(_textController.text)));
                       Navigator.pop(context);
                       context.read(currentPageProvider).state = Pages.home;
                     },
@@ -218,17 +219,14 @@ class UpdateButton extends StatelessWidget {
                 Center(
                   child: RaisedButton(
                     onPressed: () {
-                      final TextEditingController _reviewController =
-                          TextEditingController();
+                      final TextEditingController _reviewController = TextEditingController();
                       double rating = 0;
                       showDialog<Widget>(
                         context: context,
                         builder: (_) => Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 250, horizontal: 30),
+                          padding: const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
                           child: Scaffold(
-                            resizeToAvoidBottomInset:
-                                false, //this makes it so scaffold still appears
+                            resizeToAvoidBottomInset: false, //this makes it so scaffold still appears
                             body: ListView(
                               children: [
                                 const Text(
@@ -243,8 +241,7 @@ class UpdateButton extends StatelessWidget {
                                   initialRating: 1,
                                   minRating: 1,
                                   allowHalfRating: true,
-                                  itemPadding: const EdgeInsets.symmetric(
-                                      horizontal: 4.0),
+                                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                   itemBuilder: (context, _) => const Icon(
                                     Icons.star,
                                     color: Colors.amber,
@@ -262,9 +259,7 @@ class UpdateButton extends StatelessWidget {
                                 ),
                                 RaisedButton(
                                   onPressed: () {
-                                    context
-                                        .read(currentBooksController)
-                                        .finishBook(
+                                    context.read(currentBooksController).finishBook(
                                           book: book.copyWith(
                                             rating: rating,
                                             review: _reviewController.text,
@@ -272,8 +267,7 @@ class UpdateButton extends StatelessWidget {
                                         );
                                     Navigator.pop(context);
                                     Navigator.pop(context);
-                                    context.read(currentPageProvider).state =
-                                        Pages.home;
+                                    context.read(currentPageProvider).state = Pages.home;
                                   },
                                   child: const Text("Update"),
                                 ),

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/providers/book_provider.dart';
+import 'package:flutter/painting.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:user_repository/user_repository.dart';
@@ -85,6 +86,14 @@ class FirestoreClub implements ClubRepository {
   }
 
   @override
+  Future<void> removeCurrentReader(String clubId) async {
+    final user = await read(userRespositoryProvider).getCurrentUser();
+    return clubs.doc(clubId).update(<String, dynamic>{
+      "currentReaders": FieldValue.arrayRemove(<String>[user.uid]),
+    });
+  }
+
+  @override
   Future<void> addNextBook(String clubId, DateTime nextBookDue, BookModel bookModel) async {
     final DocumentReference _bookRef =
         await clubs.doc(clubId).collection("books").add(bookModel.copyWith(clubId: clubId).toJson()); //add book to club list
@@ -106,14 +115,14 @@ class FirestoreClub implements ClubRepository {
   }
 
   @override
-  Future<List<DatabaseUser>> getClubMembers(String clubId) async {
-    final QuerySnapshot query = await clubs.doc(clubId).collection("members").get();
-
-    final List<DatabaseUser> _members = [];
-    for (final DocumentSnapshot member in query.docs) {
-      _members.add(DatabaseUser.fromDocumentSnapshot(member));
-    }
-    return _members;
+  Stream<List<DatabaseUser>> getClubMembers(String clubId) {
+    return clubs.doc(clubId).collection("members").snapshots().map<List<DatabaseUser>>((querySnapshot) {
+      final List<DatabaseUser> _selectors = [];
+      for (final DocumentSnapshot selector in querySnapshot.docs) {
+        _selectors.add(DatabaseUser.fromDocumentSnapshot(selector));
+      }
+      return _selectors;
+    });
   }
 
   /// create new member in collection
@@ -147,6 +156,19 @@ class FirestoreClub implements ClubRepository {
         "selectors": FieldValue.arrayRemove(<String>[uid]),
       });
     }
+
+    await users.doc(uid).collection("clubs").doc(clubId).delete();
+    final CollectionReference userCurrentBooksRef = users.doc(uid).collection("currentBooks");
+    final QuerySnapshot query = await userCurrentBooksRef.get();
+    query.docs.forEach((doc) {
+      if (doc.data()["clubId"] == clubId) {
+        userCurrentBooksRef.doc(doc.id).update(<String, dynamic>{
+          "clubId": FieldValue.delete(),
+          "clubName": FieldValue.delete(),
+          "clubBookId": FieldValue.delete(),
+        });
+      }
+    });
   }
 
   // remove from selector collection, selector array

@@ -64,34 +64,53 @@ class _ClubSelectorsPageState extends State<ClubSelectorsPage> {
                           itemBuilder: (context, index) {
                             return ListTile(
                               leading: const Icon(Icons.person),
-                              title: Text(members[index].name),
+                              title: Text(members[index].name ?? "Error: no name"),
                               trailing: currentUser.maybeWhen(
                                 data: (user) {
                                   return club.maybeWhen(data: (clubset) {
                                     if (clubset.club.leader == user.uid) {
-                                      return selectors.when(
-                                        data: (List<DatabaseUser> selectors) {
-                                          if (selectors.contains(members[index])) {
-                                            return IconButton(
-                                              icon: const Icon(Icons.check_box),
-                                              onPressed: () {
-                                                context.read(clubLogic).removeSelector(widget.clubId, members[index].uid);
-                                              },
-                                            );
-                                          }
-                                          return IconButton(
-                                            icon: const Icon(Icons.check_box_outline_blank),
-                                            onPressed: () {
-                                              context.read(clubLogic).addSelector(widget.clubId, members[index]);
+                                      return Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          selectors.when(
+                                            data: (List<DatabaseUser> selectors) {
+                                              if (selectors.contains(members[index])) {
+                                                return IconButton(
+                                                  icon: const Icon(Icons.check_box),
+                                                  onPressed: () {
+                                                    context.read(clubLogic).removeSelector(widget.clubId, members[index].uid);
+                                                  },
+                                                );
+                                              }
+                                              return IconButton(
+                                                icon: const Icon(Icons.check_box_outline_blank),
+                                                onPressed: () {
+                                                  context.read(clubLogic).addSelector(widget.clubId, members[index]);
+                                                },
+                                              );
                                             },
-                                          );
-                                        },
-                                        error: (Object error, StackTrace stackTrace) {
-                                          return const Icon(Icons.check_box_outline_blank);
-                                        },
-                                        loading: () {
-                                          return const Icon(Icons.check_box_outline_blank);
-                                        },
+                                            error: (Object error, StackTrace stackTrace) {
+                                              return const Icon(Icons.check_box_outline_blank);
+                                            },
+                                            loading: () {
+                                              return const Icon(Icons.check_box_outline_blank);
+                                            },
+                                          ),
+                                          () {
+                                            if (members[index].uid != clubset.club.leader) {
+                                              return RaisedButton(
+                                                onPressed: () {
+                                                  context.read(clubLogic).removeMember(widget.clubId, members[index].uid);
+                                                },
+                                                child: const Text("Delete"),
+                                              );
+                                            } else {
+                                              return Container(
+                                                width: 90,
+                                              );
+                                            }
+                                          }()
+                                        ],
                                       );
                                     } else {
                                       return Padding(
