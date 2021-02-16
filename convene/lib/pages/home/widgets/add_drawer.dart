@@ -1,5 +1,6 @@
-import 'package:convene/domain/navigation/navigation.dart';
-import 'package:convene/providers/navigation_provider.dart';
+import 'package:convene/pages/add_book/add_book.dart';
+import 'package:convene/pages/create_club/create_club.dart';
+import 'package:convene/pages/join_club/join_club.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,24 +21,24 @@ class AddDrawer extends StatelessWidget {
               leading: const Icon(Icons.add),
               title: const Text('Add Solo Book'),
               onTap: () {
-                context.read(currentPageProvider).state = Pages.addbook;
                 Navigator.pop(context);
+                Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(builder: (context) => AddBookPage()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.group),
               title: const Text('Join a Club'),
               onTap: () {
-                context.read(currentPageProvider).state = Pages.joinClub;
                 Navigator.pop(context);
+                Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(builder: (context) => JoinClubPage()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.group_add),
               title: const Text('Create a Club'),
               onTap: () {
-                context.read(currentPageProvider).state = Pages.createClub;
                 Navigator.pop(context);
+                Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(builder: (context) => CreateClubPage()));
               },
             ),
           ],

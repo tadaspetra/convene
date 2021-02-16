@@ -1,8 +1,6 @@
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
-import 'package:convene/domain/navigation/navigation.dart';
 import 'package:convene/providers/book_provider.dart';
 import 'package:convene/providers/club_provider.dart';
-import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,7 +42,7 @@ class BookCard extends StatelessWidget {
                         onPressed: () {
                           context.read(currentBooksController).addBook(book: book);
                           Navigator.pop(context);
-                          context.read(currentPageProvider).state = Pages.home;
+                          Navigator.pop(context);
                         },
                         child: const Text("Add"),
                       ),
@@ -211,7 +209,7 @@ class UpdateButton extends StatelessWidget {
                     onPressed: () {
                       context.read(currentBooksController).updateBook(book: book.copyWith(currentPage: int.parse(_textController.text)));
                       Navigator.pop(context);
-                      context.read(currentPageProvider).state = Pages.home;
+                      Navigator.pop(context);
                     },
                     child: const Text("Update"),
                   ),
@@ -270,7 +268,7 @@ class UpdateButton extends StatelessWidget {
                                     }
                                     Navigator.pop(context);
                                     Navigator.pop(context);
-                                    context.read(currentPageProvider).state = Pages.home;
+                                    Navigator.pop(context);
                                   },
                                   child: const Text("Update"),
                                 ),

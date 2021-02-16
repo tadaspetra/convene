@@ -1,14 +1,11 @@
-import 'package:convene/domain/navigation/navigation.dart';
 import 'package:convene/providers/club_provider.dart';
-import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class JoinClubPage extends StatefulWidget {
   const JoinClubPage({Key key}) : super(key: key);
 
-  static Route get route =>
-      MaterialPageRoute<void>(builder: (_) => const JoinClubPage());
+  static Route get route => MaterialPageRoute<void>(builder: (_) => const JoinClubPage());
 
   @override
   _JoinClubPageState createState() => _JoinClubPageState();
@@ -27,8 +24,8 @@ class _JoinClubPageState extends State<JoinClubPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BackButton(
-                      onPressed: () =>
-                          context.read(currentPageProvider).state = Pages.home),
+                    onPressed: () => Navigator.pop(context),
+                  ),
                 ],
               ),
             ),
@@ -40,7 +37,7 @@ class _JoinClubPageState extends State<JoinClubPage> {
             RaisedButton(
               onPressed: () {
                 context.read(clubLogic).joinClub(_clubId.text);
-                context.read(currentPageProvider).state = Pages.home;
+                Navigator.pop(context);
               },
               child: const Text("Join Club"),
             )
