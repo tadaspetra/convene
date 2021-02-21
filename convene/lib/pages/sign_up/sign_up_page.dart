@@ -12,13 +12,32 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenwidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      appBar: AppBar(),
-      body: const Center(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: SignUpForm(),
-        ),
+      body: Column(
+        children: [
+          SafeArea(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                BackButton(onPressed: () => Navigator.pop(context)),
+              ],
+            ),
+          ),
+          const Spacer(flex: 3),
+          Image.asset(
+            "assets/convene.png",
+            width: screenwidth * .8,
+          ),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(32.0),
+              child: SignUpForm(),
+            ),
+          ),
+          const Spacer(flex: 8),
+        ],
       ),
     );
   }

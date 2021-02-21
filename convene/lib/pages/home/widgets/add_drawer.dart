@@ -2,7 +2,6 @@ import 'package:convene/pages/add_book/add_book.dart';
 import 'package:convene/pages/create_club/create_club.dart';
 import 'package:convene/pages/join_club/join_club.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddDrawer extends StatelessWidget {
   const AddDrawer({
@@ -22,7 +21,7 @@ class AddDrawer extends StatelessWidget {
               title: const Text('Add Solo Book'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(builder: (context) => AddBookPage()));
+                Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(builder: (context) => const AddBookPage()));
               },
             ),
             ListTile(
@@ -30,7 +29,7 @@ class AddDrawer extends StatelessWidget {
               title: const Text('Join a Club'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(builder: (context) => JoinClubPage()));
+                Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(builder: (context) => const JoinClubPage()));
               },
             ),
             ListTile(
@@ -38,7 +37,7 @@ class AddDrawer extends StatelessWidget {
               title: const Text('Create a Club'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(builder: (context) => CreateClubPage()));
+                Navigator.of(context).push<MaterialPageRoute>(MaterialPageRoute(builder: (context) => const CreateClubPage()));
               },
             ),
           ],

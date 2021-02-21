@@ -1,25 +1,15 @@
-import 'dart:developer';
-
 import 'package:convene/config/palette.dart';
-import 'package:convene/domain/authentication/email.dart';
-
-import 'package:convene/pages/add_book/add_book.dart';
-import 'package:convene/pages/create_club/create_club.dart';
-import 'package:convene/pages/finished_book/finished_book.dart';
-import 'package:convene/pages/join_club/join_club.dart';
+import 'package:convene/config/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:user_repository/user_repository.dart';
 
-import 'config/logger.dart';
 import 'pages/email_not_verified/email_not_verified.dart';
 import 'pages/error/error.dart';
 import 'pages/home/home.dart';
 import 'pages/login/login_page.dart';
 import 'pages/splash/splash.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
 
 class App extends StatefulWidget {
   // Create the initilization Future outside of `build`:
@@ -60,20 +50,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        buttonColor: Palette.darkerGrey,
-        canvasColor: Palette.lightGrey,
-        accentColor: Palette.lightBlue,
-        primaryColor: Palette.darkerGrey,
-        buttonTheme: const ButtonThemeData(
-          buttonColor: Palette.darkerGrey,
-          textTheme: ButtonTextTheme.primary,
-        ),
-        colorScheme: const ColorScheme.light(
-          primary: Colors.black, //flat button text color
-        ),
-      ),
+      theme: CustomTheme().buildTheme(),
       navigatorKey: _navigatorKey,
       builder: (context, child) {
         return FutureBuilder(
@@ -113,36 +90,36 @@ class _AppState extends State<App> {
         );
       },
       onGenerateRoute: (settings) {
-        final arguments = settings.arguments;
+        //final arguments = settings.arguments;
         switch (settings.name) {
           case "/home":
             return MaterialPageRoute<HomePage>(
-              builder: (context) => HomePage(),
+              builder: (context) => const HomePage(),
             );
             break;
           case "/login":
             return MaterialPageRoute<HomePage>(
-              builder: (context) => LoginPage(),
+              builder: (context) => const LoginPage(),
             );
             break;
           case "/loading":
             return MaterialPageRoute<HomePage>(
-              builder: (context) => SplashPage(),
+              builder: (context) => const SplashPage(),
             );
             break;
           case "/error":
             return MaterialPageRoute<HomePage>(
-              builder: (context) => ErrorPage(),
+              builder: (context) => const ErrorPage(),
             );
             break;
           case "/emailnotverified":
             return MaterialPageRoute<HomePage>(
-              builder: (context) => EmailNotVerifiedPage(),
+              builder: (context) => const EmailNotVerifiedPage(),
             );
             break;
           default:
             return MaterialPageRoute<SplashPage>(
-              builder: (context) => SplashPage(),
+              builder: (context) => const SplashPage(),
             );
             break;
         }
