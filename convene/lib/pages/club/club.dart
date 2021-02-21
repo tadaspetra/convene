@@ -116,7 +116,7 @@ class _ClubPageState extends State<ClubPage> {
           ],
         );
       } else {
-        return Text("No current book found"); // TODO: Leader needs to choose next book
+        return const Text("No current book found"); // TODO: Leader needs to choose next book
       }
     } else {
       return const Text("No Book Found");

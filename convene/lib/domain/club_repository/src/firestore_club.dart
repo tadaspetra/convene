@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
 import 'package:convene/providers/book_provider.dart';
-import 'package:flutter/painting.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'package:user_repository/user_repository.dart';
@@ -69,7 +68,7 @@ class FirestoreClub implements ClubRepository {
       final DocumentSnapshot doc = await clubs.doc(clubId).collection("books").doc(bookId).get();
       return BookModel.fromDocumentSnapshot(doc);
     } catch (e) {
-      return BookModel(title: "Error Finding Book", authors: ["Error"]);
+      return const BookModel(title: "Error Finding Book", authors: ["Error"]);
     }
   }
 
@@ -160,7 +159,7 @@ class FirestoreClub implements ClubRepository {
     await users.doc(uid).collection("clubs").doc(clubId).delete();
     final CollectionReference userCurrentBooksRef = users.doc(uid).collection("currentBooks");
     final QuerySnapshot query = await userCurrentBooksRef.get();
-    query.docs.forEach((doc) {
+    for (final DocumentSnapshot doc in query.docs) {
       if (doc.data()["clubId"] == clubId) {
         userCurrentBooksRef.doc(doc.id).update(<String, dynamic>{
           "clubId": FieldValue.delete(),
@@ -168,7 +167,7 @@ class FirestoreClub implements ClubRepository {
           "clubBookId": FieldValue.delete(),
         });
       }
-    });
+    }
   }
 
   // remove from selector collection, selector array

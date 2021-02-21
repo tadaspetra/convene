@@ -1,10 +1,8 @@
 import 'package:convene/domain/book_repository/src/firestore_book.dart';
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
 import 'package:convene/domain/club_repository/src/models/club_model.dart';
-import 'package:convene/domain/navigation/navigation.dart';
 import 'package:convene/global_widgets/book_card.dart';
 import 'package:convene/providers/club_provider.dart';
-import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:user_repository/user_repository.dart';
@@ -154,7 +152,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BackButton(onPressed: () => context.read(currentPageProvider).state = Pages.home),
+                  BackButton(onPressed: () => Navigator.pop(context)),
                 ],
               ),
             ),
@@ -203,24 +201,32 @@ class _CreateClubPageState extends State<CreateClubPage> {
                 ),
               ],
             ),
-            RaisedButton(
-              onPressed: () {
-                context.read(clubLogic).createClub(
-                      ClubModel(
-                        clubName: _clubName.text,
-                        leader: currentUser.uid,
-                        selectors: [currentUser.uid],
-                        currentReaders: [currentUser.uid],
-                        dateCreated: DateTime.now(),
-                        //currentBookId needs to be done within createClub function
-                        currentBookDue: _selectedDate,
-                      ),
-                      _firstBook.book.copyWith(fromClub: true, clubName: _clubName.text),
-                    );
-                context.read(currentPageProvider).state = Pages.home;
+            Consumer(
+              builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+                return watch(currentUserController.state).maybeWhen(data: (DatabaseUser value) {
+                  return RaisedButton(
+                    onPressed: () {
+                      context.read(clubLogic).createClub(
+                            ClubModel(
+                              clubName: _clubName.text,
+                              leader: currentUser.uid,
+                              selectors: [currentUser.uid],
+                              currentReaders: [currentUser.uid],
+                              dateCreated: DateTime.now(),
+                              //currentBookId needs to be done within createClub function
+                              currentBookDue: _selectedDate,
+                            ),
+                            _firstBook.book.copyWith(fromClub: true, clubName: _clubName.text),
+                          );
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Create Club"),
+                  );
+                }, orElse: () {
+                  return const Text("Error, can't find current user");
+                });
               },
-              child: const Text("Create Club"),
-            )
+            ),
           ],
         ),
       ),

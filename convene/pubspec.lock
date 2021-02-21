@@ -315,13 +315,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  formz:
+  form_field_validator:
     dependency: "direct main"
     description:
-      name: formz
+      name: form_field_validator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.2"
+    version: "1.0.1"
   freezed:
     dependency: "direct dev"
     description:

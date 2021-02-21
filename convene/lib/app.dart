@@ -1,22 +1,14 @@
-import 'dart:developer';
-
 import 'package:convene/config/palette.dart';
-
-import 'package:convene/domain/navigation/navigation_state.dart';
-import 'package:convene/pages/add_book/add_book.dart';
-import 'package:convene/pages/create_club/create_club.dart';
-import 'package:convene/pages/finished_book/finished_book.dart';
-import 'package:convene/pages/join_club/join_club.dart';
-import 'package:convene/providers/navigation_provider.dart';
+import 'package:convene/config/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:user_repository/user_repository.dart';
 
-import 'config/logger.dart';
 import 'pages/email_not_verified/email_not_verified.dart';
 import 'pages/error/error.dart';
 import 'pages/home/home.dart';
-import 'pages/login/view/login_page.dart';
+import 'pages/login/login_page.dart';
 import 'pages/splash/splash.dart';
 
 class App extends StatefulWidget {
@@ -32,8 +24,8 @@ class _AppState extends State<App> {
 
   NavigatorState get _navigator => _navigatorKey.currentState;
 
-  void _navigateToRoute(Route route) {
-    _navigator.pushAndRemoveUntil<void>(
+  void _navigateToRoute(String route) {
+    _navigator.pushNamedAndRemoveUntil<void>(
       route,
       (_) => false,
     );
@@ -58,20 +50,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        buttonColor: Palette.darkerGrey,
-        canvasColor: Palette.lightGrey,
-        accentColor: Palette.lightBlue,
-        primaryColor: Palette.darkerGrey,
-        buttonTheme: const ButtonThemeData(
-          buttonColor: Palette.darkerGrey,
-          textTheme: ButtonTextTheme.primary,
-        ),
-        colorScheme: const ColorScheme.light(
-          primary: Colors.black, //flat button text color
-        ),
-      ),
+      theme: CustomTheme().buildTheme(),
       navigatorKey: _navigatorKey,
       builder: (context, child) {
         return FutureBuilder(
@@ -79,7 +58,7 @@ class _AppState extends State<App> {
           builder: (context, snapshot) {
             // Firebase check for errors
             if (snapshot.hasError) {
-              _navigateToRoute(ErrorPage.route);
+              _navigateToRoute("error");
             }
 
             // Firebase initialized
@@ -87,24 +66,20 @@ class _AppState extends State<App> {
               //context.read(authRepositoryProvider).logOut();
               // Listen to user authentication state updates
               return ProviderListener(
-                provider: navigationProvider,
-                onChange: (NavigationState state) {
-                  state.when(
-                    home: () => _navigateToRoute(HomePage.route),
-                    addBook: () => _navigateToRoute(AddBookPage.route),
-                    finishedBook: () => _navigateToRoute(FinishedBookPage.route),
-                    createClub: () => _navigateToRoute(CreateClubPage.route),
-                    joinClub: () => _navigateToRoute(JoinClubPage.route),
-                    unauthenticated: () => _navigateToRoute(LoginPage.route),
-                    emailNotVerified: () => _navigateToRoute(EmailNotVerifiedPage.route),
-                    loading: () => _navigateToRoute(SplashPage.route),
-                    error: (Object error) {
-                      log(error.toString(), name: "Convene Log");
-                      logger.e(error.toString());
-                      _navigateToRoute(ErrorPage.route);
-                    },
-                  );
+                onChange: (AuthenticationState value) {
+                  value.when(authenticated: (user) {
+                    _navigateToRoute("/home");
+                  }, emailNotVerified: () {
+                    _navigateToRoute("/emailnotverified");
+                  }, error: (Object error) {
+                    _navigateToRoute("/error");
+                  }, loading: () {
+                    _navigateToRoute("/loading");
+                  }, unauthenticated: () {
+                    _navigateToRoute("/login");
+                  });
                 },
+                provider: authStateProvider,
                 child: child,
               );
             }
@@ -114,9 +89,42 @@ class _AppState extends State<App> {
           },
         );
       },
-      onGenerateRoute: (_) => MaterialPageRoute<SplashPage>(builder: (context) {
-        return const SplashPage();
-      }),
+      onGenerateRoute: (settings) {
+        //final arguments = settings.arguments;
+        switch (settings.name) {
+          case "/home":
+            return MaterialPageRoute<HomePage>(
+              builder: (context) => const HomePage(),
+            );
+            break;
+          case "/login":
+            return MaterialPageRoute<HomePage>(
+              builder: (context) => const LoginPage(),
+            );
+            break;
+          case "/loading":
+            return MaterialPageRoute<HomePage>(
+              builder: (context) => const SplashPage(),
+            );
+            break;
+          case "/error":
+            return MaterialPageRoute<HomePage>(
+              builder: (context) => const ErrorPage(),
+            );
+            break;
+          case "/emailnotverified":
+            return MaterialPageRoute<HomePage>(
+              builder: (context) => const EmailNotVerifiedPage(),
+            );
+            break;
+          default:
+            return MaterialPageRoute<SplashPage>(
+              builder: (context) => const SplashPage(),
+            );
+            break;
+        }
+      },
+      initialRoute: "/login",
     );
   }
 }

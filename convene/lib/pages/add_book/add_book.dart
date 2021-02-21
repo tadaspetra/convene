@@ -1,16 +1,13 @@
 import 'package:convene/domain/book_repository/src/models/book_model.dart';
-import 'package:convene/domain/navigation/navigation.dart';
 import 'package:convene/global_widgets/book_card.dart';
 import 'package:convene/providers/book_provider.dart';
-import 'package:convene/providers/navigation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddBookPage extends StatefulWidget {
   const AddBookPage({Key key}) : super(key: key);
 
-  static Route get route =>
-      MaterialPageRoute<void>(builder: (_) => const AddBookPage());
+  static Route get route => MaterialPageRoute<void>(builder: (_) => const AddBookPage());
 
   @override
   _AddBookPageState createState() => _AddBookPageState();
@@ -31,9 +28,7 @@ class _AddBookPageState extends State<AddBookPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BackButton(
-                      onPressed: () =>
-                          context.read(currentPageProvider).state = Pages.home),
+                  BackButton(onPressed: () => Navigator.pop(context)),
                 ],
               ),
             ),
@@ -59,9 +54,7 @@ class _AddBookPageState extends State<AddBookPage> {
             ),
             Expanded(
               child: Consumer(
-                builder: (BuildContext context,
-                    T Function<T>(ProviderBase<Object, T>) watch,
-                    Widget child) {
+                builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
                   return watch(searchBooksProvider(searchText)).when(
                     error: (Object error, StackTrace stackTrace) {
                       return const Text("Error retrieving books");

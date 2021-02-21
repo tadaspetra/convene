@@ -58,14 +58,13 @@ class FirebaseAuthRepository implements AuthRepository {
   }) async {
     assert(email != null && password != null);
     try {
-      final UserCredential credential =
-          await _firebaseAuth.createUserWithEmailAndPassword(
+      final UserCredential credential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       await credential.user.sendEmailVerification();
     } on Exception {
-      throw SignUpFailure();
+      rethrow;
     }
   }
 
@@ -100,8 +99,8 @@ class FirebaseAuthRepository implements AuthRepository {
         email: email,
         password: password,
       );
-    } on Exception {
-      throw LogInWithEmailAndPasswordFailure();
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -117,7 +116,16 @@ class FirebaseAuthRepository implements AuthRepository {
         // _googleSignIn.signOut(),
       ]);
     } on Exception {
-      throw LogOutFailure();
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> resetPassword(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on Exception {
+      rethrow;
     }
   }
 }
