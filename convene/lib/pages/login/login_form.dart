@@ -49,7 +49,10 @@ class _LoginFormState extends State<LoginForm> {
             controller: passwordController,
             validator: passwordValidator,
           ),
-          RaisedButton(
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
             onPressed: () async {
               if (formKey.currentState.validate()) {
                 try {
@@ -63,7 +66,7 @@ class _LoginFormState extends State<LoginForm> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(e.message),
-                          RaisedButton(
+                          ElevatedButton(
                             onPressed: () async {
                               await context.read(authRepositoryProvider).resetPassword(emailController.text);
                               Scaffold.of(context).hideCurrentSnackBar();
@@ -87,9 +90,21 @@ class _LoginFormState extends State<LoginForm> {
                 }
               }
             },
-            child: const Text("Login"),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Text("Login"),
+                SizedBox(
+                  width: 30,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.arrow_forward),
+                )
+              ],
+            ),
           ),
-          FlatButton(
+          TextButton(
             onPressed: () {
               Navigator.push(
                 //TODO: this push goes against the way the app is set up, but will figure out later

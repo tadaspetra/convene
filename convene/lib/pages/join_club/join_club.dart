@@ -34,7 +34,7 @@ class _JoinClubPageState extends State<JoinClubPage> {
               controller: _clubId,
               decoration: const InputDecoration(labelText: "Enter Group ID"),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 context.read(clubLogic).joinClub(_clubId.text);
                 Navigator.pop(context);

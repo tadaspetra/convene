@@ -93,7 +93,7 @@ class _ClubSelectorsPageState extends State<ClubSelectorsPage> {
                                           ),
                                           () {
                                             if (members[index].uid != clubset.club.leader) {
-                                              return RaisedButton(
+                                              return ElevatedButton(
                                                 onPressed: () {
                                                   context.read(clubLogic).removeMember(widget.clubId, members[index].uid);
                                                 },
