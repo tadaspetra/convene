@@ -57,7 +57,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 try {
                   await context.read(authRepositoryProvider).signUp(email: emailController.text, password: passwordController.text);
                 } on FirebaseException catch (e) {
-                  Scaffold.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(e.message),
                     duration: const Duration(seconds: 2),
                   ));

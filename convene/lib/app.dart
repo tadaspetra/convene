@@ -1,4 +1,3 @@
-import 'package:convene/config/palette.dart';
 import 'package:convene/config/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +65,7 @@ class _AppState extends State<App> {
               //context.read(authRepositoryProvider).logOut();
               // Listen to user authentication state updates
               return ProviderListener(
-                onChange: (AuthenticationState value) {
+                onChange: (BuildContext context, AuthenticationState value) {
                   value.when(authenticated: (user) {
                     _navigateToRoute("/home");
                   }, emailNotVerified: () {

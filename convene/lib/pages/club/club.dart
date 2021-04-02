@@ -59,11 +59,11 @@ class _ClubPageState extends State<ClubPage> {
     await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
-        return NumberPickerDialog.integer(
+        return NumberPicker(
           minValue: 0,
           maxValue: 23,
-          initialIntegerValue: 0,
-          infiniteLoop: true,
+          value: 0,
+          onChanged: (value) {},
         );
       },
     ).then((int value) {
@@ -82,7 +82,7 @@ class _ClubPageState extends State<ClubPage> {
 
   void _copyClubId(BuildContext context) {
     Clipboard.setData(ClipboardData(text: widget.clubid));
-    key.currentState.showSnackBar(const SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Club ID Copied!"),
     ));
   }

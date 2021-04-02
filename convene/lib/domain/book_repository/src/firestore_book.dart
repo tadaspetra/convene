@@ -22,12 +22,11 @@ class FirestoreBook implements BookRepository {
   @override
   Future<List<BookModel>> searchBooks(String name) async {
     final List<BookModel> _books = [];
-    final books = await queryBooks(
-      name,
-      maxResults: 20, //TODO: How many books do we want to display
-      printType: PrintType.books,
-      orderBy: OrderBy.relevance,
-    );
+    final books = await queryBooks(name,
+        maxResults: 20, //TODO: How many books do we want to display
+        printType: PrintType.books,
+        orderBy: OrderBy.relevance,
+        reschemeImageLinks: true);
 
     for (final Book book in books) {
       _books.add(

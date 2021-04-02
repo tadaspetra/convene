@@ -57,11 +57,11 @@ class _CreateClubPageState extends State<CreateClubPage> {
     await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
-        return NumberPickerDialog.integer(
+        return NumberPicker(
           minValue: 0,
           maxValue: 23,
-          initialIntegerValue: 0,
-          infiniteLoop: true,
+          value: 0,
+          onChanged: (value) {},
         );
       },
     ).then((int value) {

@@ -61,7 +61,7 @@ class _LoginFormState extends State<LoginForm> {
                       .logInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
                 } on FirebaseException catch (e) {
                   if (e.code == "too-many-requests" || e.code == "wrong-password") {
-                    Scaffold.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -69,8 +69,8 @@ class _LoginFormState extends State<LoginForm> {
                           ElevatedButton(
                             onPressed: () async {
                               await context.read(authRepositoryProvider).resetPassword(emailController.text);
-                              Scaffold.of(context).hideCurrentSnackBar();
-                              Scaffold.of(context).showSnackBar(const SnackBar(
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                 content: Text("Check your email"),
                                 duration: Duration(seconds: 5),
                               ));
@@ -82,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
                       duration: const Duration(seconds: 10),
                     ));
                   } else {
-                    Scaffold.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(e.message),
                       duration: const Duration(seconds: 2),
                     ));

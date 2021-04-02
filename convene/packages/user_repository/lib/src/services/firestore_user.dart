@@ -31,7 +31,6 @@ class FirestoreUserRepository implements UserRepository {
   @override
   Future<DatabaseUser> getCurrentUser() async {
     final currentUser = await read(authUserProvider.last);
-    if (currentUser == null) return null;
-    return DatabaseUser.fromDocumentSnapshot(await users.doc(currentUser.uid).get());
+    return DatabaseUser.fromDocumentSnapshot(await users.doc(currentUser?.uid).get());
   }
 }
