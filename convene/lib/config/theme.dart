@@ -12,7 +12,6 @@ class CustomTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           shape: MaterialStateProperty.all(ContinuousRectangleBorder(
-            side: const BorderSide(color: Palette.black, width: 2),
             borderRadius: BorderRadius.circular(4),
           )),
           textStyle: MaterialStateProperty.all(const TextStyle(fontSize: 18)),
