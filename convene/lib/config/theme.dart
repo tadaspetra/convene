@@ -12,34 +12,32 @@ class CustomTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           shape: MaterialStateProperty.all(ContinuousRectangleBorder(
-            side: BorderSide(color: Colors.cyan[900], width: 4),
-            borderRadius: BorderRadius.circular(30.0),
+            side: const BorderSide(color: Palette.black, width: 2),
+            borderRadius: BorderRadius.circular(4),
           )),
           textStyle: MaterialStateProperty.all(const TextStyle(fontSize: 18)),
           padding: MaterialStateProperty.all(
             const EdgeInsets.symmetric(horizontal: 30),
           ),
           backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-            return (states.contains(MaterialState.pressed)) ? Palette.lightGrey : Palette.darkerGrey;
-          }),
-          foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-            return (states.contains(MaterialState.pressed)) ? Palette.darkerGrey : Palette.lightGrey;
+            return Palette.black;
           }),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
+          shape: MaterialStateProperty.all(ContinuousRectangleBorder(
+            side: const BorderSide(color: Palette.lightBlue, width: 2),
+            borderRadius: BorderRadius.circular(4),
+          )),
           textStyle: MaterialStateProperty.resolveWith<TextStyle>((states) {
             return const TextStyle(fontSize: 18);
           }),
           padding: MaterialStateProperty.resolveWith<EdgeInsets>((states) {
             return const EdgeInsets.symmetric(horizontal: 30, vertical: 10);
           }),
-          backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-            return (states.contains(MaterialState.pressed)) ? Colors.red : Colors.red;
-          }),
           foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-            return (states.contains(MaterialState.pressed)) ? Colors.red : Colors.red;
+            return Palette.black;
           }),
         ),
       ),

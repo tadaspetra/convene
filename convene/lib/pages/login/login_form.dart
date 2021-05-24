@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:convene/config/palette.dart';
 import 'package:convene/pages/sign_up/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,12 +68,13 @@ class _LoginFormState extends State<LoginForm> {
                         children: [
                           Text(e.message),
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary: Palette.lightGrey),
                             onPressed: () async {
                               await context.read(authRepositoryProvider).resetPassword(emailController.text);
                               ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                 content: Text("Check your email"),
-                                duration: Duration(seconds: 5),
+                                duration: Duration(seconds: 10),
                               ));
                             },
                             child: const Text("Send Reset Password Email"),
