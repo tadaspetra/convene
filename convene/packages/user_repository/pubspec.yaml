@@ -7,23 +7,23 @@ version: 1.0.0
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: ">=2.9.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  cloud_firestore: ^1.0.2
+  firebase_auth: ^1.0.1
+  firebase_core: ^1.0.2
   flutter:
     sdk: flutter
-  firebase_core: "^0.5.0"
-  firebase_auth: "^0.18.0+1"
-  cloud_firestore: ^0.14.0+2
-  freezed_annotation: 
-  riverpod: ^0.7.0
+  freezed_annotation: ^0.14.1 
+  riverpod: ^0.13.1
 
 dev_dependencies:
+  build_runner: 
   flutter_test:
     sdk: flutter
-  mockito: ^4.0.0
-  freezed: 
-  build_runner:
-  json_serializable: 
-  lint: ^1.2.0
+  freezed: ^0.14.1+1
+  json_serializable: ^4.1.0 
+  lint: ^1.5.3
+  mockito: ^5.0.3
 

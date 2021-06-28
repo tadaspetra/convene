@@ -38,7 +38,7 @@ class BookCard extends StatelessWidget {
                       style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                     ),
                     Center(
-                      child: RaisedButton(
+                      child: ElevatedButton(
                         onPressed: () {
                           context.read(currentBooksController).addBook(book: book);
                           Navigator.pop(context);
@@ -136,7 +136,7 @@ class DisplayBookCard extends StatelessWidget {
                             if (book.fromClub) Text("From: ${book.clubName}"),
                             Text("${(book.currentPage / book.pageCount * 100).toStringAsFixed(2)}%"),
                             UpdateButton(book: book),
-                            RaisedButton(
+                            ElevatedButton(
                               onPressed: () {
                                 if (!((book.clubId == null) || (book.clubId == "Error: no club Id"))) {
                                   context.read(currentBooksController).deleteBook(book: book);
@@ -185,7 +185,7 @@ class UpdateButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController _textController = TextEditingController(text: book.currentPage.toString());
-    return RaisedButton(
+    return ElevatedButton(
       onPressed: () => showDialog<Widget>(
         context: context,
         builder: (_) => Padding(
@@ -205,17 +205,16 @@ class UpdateButton extends StatelessWidget {
                   keyboardType: TextInputType.number,
                 ),
                 Center(
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       context.read(currentBooksController).updateBook(book: book.copyWith(currentPage: int.parse(_textController.text)));
-                      Navigator.pop(context);
                       Navigator.pop(context);
                     },
                     child: const Text("Update"),
                   ),
                 ),
                 Center(
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       final TextEditingController _reviewController = TextEditingController();
                       double rating = 0;
@@ -255,7 +254,7 @@ class UpdateButton extends StatelessWidget {
                                     hintText: "Add A Review",
                                   ),
                                 ),
-                                RaisedButton(
+                                ElevatedButton(
                                   onPressed: () {
                                     context.read(currentBooksController).finishBook(
                                           book: book.copyWith(

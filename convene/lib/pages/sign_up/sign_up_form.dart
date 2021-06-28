@@ -48,20 +48,35 @@ class _SignUpFormState extends State<SignUpForm> {
             controller: passwordController,
             validator: passwordValidator,
           ),
-          RaisedButton(
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
             onPressed: () async {
               if (signUpKey.currentState.validate()) {
                 try {
                   await context.read(authRepositoryProvider).signUp(email: emailController.text, password: passwordController.text);
                 } on FirebaseException catch (e) {
-                  Scaffold.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(e.message),
                     duration: const Duration(seconds: 2),
                   ));
                 }
               }
             },
-            child: const Text("Sign Up"),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Text("Sign Up"),
+                SizedBox(
+                  width: 30,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.arrow_forward),
+                )
+              ],
+            ),
           )
         ],
       ),

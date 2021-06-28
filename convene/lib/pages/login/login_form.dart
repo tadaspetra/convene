@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:convene/config/palette.dart';
 import 'package:convene/pages/sign_up/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,7 +50,10 @@ class _LoginFormState extends State<LoginForm> {
             controller: passwordController,
             validator: passwordValidator,
           ),
-          RaisedButton(
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
             onPressed: () async {
               if (formKey.currentState.validate()) {
                 try {
@@ -58,18 +62,19 @@ class _LoginFormState extends State<LoginForm> {
                       .logInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
                 } on FirebaseException catch (e) {
                   if (e.code == "too-many-requests" || e.code == "wrong-password") {
-                    Scaffold.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(e.message),
-                          RaisedButton(
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(primary: Palette.lightGrey),
                             onPressed: () async {
                               await context.read(authRepositoryProvider).resetPassword(emailController.text);
-                              Scaffold.of(context).hideCurrentSnackBar();
-                              Scaffold.of(context).showSnackBar(const SnackBar(
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                 content: Text("Check your email"),
-                                duration: Duration(seconds: 5),
+                                duration: Duration(seconds: 10),
                               ));
                             },
                             child: const Text("Send Reset Password Email"),
@@ -79,7 +84,7 @@ class _LoginFormState extends State<LoginForm> {
                       duration: const Duration(seconds: 10),
                     ));
                   } else {
-                    Scaffold.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(e.message),
                       duration: const Duration(seconds: 2),
                     ));
@@ -87,9 +92,21 @@ class _LoginFormState extends State<LoginForm> {
                 }
               }
             },
-            child: const Text("Login"),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Text("Login"),
+                SizedBox(
+                  width: 30,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.arrow_forward),
+                )
+              ],
+            ),
           ),
-          FlatButton(
+          TextButton(
             onPressed: () {
               Navigator.push(
                 //TODO: this push goes against the way the app is set up, but will figure out later

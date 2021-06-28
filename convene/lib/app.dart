@@ -1,7 +1,7 @@
-import 'package:convene/config/palette.dart';
 import 'package:convene/config/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -49,7 +49,9 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: CustomTheme().buildTheme(),
       navigatorKey: _navigatorKey,
       builder: (context, child) {
@@ -66,7 +68,7 @@ class _AppState extends State<App> {
               //context.read(authRepositoryProvider).logOut();
               // Listen to user authentication state updates
               return ProviderListener(
-                onChange: (AuthenticationState value) {
+                onChange: (BuildContext context, AuthenticationState value) {
                   value.when(authenticated: (user) {
                     _navigateToRoute("/home");
                   }, emailNotVerified: () {

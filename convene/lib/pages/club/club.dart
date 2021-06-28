@@ -59,11 +59,11 @@ class _ClubPageState extends State<ClubPage> {
     await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
-        return NumberPickerDialog.integer(
+        return NumberPicker(
           minValue: 0,
           maxValue: 23,
-          initialIntegerValue: 0,
-          infiniteLoop: true,
+          value: 0,
+          onChanged: (value) {},
         );
       },
     ).then((int value) {
@@ -82,7 +82,7 @@ class _ClubPageState extends State<ClubPage> {
 
   void _copyClubId(BuildContext context) {
     Clipboard.setData(ClipboardData(text: widget.clubid));
-    key.currentState.showSnackBar(const SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Club ID Copied!"),
     ));
   }
@@ -99,7 +99,7 @@ class _ClubPageState extends State<ClubPage> {
               return watch(currentUserController.state).when(
                 data: (DatabaseUser value) {
                   if (!clubInfo.club.currentReaders.contains(value.uid)) {
-                    return RaisedButton(
+                    return ElevatedButton(
                       onPressed: () {
                         context.read(clubController(widget.clubid)).joinCurrentBook(clubInfo, value.uid);
                       },
@@ -139,7 +139,7 @@ class _ClubPageState extends State<ClubPage> {
               return Column(children: [
                 if (_nextBook != null) const Text("Next Book"),
                 _nextBook ?? Container(),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () async {
                     await searchDialog(context);
                     setState(() {});
@@ -158,20 +158,20 @@ class _ClubPageState extends State<ClubPage> {
                 Row(
                   children: [
                     Expanded(
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: () => _selectDate(),
                         child: const Text("Change Date"),
                       ),
                     ),
                     Expanded(
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: () => _selectTime(),
                         child: const Text("Change Time"),
                       ),
                     ),
                   ],
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     context.read(clubController(widget.clubid)).pickNextBook(clubInfo, _selectedDate, _nextBook.book);
                     context.read(clubController(widget.clubid)).updateState(widget.clubid);

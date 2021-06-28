@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:user_repository/src/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:meta/meta.dart';
 
 /// Thrown if during the sign up process if a failure occurs.
 class SignUpFailure implements Exception {}
@@ -24,7 +23,7 @@ class LogOutFailure implements Exception {}
 class FirebaseAuthRepository implements AuthRepository {
   /// {@macro authentication_repository}
   FirebaseAuthRepository({
-    FirebaseAuth firebaseAuth,
+    FirebaseAuth? firebaseAuth,
   }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   final FirebaseAuth _firebaseAuth;
@@ -32,7 +31,7 @@ class FirebaseAuthRepository implements AuthRepository {
   /// Stream of [User] which will emit the current user when
   /// the authentication state changes.
   @override
-  Stream<User> get user {
+  Stream<User?> get user {
     return _firebaseAuth.userChanges();
   }
 
@@ -42,7 +41,7 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Future<void> emailVerified() async {
     try {
-      await _firebaseAuth.currentUser.reload();
+      await _firebaseAuth.currentUser?.reload();
     } on Exception {
       throw EmailVerificationFailure();
     }
@@ -53,16 +52,15 @@ class FirebaseAuthRepository implements AuthRepository {
   /// Throws a [SignUpFailure] if an exception occurs.
   @override
   Future<void> signUp({
-    @required String email,
-    @required String password,
+    required String email,
+    required String password,
   }) async {
-    assert(email != null && password != null);
     try {
       final UserCredential credential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      await credential.user.sendEmailVerification();
+      await credential.user?.sendEmailVerification();
     } on Exception {
       rethrow;
     }
@@ -90,10 +88,9 @@ class FirebaseAuthRepository implements AuthRepository {
   /// Throws a [LogInWithEmailAndPasswordFailure] if an exception occurs.
   @override
   Future<void> logInWithEmailAndPassword({
-    @required String email,
-    @required String password,
+    required String email,
+    required String password,
   }) async {
-    assert(email != null && password != null);
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
         email: email,

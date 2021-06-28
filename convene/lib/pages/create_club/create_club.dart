@@ -57,11 +57,11 @@ class _CreateClubPageState extends State<CreateClubPage> {
     await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
-        return NumberPickerDialog.integer(
+        return NumberPicker(
           minValue: 0,
           maxValue: 23,
-          initialIntegerValue: 0,
-          infiniteLoop: true,
+          value: 0,
+          onChanged: (value) {},
         );
       },
     ).then((int value) {
@@ -169,7 +169,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
             ),
             if (_firstBook != null) const Text("First Book"),
             _firstBook ?? Container(),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () async {
                 await searchDialog(context);
                 setState(() {});
@@ -188,13 +188,13 @@ class _CreateClubPageState extends State<CreateClubPage> {
             Row(
               children: [
                 Expanded(
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: () => _selectDate(),
                     child: const Text("Change Date"),
                   ),
                 ),
                 Expanded(
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: () => _selectTime(),
                     child: const Text("Change Time"),
                   ),
@@ -204,7 +204,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
             Consumer(
               builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
                 return watch(currentUserController.state).maybeWhen(data: (DatabaseUser value) {
-                  return RaisedButton(
+                  return ElevatedButton(
                     onPressed: () {
                       context.read(clubLogic).createClub(
                             ClubModel(

@@ -7,9 +7,9 @@ part 'database_user.g.dart';
 @freezed
 abstract class DatabaseUser with _$DatabaseUser {
   const factory DatabaseUser({
-    @required String uid,
-    @required String email,
-    String name,
+    required String uid,
+    required String email,
+    String? name,
   }) = _DatabaseUser;
 
   factory DatabaseUser.fromJson(Map<String, dynamic> json) => _$DatabaseUserFromJson(json);
@@ -17,8 +17,8 @@ abstract class DatabaseUser with _$DatabaseUser {
   factory DatabaseUser.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
     return DatabaseUser(
       uid: documentSnapshot.id, // Did we plan to make the uid the document id?
-      email: documentSnapshot.data()["email"] as String,
-      name: documentSnapshot.data()["name"] as String,
+      email: documentSnapshot["email"] as String,
+      name: documentSnapshot["name"] as String,
     );
   }
 }

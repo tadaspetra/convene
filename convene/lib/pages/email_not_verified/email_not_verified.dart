@@ -5,8 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class EmailNotVerifiedPage extends StatelessWidget {
   const EmailNotVerifiedPage({Key key}) : super(key: key);
 
-  static Route get route =>
-      MaterialPageRoute<void>(builder: (_) => const EmailNotVerifiedPage());
+  static Route get route => MaterialPageRoute<void>(builder: (_) => const EmailNotVerifiedPage());
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +15,13 @@ class EmailNotVerifiedPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('You need to verify your email :)'),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 context.read(authRepositoryProvider).emailVerified();
               },
               child: const Text("Verified"),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 context.read(authRepositoryProvider).logOut();
               },
