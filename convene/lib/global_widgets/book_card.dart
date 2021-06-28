@@ -209,7 +209,6 @@ class UpdateButton extends StatelessWidget {
                     onPressed: () {
                       context.read(currentBooksController).updateBook(book: book.copyWith(currentPage: int.parse(_textController.text)));
                       Navigator.pop(context);
-                      Navigator.pop(context);
                     },
                     child: const Text("Update"),
                   ),
