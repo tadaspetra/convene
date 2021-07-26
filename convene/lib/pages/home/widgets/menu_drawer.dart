@@ -17,13 +17,11 @@ class MenuDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             Consumer(
-              builder: (BuildContext context,
-                  T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
-                return watch(currentUserController.state).when(
-                    data: (DatabaseUser value) {
+              builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+                return watch(currentUserController.state).when(data: (DatabaseUser value) {
                   return ListTile(
                     title: Text(
-                      value.name ?? "no name",
+                      value.email ?? "no email",
                     ),
                   );
                 }, error: (Object error, StackTrace stackTrace) {

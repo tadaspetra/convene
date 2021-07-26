@@ -6,7 +6,6 @@ import 'package:convene/providers/club_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:user_repository/user_repository.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:intl/intl.dart';
 
 class CreateClubPage extends StatefulWidget {
@@ -57,25 +56,40 @@ class _CreateClubPageState extends State<CreateClubPage> {
     await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
-        return NumberPicker(
-          minValue: 0,
-          maxValue: 23,
-          value: 0,
-          onChanged: (value) {},
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 200.0),
+          child: Scaffold(
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Enter Hour (0-23)"),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedDate = DateTime(
+                            _selectedDate.year,
+                            _selectedDate.month,
+                            _selectedDate.day,
+                            int.parse(value),
+                          );
+                        });
+                      },
+                      onEditingComplete: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         );
       },
-    ).then((int value) {
-      if (value != null) {
-        setState(() {
-          _selectedDate = DateTime(
-            _selectedDate.year,
-            _selectedDate.month,
-            _selectedDate.day,
-            value,
-          );
-        });
-      }
-    });
+    );
   }
 
   @override
@@ -84,66 +98,66 @@ class _CreateClubPageState extends State<CreateClubPage> {
     super.didChangeDependencies();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Future<Widget> searchDialog(BuildContext context) {
-      return showDialog<Widget>(
-        context: context,
-        builder: (_) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-          child: StatefulBuilder(
-            builder: (BuildContext context, void Function(void Function()) setState) {
-              return Scaffold(
-                body: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: TextFormField(
-                              decoration: const InputDecoration(hintText: "Enter Book"),
-                              controller: _bookController,
-                            ),
+  Future<Widget> searchDialog(BuildContext context) {
+    return showDialog<Widget>(
+      context: context,
+      builder: (_) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
+        child: StatefulBuilder(
+          builder: (BuildContext context, void Function(void Function()) setState) {
+            return Scaffold(
+              body: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: TextFormField(
+                            decoration: const InputDecoration(hintText: "Enter Book"),
+                            controller: _bookController,
                           ),
                         ),
-                        IconButton(
-                          onPressed: () async {
-                            _books = await context.read(bookRepositoryProvider).searchBooks(_bookController.text);
-                            setState(() {}); // TODO improve this
-                          },
-                          icon: const Icon(Icons.arrow_forward),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: _books.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              _firstBook = BookCard(
-                                book: _books[index],
-                              );
-
-                              Navigator.pop(context);
-                            },
-                            child: BookCard(
-                              book: _books[index],
-                            ),
-                          );
-                        },
                       ),
-                    )
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      );
-    }
+                      IconButton(
+                        onPressed: () async {
+                          _books = await context.read(bookRepositoryProvider).searchBooks(_bookController.text);
+                          setState(() {}); // TODO improve this
+                        },
+                        icon: const Icon(Icons.arrow_forward),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _books.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            _firstBook = BookCard(
+                              book: _books[index],
+                            );
 
+                            Navigator.pop(context);
+                          },
+                          child: BookCard(
+                            book: _books[index],
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
