@@ -49,7 +49,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: CustomTheme().buildTheme(),

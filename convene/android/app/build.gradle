@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.convene.convene"
+        applicationId "com.flutter.convene"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
@@ -60,10 +60,10 @@ android {
                 keyAlias System.getenv()["FCI_KEY_ALIAS"]
                 keyPassword System.getenv()["FCI_KEY_PASSWORD"]
             } else {
-                storeFile file("/path/to/local/myreleasekey.keystore")
-                storePassword "password"
-                keyAlias "MyReleaseKey"
-                keyPassword "password"
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
             }
         }
     }

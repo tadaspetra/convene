@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:33835237518:android:fc75a6396bae414bb049df",
         "android_client_info": {
-          "package_name": "com.convene.convene"
+          "package_name": "com.flutter.convene"
         }
       },
       "oauth_client": [

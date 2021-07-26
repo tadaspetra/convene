@@ -59,7 +59,7 @@ class _ClubSelectorsPageState extends State<ClubSelectorsPage> {
                           itemBuilder: (context, index) {
                             return ListTile(
                               leading: const Icon(Icons.person),
-                              title: Text(members[index].name ?? "Error: no name"),
+                              title: Text(members[index].email ?? "Error: no name"),
                               trailing: currentUser.maybeWhen(
                                 data: (user) {
                                   return club.maybeWhen(data: (clubset) {

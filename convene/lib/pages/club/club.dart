@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:user_repository/user_repository.dart';
 import 'package:convene/config/palette.dart';
 
@@ -59,25 +58,40 @@ class _ClubPageState extends State<ClubPage> {
     await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
-        return NumberPicker(
-          minValue: 0,
-          maxValue: 23,
-          value: 0,
-          onChanged: (value) {},
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 200.0),
+          child: Scaffold(
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Enter Hour (0-23)"),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedDate = DateTime(
+                            _selectedDate.year,
+                            _selectedDate.month,
+                            _selectedDate.day,
+                            int.parse(value),
+                          );
+                        });
+                      },
+                      onEditingComplete: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         );
       },
-    ).then((int value) {
-      if (value != null) {
-        setState(() {
-          _selectedDate = DateTime(
-            _selectedDate.year,
-            _selectedDate.month,
-            _selectedDate.day,
-            value,
-          );
-        });
-      }
-    });
+    );
   }
 
   void _copyClubId(BuildContext context) {
@@ -136,49 +150,59 @@ class _ClubPageState extends State<ClubPage> {
         return watch(currentUserController.state).when(
           data: (user) {
             if (clubInfo.club.selectors[clubInfo.club.nextIndexPicking] == user.uid) {
-              return Column(children: [
-                if (_nextBook != null) const Text("Next Book"),
-                _nextBook ?? Container(),
-                ElevatedButton(
+              if (_nextBook == null) {
+                return ElevatedButton(
                   onPressed: () async {
                     await searchDialog(context);
                     setState(() {});
                   },
-                  child: _nextBook != null ? const Text("Change book") : const Text("Pick Next Book"),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  "Next book due date:",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(DateFormat.yMMMMd("en_US").format(_selectedDate)),
-                Text(DateFormat("H:00").format(_selectedDate)),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () => _selectDate(),
-                        child: const Text("Change Date"),
+                  child: const Text("Pick Next Book"),
+                );
+              } else {
+                return Column(children: [
+                  const Text("Next Book"),
+                  _nextBook ?? Container(),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await searchDialog(context);
+                      setState(() {});
+                    },
+                    child: const Text("Change book"),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    "Next book due date:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(DateFormat.yMMMMd("en_US").format(_selectedDate)),
+                  Text(DateFormat("H:00").format(_selectedDate)),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () => _selectDate(),
+                          child: const Text("Change Date"),
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () => _selectTime(),
-                        child: const Text("Change Time"),
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () => _selectTime(),
+                          child: const Text("Change Time"),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    context.read(clubController(widget.clubid)).pickNextBook(clubInfo, _selectedDate, _nextBook.book);
-                    context.read(clubController(widget.clubid)).updateState(widget.clubid);
-                  },
-                  child: const Text("Add Next Book"),
-                )
-              ]);
+                    ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read(clubController(widget.clubid)).pickNextBook(clubInfo, _selectedDate, _nextBook.book);
+                      context.read(clubController(widget.clubid)).updateState(widget.clubid);
+                    },
+                    child: const Text("Add Next Book"),
+                  )
+                ]);
+              }
             } else {
               return Text("Waiting for ${clubInfo.club.selectors[clubInfo.club.nextIndexPicking]} to pick next book");
             }
