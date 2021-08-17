@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddBookPage extends StatefulWidget {
-  const AddBookPage({Key key}) : super(key: key);
+  const AddBookPage({Key? key}) : super(key: key);
 
   static Route get route => MaterialPageRoute<void>(builder: (_) => const AddBookPage());
 
@@ -16,7 +16,7 @@ class AddBookPage extends StatefulWidget {
 class _AddBookPageState extends State<AddBookPage> {
   TextEditingController bookController = TextEditingController();
 
-  String searchText;
+  String? searchText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,9 +54,9 @@ class _AddBookPageState extends State<AddBookPage> {
             ),
             Expanded(
               child: Consumer(
-                builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
-                  return watch(searchBooksProvider(searchText)).when(
-                    error: (Object error, StackTrace stackTrace) {
+                builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget? child) {
+                  return watch(searchBooksProvider(searchText ?? "harry potter")).when(
+                    error: (Object error, StackTrace? stackTrace) {
                       return const Text("Error retrieving books");
                     },
                     loading: () {

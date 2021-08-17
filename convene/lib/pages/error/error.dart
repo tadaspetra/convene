@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ErrorPage extends StatefulWidget {
-  const ErrorPage({Key key}) : super(key: key);
+  const ErrorPage({Key? key}) : super(key: key);
 
   static Route get route => MaterialPageRoute<void>(builder: (_) => const ErrorPage());
 

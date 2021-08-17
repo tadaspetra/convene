@@ -14,7 +14,7 @@ import 'package:convene/config/palette.dart';
 class ClubPage extends StatefulWidget {
   final String clubid;
 
-  const ClubPage({Key key, this.clubid}) : super(key: key);
+  const ClubPage({Key? key, required this.clubid}) : super(key: key);
 
   @override
   _ClubPageState createState() => _ClubPageState();
@@ -24,7 +24,7 @@ class _ClubPageState extends State<ClubPage> {
   final key = GlobalKey<ScaffoldState>();
   final TextEditingController _bookController = TextEditingController();
   List<BookModel> _books = [];
-  BookCard _nextBook;
+  BookCard? _nextBook;
   DateTime _selectedDate = DateTime.now();
 
   @override
@@ -39,7 +39,7 @@ class _ClubPageState extends State<ClubPage> {
   }
 
   Future<void> _selectDate() async {
-    final DateTime picked =
+    final DateTime? picked =
         await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2222));
 
     if (picked != null && picked != _selectedDate) {
@@ -67,7 +67,7 @@ class _ClubPageState extends State<ClubPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Enter Hour (0-23)"),
+                    const Text("Enter Hour (0-23)"),
                     TextField(
                       keyboardType: TextInputType.number,
                       onChanged: (value) {
@@ -103,16 +103,19 @@ class _ClubPageState extends State<ClubPage> {
 
   Widget _displayCurrentBookInfo(ClubSet clubInfo, T Function<T>(ProviderBase<Object, T>) watch) {
     if (clubInfo.currentBook != null) {
-      if (!clubInfo.currentBook.title.contains("Error")) {
+      if (!clubInfo.currentBook!.title.contains("Error")) {
         return Column(
           children: [
             const Text("Current Book"),
-            BookCard(book: clubInfo.currentBook),
-            Text("Book Due: ${clubInfo.club.currentBookDue}"),
+            BookCard(
+              book: clubInfo.currentBook!,
+              cardType: CardType.home,
+            ),
+            Text("Book Due: ${clubInfo.club!.currentBookDue}"),
             () {
               return watch(currentUserController.state).when(
                 data: (DatabaseUser value) {
-                  if (!clubInfo.club.currentReaders.contains(value.uid)) {
+                  if (!clubInfo.club!.currentReaders.contains(value.uid)) {
                     return ElevatedButton(
                       onPressed: () {
                         context.read(clubController(widget.clubid)).joinCurrentBook(clubInfo, value.uid);
@@ -123,7 +126,7 @@ class _ClubPageState extends State<ClubPage> {
                     return const SizedBox();
                   }
                 },
-                error: (Object error, StackTrace stackTrace) => const Text("Error retrieving next book"),
+                error: (Object error, StackTrace? stackTrace) => const Text("Error retrieving next book"),
                 loading: () => const CircularProgressIndicator(),
               );
             }()
@@ -138,18 +141,21 @@ class _ClubPageState extends State<ClubPage> {
   }
 
   Widget _displayNextBookInfo(ClubSet clubInfo, T Function<T>(ProviderBase<Object, T>) watch) {
-    if (!clubInfo.currentBook.title.contains("Error")) {
+    if (!clubInfo.currentBook!.title.contains("Error")) {
       if (clubInfo.nextBook != null) {
         return Column(
           children: [
             const Text("Next Book"),
-            BookCard(book: clubInfo.nextBook),
+            BookCard(
+              book: clubInfo.nextBook!,
+              cardType: CardType.home,
+            ),
           ],
         );
       } else {
         return watch(currentUserController.state).when(
           data: (user) {
-            if (clubInfo.club.selectors[clubInfo.club.nextIndexPicking] == user.uid) {
+            if (clubInfo.club!.selectors![clubInfo.club!.nextIndexPicking!] == user.uid) {
               if (_nextBook == null) {
                 return ElevatedButton(
                   onPressed: () async {
@@ -196,7 +202,7 @@ class _ClubPageState extends State<ClubPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      context.read(clubController(widget.clubid)).pickNextBook(clubInfo, _selectedDate, _nextBook.book);
+                      context.read(clubController(widget.clubid)).pickNextBook(clubInfo, _selectedDate, _nextBook!.book);
                       context.read(clubController(widget.clubid)).updateState(widget.clubid);
                     },
                     child: const Text("Add Next Book"),
@@ -204,10 +210,10 @@ class _ClubPageState extends State<ClubPage> {
                 ]);
               }
             } else {
-              return Text("Waiting for ${clubInfo.club.selectors[clubInfo.club.nextIndexPicking]} to pick next book");
+              return Text("Waiting for ${clubInfo.club!.selectors![clubInfo.club!.nextIndexPicking!]} to pick next book");
             }
           },
-          error: (Object error, StackTrace stackTrace) => const Text("Error retrieving next book"),
+          error: (Object error, StackTrace? stackTrace) => const Text("Error retrieving next book"),
           loading: () => const CircularProgressIndicator(),
         );
       }
@@ -216,7 +222,7 @@ class _ClubPageState extends State<ClubPage> {
     }
   }
 
-  Future<Widget> searchDialog(BuildContext context) {
+  Future<Widget?> searchDialog(BuildContext context) {
     return showDialog<Widget>(
       context: context,
       builder: (_) => Padding(
@@ -254,12 +260,14 @@ class _ClubPageState extends State<ClubPage> {
                           onTap: () {
                             _nextBook = BookCard(
                               book: _books[index],
+                              cardType: CardType.search,
                             );
 
                             Navigator.pop(context);
                           },
                           child: BookCard(
                             book: _books[index],
+                            cardType: CardType.search,
                           ),
                         );
                       },
@@ -318,11 +326,11 @@ class _ClubPageState extends State<ClubPage> {
             SliverList(
               delegate: SliverChildListDelegate([
                 Consumer(
-                  builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+                  builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget? child) {
                     return watch(clubController(widget.clubid).state).when(data: (ClubSet value) {
                       return Column(
                         children: [
-                          Text(value.club.clubName ?? "Error no club"),
+                          Text(value.club!.clubName),
                           const SizedBox(
                             height: 40,
                           ),
@@ -333,7 +341,7 @@ class _ClubPageState extends State<ClubPage> {
                           _displayNextBookInfo(value, watch),
                         ],
                       );
-                    }, error: (Object error, StackTrace stackTrace) {
+                    }, error: (Object error, StackTrace? stackTrace) {
                       return const Text("Error retrieving Club");
                     }, loading: () {
                       return const Center(child: CircularProgressIndicator());

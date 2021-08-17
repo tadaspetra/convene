@@ -46,7 +46,7 @@ class FirestoreBook implements BookRepository {
   @override
   Future<void> addBook(BookModel book) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
-    return users.doc(user.uid).collection("currentBooks").add(book.toJson());
+    await users.doc(user.uid).collection("currentBooks").add(book.toJson());
   }
 
   @override
@@ -65,13 +65,13 @@ class FirestoreBook implements BookRepository {
   }
 
   @override
-  Future<void> finishBook({BookModel book}) async {
+  Future<void> finishBook({required BookModel book}) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
 
     //don't need to await, nothing is dependent on this
-    users.doc(user.uid).collection("currentBooks").doc(book.id).delete();
-    if (book.fromClub) {
-      clubs.doc(book.clubId).collection("books").doc(book.clubBookId).collection("reviews").doc(user.uid).set(<String, dynamic>{
+    await users.doc(user.uid).collection("currentBooks").doc(book.id).delete();
+    if (book.fromClub!) {
+      await clubs.doc(book.clubId).collection("books").doc(book.clubBookId).collection("reviews").doc(user.uid).set(<String, dynamic>{
         'rating': book.rating,
         'review': book.review,
       }); //TODO: rating and reviews get stored in separate places for solo books and for clubs
@@ -99,7 +99,7 @@ class FirestoreBook implements BookRepository {
   }
 
   @override
-  Future<void> updateBook({BookModel book}) async {
+  Future<void> updateBook({required BookModel book}) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
     return users.doc(user.uid).collection("currentBooks").doc(book.id).update(<String, dynamic>{
       'currentPage': book.currentPage,
@@ -107,7 +107,7 @@ class FirestoreBook implements BookRepository {
   }
 
   @override
-  Future<void> deleteBook({BookModel book}) async {
+  Future<void> deleteBook({required BookModel book}) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
     return users.doc(user.uid).collection("currentBooks").doc(book.id).delete();
   }

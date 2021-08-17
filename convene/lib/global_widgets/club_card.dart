@@ -6,8 +6,8 @@ class ClubCard extends StatelessWidget {
   final ClubModel club;
 
   const ClubCard({
-    Key key,
-    this.club,
+    Key? key,
+    required this.club,
   }) : super(key: key);
 
   Future<void> goToClub() async {}
@@ -16,12 +16,12 @@ class ClubCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        Navigator.push(
+        await Navigator.push(
           //TODO: this push goes against the way the app is set up, but will figure out later
           context,
           MaterialPageRoute<ClubPage>(
             builder: (context) => ClubPage(
-              clubid: club.id,
+              clubid: club.id!,
             ),
           ),
         );
@@ -33,8 +33,8 @@ class ClubCard extends StatelessWidget {
 
 class DisplayClubCard extends StatelessWidget {
   const DisplayClubCard({
-    Key key,
-    this.club,
+    Key? key,
+    required this.club,
   }) : super(key: key);
 
   final ClubModel club;
@@ -60,8 +60,7 @@ class DisplayClubCard extends StatelessWidget {
         children: [
           Expanded(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,8 +68,7 @@ class DisplayClubCard extends StatelessWidget {
                   Flexible(
                     child: Text(
                       club.clubName,
-                      style: const TextStyle(
-                          fontSize: 24.0, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

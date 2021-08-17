@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class JoinClubPage extends StatefulWidget {
-  const JoinClubPage({Key key}) : super(key: key);
+  const JoinClubPage({Key? key}) : super(key: key);
 
   static Route get route => MaterialPageRoute<void>(builder: (_) => const JoinClubPage());
 

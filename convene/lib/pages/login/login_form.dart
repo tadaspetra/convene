@@ -55,7 +55,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           ElevatedButton(
             onPressed: () async {
-              if (formKey.currentState.validate()) {
+              if (formKey.currentState!.validate()) {
                 try {
                   await context
                       .read(authRepositoryProvider)
@@ -66,7 +66,7 @@ class _LoginFormState extends State<LoginForm> {
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(e.message),
+                          Text(e.message!),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(primary: Palette.lightGrey),
                             onPressed: () async {
@@ -85,7 +85,7 @@ class _LoginFormState extends State<LoginForm> {
                     ));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(e.message),
+                      content: Text(e.message!),
                       duration: const Duration(seconds: 2),
                     ));
                   }

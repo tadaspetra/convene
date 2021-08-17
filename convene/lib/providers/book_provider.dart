@@ -33,47 +33,47 @@ class CurrentBookList extends StateNotifier<AsyncValue<List<BookModel>>> {
       final List<BookModel> books = await read(bookRepositoryProvider).getCurrentBooks();
       state = AsyncData(books);
     } catch (e, st) {
-      return AsyncError<Exception>(e, st);
+      throw AsyncError<Exception>(e, st);
     }
   }
 
-  Future<void> addBook({BookModel book}) async {
+  Future<void> addBook({required BookModel book}) async {
     try {
       await read(bookRepositoryProvider).addBook(book);
       final List<BookModel> books = await read(bookRepositoryProvider).getCurrentBooks();
       state = AsyncData(books);
     } catch (e, st) {
-      return AsyncError<Exception>(e, st);
+      throw AsyncError<Exception>(e, st);
     }
   }
 
-  Future<void> updateBook({BookModel book}) async {
+  Future<void> updateBook({required BookModel book}) async {
     try {
       await read(bookRepositoryProvider).updateBook(book: book);
       final List<BookModel> books = await read(bookRepositoryProvider).getCurrentBooks();
       state = AsyncData(books);
     } catch (e, st) {
-      return AsyncError<Exception>(e, st);
+      throw AsyncError<Exception>(e, st);
     }
   }
 
-  Future<void> finishBook({BookModel book}) async {
+  Future<void> finishBook({required BookModel book}) async {
     try {
       await read(bookRepositoryProvider).finishBook(book: book);
       final List<BookModel> books = await read(bookRepositoryProvider).getCurrentBooks();
       state = AsyncData(books);
     } catch (e, st) {
-      return AsyncError<Exception>(e, st);
+      throw AsyncError<Exception>(e, st);
     }
   }
 
-  Future<void> deleteBook({BookModel book}) async {
+  Future<void> deleteBook({required BookModel book}) async {
     try {
       await read(bookRepositoryProvider).deleteBook(book: book);
       final List<BookModel> books = await read(bookRepositoryProvider).getCurrentBooks();
       state = AsyncData(books);
     } catch (e, st) {
-      return AsyncError<Exception>(e, st);
+      throw AsyncError<Exception>(e, st);
     }
   }
 }

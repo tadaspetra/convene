@@ -37,12 +37,12 @@ class FirestoreClub implements ClubRepository {
   Future<void> createClub(ClubModel clubModel, BookModel bookModel) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
     final DocumentReference _clubRef = await clubs.add(clubModel.toJson()); //create club
-    addNewMember(_clubRef.id, user);
-    addNewSelector(_clubRef.id, user);
+    await addNewMember(_clubRef.id, user);
+    await addNewSelector(_clubRef.id, user);
     final DocumentReference _bookRef =
         await _clubRef.collection("books").add(bookModel.copyWith(clubId: _clubRef.id).toJson()); //add book to club list
     //book relys on club being created and currentBookId relys on book being created
-    _clubRef.update(clubModel.copyWith(currentBookId: _bookRef.id).toJson());
+    await _clubRef.update(clubModel.copyWith(currentBookId: _bookRef.id).toJson());
     //this will give personal list a different ID, but I think has to be that way, because there is
     //a possibility that it will give an ID that already exists
     await read(currentBooksController)
@@ -57,7 +57,7 @@ class FirestoreClub implements ClubRepository {
     final DocumentReference _clubRef = clubs.doc(clubId);
     final ClubModel _clubModel = ClubModel.fromDocumentSnapshot(await _clubRef.get());
 
-    addNewMember(_clubRef.id, user);
+    await addNewMember(_clubRef.id, user);
 
     await users.doc(user.uid).collection("clubs").doc(_clubRef.id).set(_clubModel.toJson()); //add club to users model
   }
@@ -146,11 +146,11 @@ class FirestoreClub implements ClubRepository {
     final DocumentReference selectorRef = clubs.doc(clubId).collection("selectors").doc(uid);
 
     if ((await memberRef.get()).exists) {
-      memberRef.delete();
+      await memberRef.delete();
     }
 
     if ((await selectorRef.get()).exists) {
-      selectorRef.delete();
+      await selectorRef.delete();
       await clubs.doc(clubId).update(<String, dynamic>{
         "selectors": FieldValue.arrayRemove(<String>[uid]),
       });
@@ -160,8 +160,8 @@ class FirestoreClub implements ClubRepository {
     final CollectionReference userCurrentBooksRef = users.doc(uid).collection("currentBooks");
     final QuerySnapshot query = await userCurrentBooksRef.get();
     for (final DocumentSnapshot doc in query.docs) {
-      if (doc.data()["clubId"] == clubId) {
-        userCurrentBooksRef.doc(doc.id).update(<String, dynamic>{
+      if (doc.data()!["clubId"] == clubId) {
+        await userCurrentBooksRef.doc(doc.id).update(<String, dynamic>{
           "clubId": FieldValue.delete(),
           "clubName": FieldValue.delete(),
           "clubBookId": FieldValue.delete(),
@@ -176,7 +176,7 @@ class FirestoreClub implements ClubRepository {
     final DocumentReference selectorRef = clubs.doc(clubId).collection("selectors").doc(uid);
 
     if ((await selectorRef.get()).exists) {
-      selectorRef.delete();
+      await selectorRef.delete();
       await clubs.doc(clubId).update(<String, dynamic>{
         "selectors": FieldValue.arrayRemove(<String>[uid]),
       });
@@ -186,7 +186,7 @@ class FirestoreClub implements ClubRepository {
   @override
   Future<void> addReview(String clubId, String bookId, String review, double rating) async {
     final user = await read(userRespositoryProvider).getCurrentUser();
-    clubs.doc(clubId).collection("books").doc(bookId).collection("reviews").doc(user.uid).set(<String, dynamic>{
+    await clubs.doc(clubId).collection("books").doc(bookId).collection("reviews").doc(user.uid).set(<String, dynamic>{
       "rating": rating,
       "review": review,
     });

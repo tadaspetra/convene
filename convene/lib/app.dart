@@ -18,11 +18,11 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  Future<FirebaseApp> _initialization;
+  Future<FirebaseApp>? _initialization;
 
   final _navigatorKey = GlobalKey<NavigatorState>();
 
-  NavigatorState get _navigator => _navigatorKey.currentState;
+  NavigatorState get _navigator => _navigatorKey.currentState!;
 
   void _navigateToRoute(String route) {
     _navigator.pushNamedAndRemoveUntil<void>(
@@ -81,12 +81,12 @@ class _AppState extends State<App> {
                   });
                 },
                 provider: authStateProvider,
-                child: child,
+                child: child!,
               );
             }
 
             // Firebase loading
-            return child;
+            return child!;
           },
         );
       },
@@ -97,32 +97,26 @@ class _AppState extends State<App> {
             return MaterialPageRoute<HomePage>(
               builder: (context) => const HomePage(),
             );
-            break;
           case "/login":
             return MaterialPageRoute<HomePage>(
               builder: (context) => const LoginPage(),
             );
-            break;
           case "/loading":
             return MaterialPageRoute<HomePage>(
               builder: (context) => const SplashPage(),
             );
-            break;
           case "/error":
             return MaterialPageRoute<HomePage>(
               builder: (context) => const ErrorPage(),
             );
-            break;
           case "/emailnotverified":
             return MaterialPageRoute<HomePage>(
               builder: (context) => const EmailNotVerifiedPage(),
             );
-            break;
           default:
             return MaterialPageRoute<SplashPage>(
               builder: (context) => const SplashPage(),
             );
-            break;
         }
       },
       initialRoute: "/login",

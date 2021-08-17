@@ -15,7 +15,7 @@ class BookCard extends StatelessWidget {
   final BookModel book;
   final CardType cardType;
 
-  const BookCard({Key key, this.book, this.cardType}) : super(key: key);
+  const BookCard({Key? key, required this.book, required this.cardType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,10 @@ class BookCard extends StatelessWidget {
                 resizeToAvoidBottomInset: false,
                 body: ListView(
                   children: [
-                    DisplayBookCard(book: book),
+                    DisplayBookCard(
+                      book: book,
+                      cardType: cardType,
+                    ),
                     const SizedBox(height: 30),
                     const Text(
                       "Add this book to current reading?",
@@ -54,21 +57,19 @@ class BookCard extends StatelessWidget {
           ),
           child: DisplayBookCard(book: book, cardType: cardType),
         );
-        break;
       case CardType.home:
       case CardType.finished:
       default:
         return DisplayBookCard(book: book, cardType: cardType);
-        break;
     }
   }
 }
 
 class DisplayBookCard extends StatelessWidget {
   const DisplayBookCard({
-    Key key,
-    @required this.book,
-    this.cardType,
+    Key? key,
+    required this.book,
+    required this.cardType,
   }) : super(key: key);
 
   final BookModel book;
@@ -99,7 +100,7 @@ class DisplayBookCard extends StatelessWidget {
                 //if object gets created with no cover image we set to "noimage"
                 ? Container()
                 : Image.network(
-                    book.coverImage,
+                    book.coverImage!,
                     width: 80,
                     height: 120,
                     cacheWidth: 80,
@@ -128,19 +129,18 @@ class DisplayBookCard extends StatelessWidget {
                             Text(book.pageCount.toString()),
                           ],
                         ); //TODO: Is there something better to return here?
-                        break;
                       case CardType.home:
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (book.fromClub) Text("From: ${book.clubName}"),
-                            Text("${(book.currentPage / book.pageCount * 100).toStringAsFixed(2)}%"),
+                            if (book.fromClub!) Text("From: ${book.clubName}"),
+                            Text("${(book.currentPage! / book.pageCount! * 100).toStringAsFixed(2)}%"),
                             UpdateButton(book: book),
                             ElevatedButton(
                               onPressed: () {
                                 if (!((book.clubId == null) || (book.clubId == "Error: no club Id"))) {
                                   context.read(currentBooksController).deleteBook(book: book);
-                                  context.read(clubLogic).removeCurrentReader(book.clubId);
+                                  context.read(clubLogic).removeCurrentReader(book.clubId!);
                                 } else {
                                   context.read(currentBooksController).deleteBook(book: book);
                                 }
@@ -149,7 +149,6 @@ class DisplayBookCard extends StatelessWidget {
                             )
                           ],
                         );
-                        break;
                       case CardType.finished:
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,10 +157,8 @@ class DisplayBookCard extends StatelessWidget {
                             Text("Review:  ${book.review}"),
                           ],
                         );
-                        break;
                       default:
                         return Container();
-                        break;
                     }
                   }()
                 ],
@@ -176,8 +173,8 @@ class DisplayBookCard extends StatelessWidget {
 
 class UpdateButton extends StatelessWidget {
   const UpdateButton({
-    Key key,
-    @required this.book,
+    Key? key,
+    required this.book,
   }) : super(key: key);
 
   final BookModel book;
@@ -263,7 +260,7 @@ class UpdateButton extends StatelessWidget {
                                           ),
                                         );
                                     if (!((book.clubId == null) || (book.clubId == "Error: no club Id"))) {
-                                      context.read(clubLogic).addReview(book.clubId, book.clubBookId, _reviewController.text, rating);
+                                      context.read(clubLogic).addReview(book.clubId!, book.clubBookId!, _reviewController.text, rating);
                                     }
                                     Navigator.pop(context);
                                     Navigator.pop(context);

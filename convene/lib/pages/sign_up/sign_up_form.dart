@@ -53,12 +53,12 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           ElevatedButton(
             onPressed: () async {
-              if (signUpKey.currentState.validate()) {
+              if (signUpKey.currentState!.validate()) {
                 try {
                   await context.read(authRepositoryProvider).signUp(email: emailController.text, password: passwordController.text);
                 } on FirebaseException catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(e.message),
+                    content: Text(e.message!),
                     duration: const Duration(seconds: 2),
                   ));
                 }

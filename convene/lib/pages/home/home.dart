@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage();
+  const HomePage({Key? key}) : super(key: key);
 
   static Route get route => MaterialPageRoute<void>(builder: (_) => const HomePage());
 
@@ -36,14 +36,14 @@ class _HomePageState extends State<HomePage> {
             leading: IconButton(
               icon: const Icon(Icons.menu),
               onPressed: () {
-                _homeScaffoldKey.currentState.openDrawer();
+                _homeScaffoldKey.currentState!.openDrawer();
               },
             ),
             actions: [
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
-                  _homeScaffoldKey.currentState.openEndDrawer();
+                  _homeScaffoldKey.currentState!.openEndDrawer();
                 },
               ),
             ],
@@ -65,9 +65,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Consumer(
-            builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+            builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget? child) {
               return watch(currentBooksController.state).when(
-                error: (Object error, StackTrace stackTrace) {
+                error: (Object error, StackTrace? stackTrace) {
                   return SliverList(
                     delegate: SliverChildListDelegate([const Text("Error retrieving books")]),
                   );
@@ -99,12 +99,12 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Consumer(
-            builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+            builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget? child) {
               return watch(currentClubsProvider).when(
                 data: (List<ClubModel> value) {
                   return Clubs(value);
                 },
-                error: (Object error, StackTrace stackTrace) {
+                error: (Object error, StackTrace? stackTrace) {
                   return SliverList(
                     delegate: SliverChildListDelegate([const Text("Error retrieving books")]),
                   );

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EmailNotVerifiedPage extends StatelessWidget {
-  const EmailNotVerifiedPage({Key key}) : super(key: key);
+  const EmailNotVerifiedPage({Key? key}) : super(key: key);
 
   static Route get route => MaterialPageRoute<void>(builder: (_) => const EmailNotVerifiedPage());
 

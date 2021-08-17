@@ -13,11 +13,12 @@ final currentClubsProvider = StreamProvider.autoDispose<List<ClubModel>>((ref) {
           data: (DatabaseUser value) {
             return value;
           },
-          error: (Object error, StackTrace stackTrace) {
-            return DatabaseUser(uid: null, email: null);
+          error: (Object error, StackTrace? stackTrace) {
+            throw ("error");
+            //return const DatabaseUser(uid: "error", email: "error");
           },
           loading: () {
-            return DatabaseUser(uid: null, email: null);
+            return const DatabaseUser(uid: "loading", email: "loading");
           },
         ),
       );
@@ -76,10 +77,10 @@ class CurrentClub extends StateNotifier<AsyncValue<ClubSet>> {
   Future<void> _getInfo(String id) async {
     try {
       final ClubModel club = await read(clubRepositoryProvider).getSingleClub(id);
-      final BookModel currentBook = await read(clubRepositoryProvider).getCurrentBook(clubid, club.currentBookId);
-      BookModel nextBook;
+      final BookModel currentBook = await read(clubRepositoryProvider).getCurrentBook(clubid, club.currentBookId!);
+      BookModel? nextBook;
       if (club.nextBookId != null) {
-        nextBook = await read(clubRepositoryProvider).getCurrentBook(clubid, club.nextBookId);
+        nextBook = await read(clubRepositoryProvider).getCurrentBook(clubid, club.nextBookId!);
       }
       state = AsyncData(ClubSet(
         club: club,
@@ -92,18 +93,18 @@ class CurrentClub extends StateNotifier<AsyncValue<ClubSet>> {
   }
 
   Future<void> updateState(String clubid) async {
-    _getInfo(clubid);
+    await _getInfo(clubid);
   }
 
   Future<void> joinCurrentBook(ClubSet clubInfo, String uid) async {
-    await read(currentBooksController).addBook(book: clubInfo.currentBook.copyWith(clubBookId: clubInfo.club.id));
-    await read(clubRepositoryProvider).addCurrentReader(clubInfo.club.id, uid);
-    await updateState(clubInfo.club.id); //need to update the UI with the current club updates
+    await read(currentBooksController).addBook(book: clubInfo.currentBook!.copyWith(clubBookId: clubInfo.club!.id));
+    await read(clubRepositoryProvider).addCurrentReader(clubInfo.club!.id!, uid);
+    await updateState(clubInfo.club!.id!); //need to update the UI with the current club updates
   }
 
   Future<void> pickNextBook(ClubSet clubInfo, DateTime nextBookDue, BookModel nextBook) async {
-    await read(clubRepositoryProvider).addNextBook(clubInfo.club.id, nextBookDue, nextBook);
-    await updateState(clubInfo.club.id); //need to update the UI with the current club updates
+    await read(clubRepositoryProvider).addNextBook(clubInfo.club!.id!, nextBookDue, nextBook);
+    await updateState(clubInfo.club!.id!); //need to update the UI with the current club updates
   }
 }
 

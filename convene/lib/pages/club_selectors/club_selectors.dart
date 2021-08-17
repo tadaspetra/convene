@@ -6,9 +6,12 @@ import 'package:user_repository/user_repository.dart';
 
 class ClubSelectorsPage extends StatefulWidget {
   final String clubId;
-  const ClubSelectorsPage({Key key, this.clubId}) : super(key: key);
+  const ClubSelectorsPage({Key? key, required this.clubId}) : super(key: key);
 
-  static Route get route => MaterialPageRoute<void>(builder: (_) => const ClubSelectorsPage());
+  Route get route => MaterialPageRoute<void>(
+      builder: (_) => ClubSelectorsPage(
+            clubId: clubId,
+          ));
 
   @override
   _ClubSelectorsPageState createState() => _ClubSelectorsPageState();
@@ -17,7 +20,7 @@ class ClubSelectorsPage extends StatefulWidget {
 class _ClubSelectorsPageState extends State<ClubSelectorsPage> {
   TextEditingController bookController = TextEditingController();
 
-  String searchText;
+  String? searchText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,14 +38,14 @@ class _ClubSelectorsPageState extends State<ClubSelectorsPage> {
             ),
             Expanded(
               child: Consumer(
-                builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+                builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget? child) {
                   final AsyncValue<List<DatabaseUser>> members = watch(membersController(widget.clubId));
                   final AsyncValue<List<DatabaseUser>> selectors = watch(selectorsController(widget.clubId));
                   final AsyncValue<ClubSet> club = watch(clubController(widget.clubId).state);
                   final AsyncValue<DatabaseUser> currentUser = watch(currentUserController.state);
 
                   return members.when(
-                    error: (Object error, StackTrace stackTrace) {
+                    error: (Object error, StackTrace? stackTrace) {
                       return const Text("Error retrieving books");
                     },
                     loading: () {
@@ -59,11 +62,11 @@ class _ClubSelectorsPageState extends State<ClubSelectorsPage> {
                           itemBuilder: (context, index) {
                             return ListTile(
                               leading: const Icon(Icons.person),
-                              title: Text(members[index].email ?? "Error: no name"),
+                              title: Text(members[index].email),
                               trailing: currentUser.maybeWhen(
                                 data: (user) {
                                   return club.maybeWhen(data: (clubset) {
-                                    if (clubset.club.leader == user.uid) {
+                                    if (clubset.club!.leader == user.uid) {
                                       return Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
@@ -84,7 +87,7 @@ class _ClubSelectorsPageState extends State<ClubSelectorsPage> {
                                                 },
                                               );
                                             },
-                                            error: (Object error, StackTrace stackTrace) {
+                                            error: (Object error, StackTrace? stackTrace) {
                                               return const Icon(Icons.check_box_outline_blank);
                                             },
                                             loading: () {
@@ -92,7 +95,7 @@ class _ClubSelectorsPageState extends State<ClubSelectorsPage> {
                                             },
                                           ),
                                           () {
-                                            if (members[index].uid != clubset.club.leader) {
+                                            if (members[index].uid != clubset.club!.leader) {
                                               return ElevatedButton(
                                                 onPressed: () {
                                                   context.read(clubLogic).removeMember(widget.clubId, members[index].uid);
@@ -117,7 +120,7 @@ class _ClubSelectorsPageState extends State<ClubSelectorsPage> {
                                             }
                                             return const Icon(Icons.check_box_outline_blank);
                                           },
-                                          error: (Object error, StackTrace stackTrace) {
+                                          error: (Object error, StackTrace? stackTrace) {
                                             return const Icon(Icons.check_box_outline_blank);
                                           },
                                           loading: () {

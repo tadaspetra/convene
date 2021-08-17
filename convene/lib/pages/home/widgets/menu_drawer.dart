@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -17,14 +17,14 @@ class MenuDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             Consumer(
-              builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+              builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget? child) {
                 return watch(currentUserController.state).when(data: (DatabaseUser value) {
                   return ListTile(
                     title: Text(
-                      value.email ?? "no email",
+                      value.email,
                     ),
                   );
-                }, error: (Object error, StackTrace stackTrace) {
+                }, error: (Object error, StackTrace? stackTrace) {
                   return Container();
                 }, loading: () {
                   return Container();

@@ -6,10 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FinishedBookPage extends ConsumerWidget {
-  const FinishedBookPage({Key key}) : super(key: key);
+  const FinishedBookPage({Key? key}) : super(key: key);
 
-  static Route get route =>
-      MaterialPageRoute<void>(builder: (_) => const FinishedBookPage());
+  static Route get route => MaterialPageRoute<void>(builder: (_) => const FinishedBookPage());
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
@@ -20,26 +19,22 @@ class FinishedBookPage extends ConsumerWidget {
             backgroundColor: Palette.lightGrey,
           ),
           Consumer(
-            builder: (BuildContext context,
-                T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+            builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget? child) {
               return watch(finishedBooksProvider).when(
-                error: (Object error, StackTrace stackTrace) {
+                error: (Object error, StackTrace? stackTrace) {
                   return SliverList(
-                    delegate: SliverChildListDelegate(
-                        [const Text("Error retrieving books")]),
+                    delegate: SliverChildListDelegate([const Text("Error retrieving books")]),
                   );
                 },
                 loading: () {
                   return SliverList(
-                    delegate: SliverChildListDelegate(
-                        [const Center(child: CircularProgressIndicator())]),
+                    delegate: SliverChildListDelegate([const Center(child: CircularProgressIndicator())]),
                   );
                 },
                 data: (List<BookModel> value) {
                   if (value.isEmpty) {
                     return SliverList(
-                      delegate: SliverChildListDelegate(
-                          [const Text("Error retrieving books")]),
+                      delegate: SliverChildListDelegate([const Text("Error retrieving books")]),
                     );
                   } else {
                     return SliverList(

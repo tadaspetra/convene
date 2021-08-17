@@ -6,8 +6,8 @@ abstract class BookRepository {
   Future<List<BookModel>> searchBooks(String name);
   Future<void> addBook(BookModel book);
   Future<List<BookModel>> getCurrentBooks();
-  Future<void> finishBook({BookModel book});
+  Future<void> finishBook({required BookModel book});
   Future<List<BookModel>> getFinishedBooks();
-  Future<void> updateBook({BookModel book});
-  Future<void> deleteBook({BookModel book});
+  Future<void> updateBook({required BookModel book});
+  Future<void> deleteBook({required BookModel book});
 }

@@ -9,7 +9,7 @@ import 'package:user_repository/user_repository.dart';
 import 'package:intl/intl.dart';
 
 class CreateClubPage extends StatefulWidget {
-  const CreateClubPage({Key key}) : super(key: key);
+  const CreateClubPage({Key? key}) : super(key: key);
 
   static Route get route => MaterialPageRoute<void>(builder: (_) => const CreateClubPage());
 
@@ -20,9 +20,9 @@ class CreateClubPage extends StatefulWidget {
 class _CreateClubPageState extends State<CreateClubPage> {
   final TextEditingController _clubName = TextEditingController();
   final TextEditingController _bookController = TextEditingController();
-  BookCard _firstBook;
+  BookCard? _firstBook;
   List<BookModel> _books = [];
-  DatabaseUser currentUser;
+  DatabaseUser? currentUser;
   DateTime _selectedDate = DateTime.now();
 
   @override
@@ -37,7 +37,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
   }
 
   Future<void> _selectDate() async {
-    final DateTime picked =
+    final DateTime? picked =
         await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2222));
 
     if (picked != null && picked != _selectedDate) {
@@ -65,7 +65,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Enter Hour (0-23)"),
+                    const Text("Enter Hour (0-23)"),
                     TextField(
                       keyboardType: TextInputType.number,
                       onChanged: (value) {
@@ -98,7 +98,7 @@ class _CreateClubPageState extends State<CreateClubPage> {
     super.didChangeDependencies();
   }
 
-  Future<Widget> searchDialog(BuildContext context) {
+  Future<Widget?> searchDialog(BuildContext context) {
     return showDialog<Widget>(
       context: context,
       builder: (_) => Padding(
@@ -136,12 +136,14 @@ class _CreateClubPageState extends State<CreateClubPage> {
                           onTap: () {
                             _firstBook = BookCard(
                               book: _books[index],
+                              cardType: CardType.search,
                             );
 
                             Navigator.pop(context);
                           },
                           child: BookCard(
                             book: _books[index],
+                            cardType: CardType.search,
                           ),
                         );
                       },
@@ -216,21 +218,21 @@ class _CreateClubPageState extends State<CreateClubPage> {
               ],
             ),
             Consumer(
-              builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget child) {
+              builder: (BuildContext context, T Function<T>(ProviderBase<Object, T>) watch, Widget? child) {
                 return watch(currentUserController.state).maybeWhen(data: (DatabaseUser value) {
                   return ElevatedButton(
                     onPressed: () {
                       context.read(clubLogic).createClub(
                             ClubModel(
                               clubName: _clubName.text,
-                              leader: currentUser.uid,
-                              selectors: [currentUser.uid],
-                              currentReaders: [currentUser.uid],
+                              leader: currentUser!.uid,
+                              selectors: [currentUser!.uid],
+                              currentReaders: [currentUser!.uid],
                               dateCreated: DateTime.now(),
                               //currentBookId needs to be done within createClub function
                               currentBookDue: _selectedDate,
                             ),
-                            _firstBook.book.copyWith(fromClub: true, clubName: _clubName.text),
+                            _firstBook!.book.copyWith(fromClub: true, clubName: _clubName.text),
                           );
                       Navigator.pop(context);
                     },
