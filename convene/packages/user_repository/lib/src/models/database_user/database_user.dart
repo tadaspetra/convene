@@ -18,7 +18,7 @@ abstract class DatabaseUser with _$DatabaseUser {
     return DatabaseUser(
       uid: documentSnapshot.id, // Did we plan to make the uid the document id?
       email: documentSnapshot["email"] as String,
-      name: "temp",
+      name: "temp", //TODO: update to not be temp
     );
   }
 }
